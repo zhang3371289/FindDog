@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            style="@style/TitleTextStyle"/>
+
+        <ImageView
+            android:id="@+id/activity_main_user"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/user"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/black"/>
+    </RelativeLayout>
+
+    <!--可滑动的布局内容-->
+    <com.find.dog.utils.NoScrollViewPager
+        android:id="@+id/home_vp_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/home_tabs"
+        android:layout_below="@+id/title_layout"
+        android:layout_marginTop="1px"/>
+
+    <!--
+       android design library提供的TabLayout控件
+       tabIndicatorColor：菜单下方移动的横线的颜色
+       tabSelectedTextColor ：菜单被选中之后的颜色
+       tabTextColor : 菜单正常的颜色
+       app:tabTextAppearance : 添加样式，这里加了样式主要是为了在文字前面加一个图所用，就是把textAllCaps设置成false
+   -->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/home_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
