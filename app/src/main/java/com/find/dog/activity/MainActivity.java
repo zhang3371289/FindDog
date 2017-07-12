@@ -22,10 +22,8 @@ import com.find.dog.fragment.CommunityFragment;
 import com.find.dog.fragment.FindFragment;
 import com.find.dog.fragment.PetFragment;
 import com.find.dog.fragment.ScanFragment;
-import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.NoScrollViewPager;
-import com.find.dog.utils.PhotoUtil;
 
 import java.util.ArrayList;
 

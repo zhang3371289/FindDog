@@ -15,6 +15,8 @@ import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by zhangzhongwei on 2017/6/27.
  * 宠物Fragment
@@ -26,6 +28,7 @@ public class PetFragment extends Fragment {
     private Context mContext;
     private TextView name;
     private PetFooterAdapter mFooterAdapter;
+    private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
     private static int selectPosition = 0;
     private String[] data1 = {"http://pic1.win4000.com/wallpaper/2/57e0fc465d511.jpg"
             ,"http://pic1.win4000.com/wallpaper/2/57e0fc465d511.jpg"
@@ -42,7 +45,6 @@ public class PetFragment extends Fragment {
             ,"http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg"
             ,"http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg"
             ,"http://imgsrc.baidu.com/imgad/pic/item/1e30e924b899a9017c518d1517950a7b0208f5a9.jpg"};
-    private String[] datas = data1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pet, container, false);
@@ -68,13 +70,19 @@ public class PetFragment extends Fragment {
         name.setText("选中"+position);
         switch (position){
             case 0:
-                datas = data1;
+                for(int i=0;i<data1.length;i++){
+                    mPicList.add(data1[i]);
+                }
                 break;
             case 1:
-                datas = data2;
+                for(int i=0;i<data2.length;i++){
+                    mPicList.add(data2[i]);
+                }
                 break;
             case 2:
-                datas = data3;
+                for(int i=0;i<data3.length;i++){
+                    mPicList.add(data3[i]);
+                }
                 break;
         }
 //        mFooterAdapter = new PetFooterAdapter(datas,mContext);
@@ -109,7 +117,7 @@ public class PetFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTopRV.setLayoutManager(linearLayoutManager);
         mListView.addFooterView(footerView);
-//        mFooterAdapter = new PetFooterAdapter(datas,mContext);
-//        mTopRV.setAdapter(mFooterAdapter);
+        mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
+        mTopRV.setAdapter(mFooterAdapter);
     }
 }
