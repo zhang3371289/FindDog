@@ -20,13 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.R;
+import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
-import com.find.dog.utils.NetWorkUtil;
 import com.find.dog.utils.PhotoUtil;
 
 import java.io.File;
@@ -49,7 +48,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 	private RecyclerView mRecyclerView;
 	private UpLoadAdapter mAdapter;
 	private LinearLayout normalLayout;
-
+	public static String PIC_LIST = "PIC_LIST";
 	private Handler mHandler = new Handler(){
 
 		@Override
@@ -197,32 +196,34 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 		/*提交按钮*/
 		case R.id.activity_upload_up:
 
-			// 是否登录 ？提交 ：跳转登录页面
-			if(MyManger.isLogin()){
-				/*连网判断*/
-				if(!NetWorkUtil.isNetworkAvailable(mActivity)){
-					Toast.makeText(mActivity, R.string.intent_no, Toast.LENGTH_SHORT).show();
-					return;
-				}
-				//防止多次点击
-				mCommit.setEnabled(false);
-				/*是否选择图片*/
-				if(mAdapter.getList().size() > 0){//上传图片
-
-					zoomPicture();
-
-				}else if(mGetEditText.length() > 0){//提交回复
-					commitReplay();
-				}else{
-					Toast.makeText(mActivity, "图片文字必填一项~", Toast.LENGTH_SHORT).show();
-					mCommit.setEnabled(false);
-				}
-
-			}else{
-				Intent goLogin = new Intent(mActivity,LoginActivity.class);
-				startActivity(goLogin);
-			}
-
+//			// 是否登录 ？提交 ：跳转登录页面
+//			if(MyManger.isLogin()){
+//				/*连网判断*/
+//				if(!NetWorkUtil.isNetworkAvailable(mActivity)){
+//					Toast.makeText(mActivity, R.string.intent_no, Toast.LENGTH_SHORT).show();
+//					return;
+//				}
+//				//防止多次点击
+//				mCommit.setEnabled(false);
+//				/*是否选择图片*/
+//				if(mAdapter.getList().size() > 0){//上传图片
+//
+//					zoomPicture();
+//
+//				}else if(mGetEditText.length() > 0){//提交回复
+//					commitReplay();
+//				}else{
+//					Toast.makeText(mActivity, "图片文字必填一项~", Toast.LENGTH_SHORT).show();
+//					mCommit.setEnabled(false);
+//				}
+//
+//			}else{
+//				Intent goLogin = new Intent(mActivity,LoginActivity.class);
+//				startActivity(goLogin);
+//			}
+			Intent intent = new Intent(mActivity,MyPetActivity.class);
+			intent.putExtra(PIC_LIST,mAdapter.getList());
+			startActivity(intent);
 			break;
 		case R.id.back_layout:
 			finish();

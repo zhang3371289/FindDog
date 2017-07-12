@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.find.dog.R;
 
+import java.util.ArrayList;
+
 public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.ViewHolder> {
 
-    public String[] datas = null;
     private Context mContext;
-    public PetFooterAdapter(String[] datas, Context mContext) {
-        this.datas = datas;
+    private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
+    public PetFooterAdapter(ArrayList<String> mPicList, Context mContext) {
+        this.mPicList = mPicList;
         this.mContext = mContext;
     }
     //创建新View，被LayoutManager所调用
@@ -29,7 +31,7 @@ public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 //        viewHolder.mImageView.setBackgroundResource();
-        Glide.with(mContext).load(datas[position])
+        Glide.with(mContext).load(mPicList.get(position))
 //                .placeholder(R.mipmap.ic_launcher)
 //                .error(R.mipmap.ic_launcher)
                 .into(viewHolder.mImageView);
@@ -37,7 +39,7 @@ public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.View
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return datas.length;
+        return mPicList.size();
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {

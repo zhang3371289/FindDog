@@ -77,8 +77,8 @@ public class PetFragment extends Fragment {
                 datas = data3;
                 break;
         }
-        mFooterAdapter = new PetFooterAdapter(datas,mContext);
-        mTopRV.setAdapter(mFooterAdapter);
+//        mFooterAdapter = new PetFooterAdapter(datas,mContext);
+//        mTopRV.setAdapter(mFooterAdapter);
         mFooterAdapter.notifyDataSetChanged();
     }
 
@@ -109,7 +109,7 @@ public class PetFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTopRV.setLayoutManager(linearLayoutManager);
         mListView.addFooterView(footerView);
-        mFooterAdapter = new PetFooterAdapter(datas,mContext);
-        mTopRV.setAdapter(mFooterAdapter);
+//        mFooterAdapter = new PetFooterAdapter(datas,mContext);
+//        mTopRV.setAdapter(mFooterAdapter);
     }
 }

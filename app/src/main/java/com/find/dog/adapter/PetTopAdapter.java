@@ -7,15 +7,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.find.dog.R;
+import com.find.dog.activity.MyPetActivity;
 import com.find.dog.fragment.PetFragment;
 
 public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-    PetFragment mContext;
+    PetFragment mFragment;
+    MyPetActivity mActivity;
 
-//    public String[] datas = null;
+    //    public String[] datas = null;
     public PetTopAdapter(PetFragment mContext) {
 //        this.datas = datas;
-        this.mContext = mContext;
+        this.mFragment = mContext;
+    }
+    public PetTopAdapter(MyPetActivity mActivity) {
+        this.mActivity = mActivity;
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -30,7 +35,12 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.getData(position);
+                if(mFragment!=null){
+                    mFragment.getData(position);
+                }
+                if(mActivity !=null){
+                    mActivity.getData(position);
+                }
             }
         });
     }
