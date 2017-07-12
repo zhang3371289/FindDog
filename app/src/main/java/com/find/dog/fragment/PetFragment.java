@@ -70,23 +70,26 @@ public class PetFragment extends Fragment {
         name.setText("选中"+position);
         switch (position){
             case 0:
+                mPicList.clear();
                 for(int i=0;i<data1.length;i++){
                     mPicList.add(data1[i]);
                 }
                 break;
             case 1:
+                mPicList.clear();
                 for(int i=0;i<data2.length;i++){
                     mPicList.add(data2[i]);
                 }
                 break;
             case 2:
+                mPicList.clear();
                 for(int i=0;i<data3.length;i++){
                     mPicList.add(data3[i]);
                 }
                 break;
         }
-//        mFooterAdapter = new PetFooterAdapter(datas,mContext);
-//        mTopRV.setAdapter(mFooterAdapter);
+        mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
+        mTopRV.setAdapter(mFooterAdapter);
         mFooterAdapter.notifyDataSetChanged();
     }
 
