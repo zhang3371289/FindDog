@@ -5,6 +5,8 @@ import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.find.dog.main.MyApplication;
+import com.find.dog.utils.ToastUtil;
 
 import java.util.List;
 
@@ -105,6 +107,7 @@ public class MyLocationListener implements BDLocationListener {
         }
 
         Log.i("BaiduLocationApiDem", sb.toString());
+        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
     }
 
     @Override

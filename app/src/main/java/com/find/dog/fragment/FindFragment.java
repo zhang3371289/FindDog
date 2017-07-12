@@ -51,4 +51,5 @@ public class FindFragment extends Fragment {
             MyApplication.getInstance().mLocationClient.stop();
         }
     }
+
 }
