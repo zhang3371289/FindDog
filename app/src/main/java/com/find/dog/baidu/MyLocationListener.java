@@ -5,6 +5,7 @@ import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
+import com.find.dog.fragment.FindFragment;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.ToastUtil;
 
@@ -15,7 +16,6 @@ import java.util.List;
  */
 
 public class MyLocationListener implements BDLocationListener {
-
     @Override
     public void onReceiveLocation(BDLocation location) {
 
@@ -105,9 +105,9 @@ public class MyLocationListener implements BDLocationListener {
                 sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
             }
         }
-
         Log.i("BaiduLocationApiDem", sb.toString());
-        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
+//        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
+        FindFragment.setLocation(sb.toString());
     }
 
     @Override

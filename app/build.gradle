@@ -11,20 +11,43 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     productFlavors {
     }
 
+    /**
+     * 百度定位
+     */
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs',"src/main/jniLibs"]
         }
     }
+
+    /**
+     * 签名文件
+     */
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+        lintOptions {
+            checkReleaseBuilds false
+        }
+    }
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
 
 }
 
