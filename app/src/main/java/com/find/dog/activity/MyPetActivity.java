@@ -13,21 +13,26 @@ import com.find.dog.R;
 import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.utils.MyManger;
+import com.find.dog.utils.ToastUtil;
 
 import java.util.ArrayList;
+
+import static android.R.attr.name;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
  * 我的宠物
  */
-public class MyPetActivity extends BaseActivity {
+public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	private ListView mListView;
 	private RecyclerView mTopRV;
 	private Context mContext;
-	private TextView name;
 	private PetFooterAdapter mFooterAdapter;
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
+	private String mName,mAdress;
+	private TextView name_text,type_text,phone_text,adress_text;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -38,6 +43,8 @@ public class MyPetActivity extends BaseActivity {
 
 	private void intview() {
 		mPicList = getIntent().getStringArrayListExtra(UpLoadActivity.PIC_LIST);
+		mName = getIntent().getStringExtra("name");
+		mAdress = getIntent().getStringExtra("adress");
 		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
@@ -52,7 +59,6 @@ public class MyPetActivity extends BaseActivity {
 	 */
 	public void getData(int position){
 		selectPosition = position;
-		name.setText("选中"+position);
 //		switch (position){
 //			case 0:
 //				datas = data1;
@@ -89,7 +95,10 @@ public class MyPetActivity extends BaseActivity {
 	 */
 	private void addFooter() {
 		View footerView = LayoutInflater.from(mContext).inflate(R.layout.fragment_pet_addfooter, null, false);
-		name = (TextView) footerView.findViewById(R.id.fragment_pet_name);
+		name_text = (TextView) footerView.findViewById(R.id.fragment_pet_name);
+		phone_text = (TextView) footerView.findViewById(R.id.fragment_pet_phone);
+		adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
+		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
 		mTopRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
 		//设置布局管理器
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -98,6 +107,23 @@ public class MyPetActivity extends BaseActivity {
 		mListView.addFooterView(footerView);
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
+		name_text.setText(mName);
+		phone_text.setText(MyManger.getUserInfo());
+		adress_text.setText(mAdress);
+		footerView.findViewById(R.id.fabu).setOnClickListener(this);
+		footerView.findViewById(R.id.change).setOnClickListener(this);
 	}
 
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.fabu:
+				ToastUtil.showTextToast(mContext,"fabu");
+				break;
+			case R.id.change:
+				ToastUtil.showTextToast(mContext,"xiugai");
+				break;
+		}
+
+	}
 }
