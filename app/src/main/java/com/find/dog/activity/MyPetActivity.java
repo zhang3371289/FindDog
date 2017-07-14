@@ -1,6 +1,7 @@
 package com.find.dog.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -118,7 +119,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.fabu:
-				ToastUtil.showTextToast(mContext,"fabu");
+				startActivity(new Intent(this,IssueActivity.class));
 				break;
 			case R.id.change:
 				ToastUtil.showTextToast(mContext,"xiugai");
