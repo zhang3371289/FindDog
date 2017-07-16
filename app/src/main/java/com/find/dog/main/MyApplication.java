@@ -26,6 +26,9 @@ public class MyApplication extends android.app.Application {
         return myApplication;
     }
 
+    /**
+     * 百度定位 实例化
+     */
     private void initLocation(){
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类

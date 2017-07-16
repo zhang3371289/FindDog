@@ -96,6 +96,14 @@ public class MyLocationListener implements BDLocationListener {
         sb.append("\nlocationdescribe : ");
         sb.append(location.getLocationDescribe());    //位置语义化信息
 
+        //当前设备位置所在的省
+        String province = location.getProvince();
+        //当前设备位置所在的市
+        String city = location.getCity();
+        //当前设备位置所在的区
+        String district = location.getDistrict();
+        sb.append("\n省市区 : "+province+"-"+city+"-"+district);
+
         List<Poi> list = location.getPoiList();    // POI数据
         if (list != null) {
             sb.append("\npoilist size = : ");
@@ -107,6 +115,7 @@ public class MyLocationListener implements BDLocationListener {
         }
         Log.i("BaiduLocationApiDem", sb.toString());
 //        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
+
         FindFragment.setLocation(sb.toString());
     }
 
