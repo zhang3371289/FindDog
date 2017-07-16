@@ -169,7 +169,7 @@
         android:layout_below="@+id/fragment_pet_layout"
         android:scrollbars="none" />
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_pet_rv"
@@ -194,5 +194,14 @@
             android:padding="20dp"
             android:text="取消悬赏" />
     </LinearLayout>
+
+    <Button android:id="@+id/lianxizhuren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_pet_rv"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:text="联系主人"/>
 
 </RelativeLayout>

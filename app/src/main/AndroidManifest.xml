@@ -63,6 +63,8 @@
         <activity android:name="com.find.dog.activity.MyPetPayAfterActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.PayActivity"/>
+        <activity android:name="com.find.dog.activity.FindActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <!--  百度定位  -->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
 

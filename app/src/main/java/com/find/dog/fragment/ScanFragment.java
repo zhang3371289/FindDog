@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
+import com.find.dog.activity.FindActivity;
 import com.find.dog.activity.MainActivity;
 import com.find.dog.activity.UpLoadActivity;
 import com.find.dog.data.UserInfoUpdate;
@@ -104,8 +105,14 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
         if (data != null) {
+            Log.e("H",requestCode+"-------------"+resultCode);
             resultTextView.setText(data.getStringExtra("result"));
-            startActivity(new Intent(getActivity(), UpLoadActivity.class));
+            if(resultCode == 300){
+                startActivity(new Intent(getActivity(), FindActivity.class));
+            }else {
+                startActivity(new Intent(getActivity(), UpLoadActivity.class));
+            }
+
         }
     }
 
