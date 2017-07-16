@@ -56,7 +56,10 @@
         <activity android:name="com.find.dog.activity.SelectAlbumActivity"/>
         <activity android:name="com.find.dog.activity.SelectPictureActivity"/>
         <activity android:name="com.find.dog.activity.MyPetActivity"/>
-        <activity android:name="com.find.dog.activity.IssueActivity"/>
+        <activity android:name="com.find.dog.activity.IssueActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="com.find.dog.activity.ChangePetActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <!--  百度定位  -->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
 

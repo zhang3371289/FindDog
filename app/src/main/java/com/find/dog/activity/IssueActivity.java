@@ -40,8 +40,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
- *
- *发布悬赏
+ * 发布悬赏
  */
 public class IssueActivity extends BaseActivity implements OnClickListener {
     private Activity mActivity;
@@ -53,7 +52,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private IssueAdapter mAdapter;
     private LinearLayout normalLayout;
-    public static String PIC_LIST = "PIC_LIST";
+    private String mName, mAdress;
     private Handler mHandler = new Handler() {
 
         @Override
@@ -96,6 +95,10 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         mRecyclerView.setAdapter(mAdapter);
         findViewById(R.id.fabu).setOnClickListener(this);
         findViewById(R.id.change).setOnClickListener(this);
+        findViewById(R.id.back_layout).setOnClickListener(this);
+        mAdapter.refresh(getIntent().getStringArrayListExtra(UpLoadActivity.PIC_LIST));
+        mName = getIntent().getStringExtra(UpLoadActivity.NAME);
+        mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
     }
 
     @Override
@@ -177,42 +180,16 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         /*提交按钮*/
             case R.id.fabu:
-
-//			// 是否登录 ？提交 ：跳转登录页面
-//			if(MyManger.isLogin()){
-//				/*连网判断*/
-//				if(!NetWorkUtil.isNetworkAvailable(mActivity)){
-//					Toast.makeText(mActivity, R.string.intent_no, Toast.LENGTH_SHORT).show();
-//					return;
-//				}
-//				//防止多次点击
-//				mCommit.setEnabled(false);
-//				/*是否选择图片*/
-//				if(mAdapter.getList().size() > 0){//上传图片
-//
-//					zoomPicture();
-//
-//				}else if(mGetEditText.length() > 0){//提交回复
-//					commitReplay();
-//				}else{
-//					Toast.makeText(mActivity, "图片文字必填一项~", Toast.LENGTH_SHORT).show();
-//					mCommit.setEnabled(false);
-//				}
-//
-//			}else{
-//				Intent goLogin = new Intent(mActivity,LoginActivity.class);
-//				startActivity(goLogin);
-//			}
-                ToastUtil.showTextToast(this,"发布");
+                ToastUtil.showTextToast(this, "发布");
                 break;
             case R.id.change:
-                ToastUtil.showTextToast(this,"取消");
+            case R.id.back_layout:
+                finish();
             default:
                 break;
         }
 
     }
-
 
     /**
      * 相册选择图片或拍照
@@ -226,17 +203,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0://选择本地图片
-
-//								onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnBooleanListener() {
-//									@Override
-//									public void onClick(boolean bln) {
-//										if (bln) {
-//											PhotoUtil.takePhotoForAlbum(mActivity);
-//										} else {
-//											Toast.makeText(mActivity, "未打开相册权限", Toast.LENGTH_SHORT).show();
-//										}
-//									}
-//								});
 
                                 Intent intentImage = new Intent(mActivity, SelectAlbumActivity.class);
                                 //			intentImage.putExtra(SelectPictureActivity.INTENT_MAX_NUM, 3);//选择三张

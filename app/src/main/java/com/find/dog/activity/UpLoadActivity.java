@@ -47,7 +47,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private LinearLayout normalLayout;
-    public static String PIC_LIST = "PIC_LIST";
+    public static String PIC_LIST = "PIC_LIST",NAME="NAME",ADRESS = "ADRESS";
     private EditText mNameEdit,mAdressEdit,mPhoneEdit;
     private Handler mHandler = new Handler() {
 
@@ -230,8 +230,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
                 Intent intent = new Intent(mActivity, MyPetActivity.class);
                 intent.putExtra(PIC_LIST, mAdapter.getList());
-                intent.putExtra("name", mNameEdit.getText().toString());
-                intent.putExtra("adress", mAdressEdit.getText().toString());
+                intent.putExtra(NAME, mNameEdit.getText().toString());
+                intent.putExtra(ADRESS, mAdressEdit.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.back_layout:
