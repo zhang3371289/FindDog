@@ -180,7 +180,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         /*提交按钮*/
             case R.id.fabu:
-                ToastUtil.showTextToast(this, "发布");
+                Intent intent = new Intent(this,PayActivity.class);
+                startActivity(intent);
                 break;
             case R.id.change:
             case R.id.back_layout:
@@ -451,11 +452,13 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         }
 
         public void refresh(final ArrayList<String> _list) {
+            if (_list == null)
+                return;
             mList = _list;
             mapList.clear();
             new Thread() {
                 public void run() {
-                    for (String path : _list) {
+                    for (String path : mList) {
                         mapList.add(getLocationBitmap(path, 6));
                     }
                     mHandler.sendEmptyMessage(200);

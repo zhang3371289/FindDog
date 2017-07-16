@@ -1,5 +1,6 @@
 package com.find.dog.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import com.find.dog.fragment.PetFragment;
 public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
     PetFragment mFragment;
     MyPetActivity mActivity;
-
     //    public String[] datas = null;
     public PetTopAdapter(PetFragment mContext) {
 //        this.datas = datas;

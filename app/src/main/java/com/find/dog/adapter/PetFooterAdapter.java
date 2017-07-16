@@ -39,7 +39,8 @@ public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.View
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return mPicList.size();
+
+        return mPicList == null ? 0 : mPicList.size();
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
