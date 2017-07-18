@@ -40,6 +40,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -158,32 +159,6 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-    }
-
-
-    private void get(){
-        //获取 完善个人信息数据
-        Map<String, String> map = new HashMap<>();
-        map.put("authtoken", "8fd9El4eLyKCsIDgFCrWRve59sKCo2lF45IMrS2O6Ns5ZKd%2F4g0g7G8%2B0g");
-        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-        new RetroFitUtil<UserInfoUpdate>(mContext, RetroFactory.getIstance().getStringService().updateUserInfo(requestBody))
-                .request(new RetroFitUtil.ResponseListener<UserInfoUpdate>() {
-
-                    @Override
-                    public void onSuccess(UserInfoUpdate infos) {
-                        Log.d("H", "updateUserInfo---->" + infos);
-                        if (infos != null) {
-//                            updateUI(infos);
-                        } else {
-                        }
-                    }
-
-                    @Override
-                    public void onFail() {
-                        Log.d("H", "onFail---->");
-                    }
-
-                });
     }
 
 

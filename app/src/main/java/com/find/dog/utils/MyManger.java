@@ -11,7 +11,7 @@ import com.find.dog.main.MyApplication;
  */
 
 public class MyManger {
-    public static final String BASE = "http://fujun.yoka.com/api/";//正式环境
+    public static final String BASE = "http://zhaogou.applinzi.com/";//正式环境
 
     public static void saveUserInfo(String phone) {
         SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据

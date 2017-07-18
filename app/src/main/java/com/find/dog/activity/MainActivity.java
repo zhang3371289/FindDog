@@ -13,11 +13,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
+import com.find.dog.data.UserInfoUpdate;
 import com.find.dog.fragment.CommunityFragment;
 import com.find.dog.fragment.FindFragment;
 import com.find.dog.fragment.PetFragment;
@@ -26,6 +30,10 @@ import com.find.dog.utils.MyManger;
 import com.find.dog.utils.NoScrollViewPager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -69,8 +77,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
-        super.onResume();
+
+        get();
     }
+
+    private void get(){
+        //获取 完善个人信息数据
+        Map<String, String> map = new HashMap<>();
+//        map.put("authtoken", "8fd9El4eLyKCsIDgFCrWRve59sKCo2lF45IMrS2O6Ns5ZKd%2F4g0g7G8%2B0g");
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<ArrayList<UserInfoUpdate>>(this, RetroFactory.getIstance().getStringService().updateUserInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<ArrayList<UserInfoUpdate>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<UserInfoUpdate> infos) {
+                        Log.e("H", "updateUserInfo---->" + infos);
+                        if (infos != null) {
+//                            updateUI(infos);
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                        Log.e("H", "onFail---->");
+                    }
+
+                });
+    }
+
+
 
     @Override
     public void onClick(View v) {

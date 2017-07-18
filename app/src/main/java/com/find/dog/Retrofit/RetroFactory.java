@@ -97,10 +97,10 @@ public class RetroFactory {
             systemObject = new JSONObject();
             addDefaultParams(systemObject);
         }
-        try {
-            object.put("system", systemObject);
-        } catch (JSONException e) {
-        }
+//        try {
+//            object.put("system", systemObject);
+//        } catch (JSONException e) {
+//        }
         if (parameters != null) {
             Iterator<Map.Entry<String, String>> iter = parameters.entrySet()
                     .iterator();
@@ -116,10 +116,10 @@ public class RetroFactory {
                     }
                 }
             }
-            try {
-                object.put("postdata", postObject);
-            } catch (JSONException e) {
-            }
+//            try {
+//                object.put("postdata", postObject);
+//            } catch (JSONException e) {
+//            }
         }
         return object;
     }

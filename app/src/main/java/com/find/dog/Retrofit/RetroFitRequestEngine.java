@@ -4,6 +4,8 @@ import android.database.Observable;
 
 import com.find.dog.data.UserInfoUpdate;
 
+import java.util.ArrayList;
+
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,8 +21,8 @@ import retrofit2.http.Part;
 public interface RetroFitRequestEngine {
 
     //完善个人信息接口 -->zzw
-    @POST("user/profile")
-    Call<BaseEntity<UserInfoUpdate>> updateUserInfo(@Body RequestBody route);
+    @POST("getinfo_reward.php")
+    Call<BaseEntity<ArrayList<UserInfoUpdate>>> updateUserInfo(@Body RequestBody route);
 
     //关注,取关
     @POST("focus/user")
