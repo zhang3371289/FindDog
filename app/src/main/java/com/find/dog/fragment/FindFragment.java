@@ -36,18 +36,6 @@ public class FindFragment extends Fragment {
         mTextView = (TextView)rootView.findViewById(R.id.find_textview);
     }
 
-    public static void setLocation(final String result){
-        if(mTextView!=null){
-            mTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    mTextView.setText(showCount+"\n\n"+result);
-                    showCount++;
-                }
-            });
-        }
-    }
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);

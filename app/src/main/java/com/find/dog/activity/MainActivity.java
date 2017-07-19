@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.find.dog.R;
@@ -14,6 +15,7 @@ import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.data.rewardingInfo;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 import com.google.zxing.activity.CaptureActivity;
@@ -27,16 +29,23 @@ import okhttp3.RequestBody;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static Activity mActivity;
+    private static TextView location_text;
+    private static int showCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
+        initview();
+        getRewardInfo();
+    }
+    private void initview(){
         mActivity = this;
         findViewById(R.id.activity_main_user).setOnClickListener(this);
         findViewById(R.id.activity_main_tab1).setOnClickListener(this);
         findViewById(R.id.activity_main_tab2).setOnClickListener(this);
         findViewById(R.id.activity_main_tab3).setOnClickListener(this);
         findViewById(R.id.activity_main_tab4).setOnClickListener(this);
+        location_text = (TextView) findViewById(R.id.activity_main_location);
         onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnBooleanListener() {
             @Override
             public void onClick(boolean bln) {
@@ -47,8 +56,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 }
             }
         });
-
-        getRewardInfo();
+        onPermissionRequests(Manifest.permission.ACCESS_FINE_LOCATION, new BaseActivity.OnBooleanListener() {
+            @Override
+            public void onClick(boolean bln) {
+                if (bln) {
+                    showCount = 1;
+                    MyApplication.getInstance().mLocationClient.start();
+                } else {
+                    Toast.makeText(MyApplication.getInstance(), "文件读写或无法正常使用", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void getRewardInfo(){
@@ -81,7 +99,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
         if (data != null) {
-            Log.e("H",requestCode+"-------------"+resultCode);
             ToastUtil.showTextToast(this,data.getStringExtra("result"));
             if(resultCode == 300){
                 startActivity(new Intent(this, FindActivity.class));
@@ -90,6 +107,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             }
 
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MyApplication.getInstance().mLocationClient.stop();
     }
 
     @Override
@@ -129,6 +152,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.activity_main_tab4:
                 ToastUtil.showTextToast(mActivity,"社区");
                 break;
+        }
+    }
+
+    public static void setLocation(final String result){
+        if(location_text!=null){
+            location_text.post(new Runnable() {
+                @Override
+                public void run() {
+                    location_text.setText(showCount+"\t"+result);
+                    showCount++;
+                }
+            });
         }
     }
 

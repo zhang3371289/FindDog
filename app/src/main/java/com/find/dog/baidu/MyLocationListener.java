@@ -5,9 +5,7 @@ import android.util.Log;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
-import com.find.dog.fragment.FindFragment;
-import com.find.dog.main.MyApplication;
-import com.find.dog.utils.ToastUtil;
+import com.find.dog.activity.MainActivity;
 
 import java.util.List;
 
@@ -116,11 +114,13 @@ public class MyLocationListener implements BDLocationListener {
         Log.i("BaiduLocationApiDem", sb.toString());
 //        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
 
-        FindFragment.setLocation(sb.toString());
+        String result = province+"-"+city+"-"+district;
+        MainActivity.setLocation(result);
     }
 
     @Override
     public void onConnectHotSpotMessage(String s, int i) {
 
     }
+
 }
