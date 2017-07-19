@@ -18,13 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.find.dog.Retrofit.RetroFactory;
-import com.find.dog.Retrofit.RetroFitUtil;
+import com.find.dog.R;
 import com.find.dog.activity.FindActivity;
 import com.find.dog.activity.MainActivity;
 import com.find.dog.activity.UpLoadActivity;
-import com.find.dog.data.UserInfoUpdate;
-import com.find.dog.R;
+import com.find.dog.utils.RGBLuminanceSource;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
@@ -33,20 +31,14 @@ import com.google.zxing.activity.CaptureActivity;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.encoding.EncodingHandler;
 import com.google.zxing.qrcode.QRCodeReader;
-import com.find.dog.utils.RGBLuminanceSource;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
-
-import okhttp3.RequestBody;
 
 /**
  * Created by zhangzhongwei on 2017/6/27.

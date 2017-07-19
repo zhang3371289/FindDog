@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
-import com.find.dog.data.UserInfoUpdate;
+import com.find.dog.data.rewardingInfo;
 import com.find.dog.fragment.CommunityFragment;
 import com.find.dog.fragment.FindFragment;
 import com.find.dog.fragment.PetFragment;
@@ -78,20 +78,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        get();
+        getRewardInfo();
     }
 
-    private void get(){
-        //获取 完善个人信息数据
+    private void getRewardInfo(){
+        //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-//        map.put("authtoken", "8fd9El4eLyKCsIDgFCrWRve59sKCo2lF45IMrS2O6Ns5ZKd%2F4g0g7G8%2B0g");
+        map.put("loseAddress", "北京市");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-        new RetroFitUtil<ArrayList<UserInfoUpdate>>(this, RetroFactory.getIstance().getStringService().updateUserInfo(requestBody))
-                .request(new RetroFitUtil.ResponseListener<ArrayList<UserInfoUpdate>>() {
+        new RetroFitUtil<ArrayList<rewardingInfo>>(this, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<ArrayList<rewardingInfo>>() {
 
                     @Override
-                    public void onSuccess(ArrayList<UserInfoUpdate> infos) {
-                        Log.e("H", "updateUserInfo---->" + infos);
+                    public void onSuccess(ArrayList<rewardingInfo> infos) {
+                        Log.e("H", "rewardingInfo---->" + infos);
                         if (infos != null) {
 //                            updateUI(infos);
                         } else {

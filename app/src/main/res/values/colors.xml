@@ -37,4 +37,9 @@
     <color name="c_8899a6">#8899a6</color>
     <color name="red">#F06151</color>
     <color name="location_city_gps">#CCCCCC</color>
+
+    <!-- 新浪 -->
+    <color name="separator_background">#efefef</color>
+    <color name="list_cell_default_background">#ffffff</color>
+    <color name="list_cell_pressed_background">#ff0000</color>
 </resources>

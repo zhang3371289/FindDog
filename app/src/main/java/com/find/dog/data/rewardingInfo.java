@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Created by zhangzhongwei on 2017/5/9.
  */
 
-public class UserInfoUpdate implements Serializable {
+public class rewardingInfo implements Serializable {
 
 
     /**
@@ -178,7 +178,7 @@ public class UserInfoUpdate implements Serializable {
 
     @Override
     public String toString() {
-        return "UserInfoUpdate{" +
+        return "rewardingInfo{" +
                 "id='" + id + '\'' +
                 ", masterPhone='" + masterPhone + '\'' +
                 ", hunterPhone='" + hunterPhone + '\'' +

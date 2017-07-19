@@ -2,7 +2,8 @@ package com.find.dog.Retrofit;
 
 import android.database.Observable;
 
-import com.find.dog.data.UserInfoUpdate;
+import com.find.dog.data.rewardingInfo;
+import com.find.dog.data.stringInfo;
 
 import java.util.ArrayList;
 
@@ -20,13 +21,13 @@ import retrofit2.http.Part;
 
 public interface RetroFitRequestEngine {
 
-    //完善个人信息接口 -->zzw
+    //获取正在悬赏的宠物(XX省XX市XX区/镇)
     @POST("getinfo_reward.php")
-    Call<BaseEntity<ArrayList<UserInfoUpdate>>> updateUserInfo(@Body RequestBody route);
+    Call<BaseEntity<ArrayList<rewardingInfo>>> getRewardInfo(@Body RequestBody route);
 
-    //关注,取关
-    @POST("focus/user")
-    Call<BaseEntity<String>> focus(@Body RequestBody route);
+    //登录
+    @POST("login.php")
+    Call<BaseEntity<stringInfo>> getLoginInfo(@Body RequestBody route);
 
     //上传图片和描述
     @Multipart

@@ -72,4 +72,5 @@ dependencies {
     compile files('src/main/jniLibs/okio-1.6.0.jar')
     compile files('src/main/jniLibs/retrofit-2.2.0.jar')
     compile files('src/main/jniLibs/BaiduLBS_Android.jar')
+    compile files('src/main/jniLibs/scs-android-sdk-0.0.1-SNAPSHOT.jar')
 }
