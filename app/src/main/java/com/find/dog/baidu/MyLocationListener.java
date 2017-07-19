@@ -1,5 +1,6 @@
 package com.find.dog.baidu;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.baidu.location.BDLocation;
@@ -115,7 +116,10 @@ public class MyLocationListener implements BDLocationListener {
 //        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
 
         String result = province+"-"+city+"-"+district;
-        MainActivity.setLocation(result);
+        if(!TextUtils.isEmpty(province)){
+            MainActivity.setLocation(result);
+        }
+
     }
 
     @Override

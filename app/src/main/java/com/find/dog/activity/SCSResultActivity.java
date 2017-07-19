@@ -49,10 +49,10 @@ public class SCSResultActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_scsresult);
+//		setContentView(R.layout.activity_scsresult);
 	
 		handler = new Handler(getMainLooper());
-		resultET = (EditText)findViewById(R.id.result_edittext);
+//		resultET = (EditText)findViewById(R.id.result_edittext);
 		
 		Intent intent = getIntent();
 		final int position = intent.getIntExtra("position", 0);

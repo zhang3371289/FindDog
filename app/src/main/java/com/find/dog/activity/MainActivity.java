@@ -4,9 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,8 +34,11 @@ import okhttp3.RequestBody;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static Activity mActivity;
-    private static TextView location_text;
+    private static TextView locationTextView;
     private static int showCount;
+    private RecyclerView mRecyclerView;
+    private MyAdapter mAdapter;
+    private ArrayList<rewardingInfo> mList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,17 +53,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         findViewById(R.id.activity_main_tab2).setOnClickListener(this);
         findViewById(R.id.activity_main_tab3).setOnClickListener(this);
         findViewById(R.id.activity_main_tab4).setOnClickListener(this);
-        location_text = (TextView) findViewById(R.id.activity_main_location);
-        onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnBooleanListener() {
-            @Override
-            public void onClick(boolean bln) {
-                if (bln) {
-
-                } else {
-                    Toast.makeText(MainActivity.this, "文件读写或无法正常使用", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        mRecyclerView = (RecyclerView) findViewById(R.id.main_recycleview);
+        locationTextView = (TextView) findViewById(R.id.activity_main_location);
+        //创建默认的线性LayoutManager
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
+        mRecyclerView.setHasFixedSize(true);
+        //创建并设置Adapter
+        mAdapter = new MyAdapter();
+        mRecyclerView.setAdapter(mAdapter);
         onPermissionRequests(Manifest.permission.ACCESS_FINE_LOCATION, new BaseActivity.OnBooleanListener() {
             @Override
             public void onClick(boolean bln) {
@@ -63,10 +70,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     showCount = 1;
                     MyApplication.getInstance().mLocationClient.start();
                 } else {
-                    Toast.makeText(MyApplication.getInstance(), "文件读写或无法正常使用", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyApplication.getInstance(), "未获取位置权限", Toast.LENGTH_SHORT).show();
                 }
+                onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnBooleanListener() {
+                    @Override
+                    public void onClick(boolean bln) {
+                        if (bln) {
+
+                        } else {
+                            Toast.makeText(MainActivity.this, "文件读写或无法正常使用", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
+
     }
 
     private void getRewardInfo(){
@@ -82,6 +100,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                         Log.e("H", "rewardingInfo---->" + infos);
                         if (infos != null) {
 //                            updateUI(infos);
+                            mList = infos;
+                            mAdapter.notifyDataSetChanged();
                         } else {
                         }
                     }
@@ -156,14 +176,49 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     public static void setLocation(final String result){
-        if(location_text!=null){
-            location_text.post(new Runnable() {
+        if(locationTextView !=null){
+            locationTextView.post(new Runnable() {
                 @Override
                 public void run() {
-                    location_text.setText(showCount+"\t"+result);
+                    locationTextView.setText(showCount+"\t"+result);
                     showCount++;
                 }
             });
+        }
+    }
+
+    class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+        //创建新View，被LayoutManager所调用
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.activity_main_layout_item,viewGroup,false);
+            ViewHolder vh = new ViewHolder(view);
+            return vh;
+        }
+        //将数据与界面进行绑定的操作
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, int position) {
+            rewardingInfo info = mList.get(position);
+            viewHolder.mName.setText(info.getPatName());
+            viewHolder.mMoney.setText(info.getReward());
+            viewHolder.mType.setText(info.getState());
+        }
+        //获取数据的数量
+        @Override
+        public int getItemCount() {
+            return mList.size();
+        }
+        //自定义的ViewHolder，持有每个Item的的所有界面元素
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            public TextView mName,mType,mMoney;
+            public ImageView mImg;
+            public ViewHolder(View view){
+                super(view);
+                mName = (TextView) view.findViewById(R.id.main_item_name);
+                mMoney = (TextView) view.findViewById(R.id.main_item_money);
+                mType = (TextView) view.findViewById(R.id.main_item_type);
+                mImg = (ImageView) view.findViewById(R.id.main_item_img);
+            }
         }
     }
 
