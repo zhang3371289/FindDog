@@ -12,8 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.find.dog.R;
-import com.find.dog.activity.MainActivity;
-import com.find.dog.baidu.MyLocationListener;
+import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 
 /**
@@ -53,7 +52,7 @@ public class FindFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
-            MainActivity.onPermissionRequests(Manifest.permission.ACCESS_FINE_LOCATION, new MainActivity.OnBooleanListener() {
+            BaseActivity.onPermissionRequests(Manifest.permission.ACCESS_FINE_LOCATION, new BaseActivity.OnBooleanListener() {
                 @Override
                 public void onClick(boolean bln) {
                     if (bln) {

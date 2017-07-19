@@ -10,36 +10,39 @@ import android.util.Log;
 
 public class BaseActivity extends Activity {
 
+    private static BaseActivity mActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mActivity = this;
     }
 
 
     ////////////////////   7.0权限申请  相机+存储///////////////////////////
-    private OnBooleanListener onPermissionListener;//权限监听
+    public static OnBooleanListener onPermissionListener;//权限监听
 
-    public void onPermissionRequests(String permission, OnBooleanListener onBooleanListener) {
+    public static void onPermissionRequests(String permission, OnBooleanListener onBooleanListener) {
         onPermissionListener = onBooleanListener;
         Log.d("MainActivity", "0");
-        if (ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(mActivity,
                 permission)
                 != PackageManager.PERMISSION_GRANTED) {
             // Should we show an explanation?
             Log.d("MainActivity", "1");
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if (ActivityCompat.shouldShowRequestPermissionRationale(mActivity,
                     Manifest.permission.READ_CONTACTS)) {
                 //权限已有
                 onPermissionListener.onClick(true);
             } else {
                 //没有权限，申请一下
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions(mActivity,
                         new String[]{permission},
                         1);
             }
         } else {
             onPermissionListener.onClick(true);
-            Log.d("MainActivity", "2" + ContextCompat.checkSelfPermission(this,
+            Log.d("MainActivity", "2" + ContextCompat.checkSelfPermission(mActivity,
                     permission));
         }
     }

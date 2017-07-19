@@ -1,6 +1,5 @@
 package com.find.dog.fragment;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,14 +19,12 @@ import android.widget.Toast;
 
 import com.find.dog.R;
 import com.find.dog.activity.FindActivity;
-import com.find.dog.activity.MainActivity;
 import com.find.dog.activity.UpLoadActivity;
 import com.find.dog.utils.RGBLuminanceSource;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.Result;
 import com.google.zxing.WriterException;
-import com.google.zxing.activity.CaptureActivity;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.encoding.EncodingHandler;
 import com.google.zxing.qrcode.QRCodeReader;
@@ -75,17 +72,17 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         qrImgImageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                MainActivity.onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new  MainActivity.OnBooleanListener() {
-                    @Override
-                    public void onClick(boolean bln) {
-                        if (bln) {
-                            // 长按识别二维码
-                            saveCurrentImage();
-                        } else {
-                            Toast.makeText(getActivity(), "未打开相册权限", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//                MainActivity.onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new  MainActivity.OnBooleanListener() {
+//                    @Override
+//                    public void onClick(boolean bln) {
+//                        if (bln) {
+//                            // 长按识别二维码
+//                            saveCurrentImage();
+//                        } else {
+//                            Toast.makeText(getActivity(), "未打开相册权限", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
 
                 return true;
             }
@@ -116,17 +113,17 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
             case R.id.openQrCodeScan:
 
                 //打开扫描界面扫描条形码或二维码
-                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
-                    @Override
-                    public void onClick(boolean bln) {
-                        if (bln) {
-                            Intent openCameraIntent = new Intent(getActivity(), CaptureActivity.class);
-                            startActivityForResult(openCameraIntent, 0);
-                        } else {
-                            Toast.makeText(getActivity(), "未打开相机权限", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
+//                    @Override
+//                    public void onClick(boolean bln) {
+//                        if (bln) {
+//                            Intent openCameraIntent = new Intent(getActivity(), CaptureActivity.class);
+//                            startActivityForResult(openCameraIntent, 0);
+//                        } else {
+//                            Toast.makeText(getActivity(), "未打开相机权限", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
 
                 break;
             case R.id.CreateQrCode:
