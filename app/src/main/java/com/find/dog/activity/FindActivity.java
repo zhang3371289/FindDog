@@ -44,7 +44,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		title = (TextView) findViewById(R.id.title);
 		title.setText("发现");
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = getIntent().getStringArrayListExtra(UpLoadActivity.PIC_LIST);
+		mPicList = MyManger.loadPicsArray();
 		mName = getIntent().getStringExtra(UpLoadActivity.NAME);
 		mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
 		mContext = this;
@@ -124,7 +124,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		switch (v.getId()){
 			case R.id.change:
 				Intent intent1 = new Intent(this,IssueActivity.class);
-				intent1.putExtra(UpLoadActivity.PIC_LIST,mPicList);
 				intent1.putExtra(UpLoadActivity.NAME,mName);
 				intent1.putExtra(UpLoadActivity.ADRESS,mAdress);
 				startActivity(intent1);
@@ -136,7 +135,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		}
 
 	}
-
 
 	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
 		//    public String[] datas = null;

@@ -17,24 +17,21 @@ import java.util.List;
  */
 
 public class MyManger {
-    private static SharedPreferences sharedPreferences;
     public static final String BASE = "http://zhaogou.applinzi.com/";//正式环境
-
-    public MyManger(){
-        sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-    }
 
     /**
      * 保存手机号
      * @param phone
      */
     public static void saveUserInfo(String phone) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
         SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
         editor.putString("phone", phone);
         editor.commit();//提交修改
     }
 
     public static String getUserInfo() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
         String str = sharedPreferences.getString("phone", "");
         return str;
     }
@@ -53,6 +50,7 @@ public class MyManger {
      * @param list
      */
     public static void savePicsArray(ArrayList<String> list) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
         SharedPreferences.Editor mEdit1= sharedPreferences.edit();
         mEdit1.putInt("Status_size",list.size());
         for(int i=0;i<list.size();i++) {
@@ -63,6 +61,7 @@ public class MyManger {
     }
 
     public static ArrayList<String> loadPicsArray() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
         ArrayList<String> list = new ArrayList<>();
         list.clear();
         int size = sharedPreferences.getInt("Status_size", 0);

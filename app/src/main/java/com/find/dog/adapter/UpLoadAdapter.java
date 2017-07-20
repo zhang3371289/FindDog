@@ -45,9 +45,8 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
         ;
     };
 
-    public UpLoadAdapter(Context mContext, ArrayList<Bitmap> mImageUrl,final Callback callback) {
+    public UpLoadAdapter(Context mContext,final Callback callback) {
         this.mContext = mContext;
-        this.mapList = mImageUrl;
         this.callback = callback;
     }
 

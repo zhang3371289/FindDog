@@ -41,7 +41,6 @@ import java.util.ArrayList;
 public class UpLoadActivity extends BaseActivity implements OnClickListener {
     public  Button mCommit;
     private Activity mActivity;
-    private ArrayList<Bitmap> mapList = new ArrayList<Bitmap>();//本地图片路径集合
     private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
     private String mGetEditText = "";
     private Bitmap tempBitmap;
@@ -49,7 +48,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private LinearLayout normalLayout;
-    public static String PIC_LIST = "PIC_LIST",NAME="NAME",ADRESS = "ADRESS";
+    public static String NAME="NAME",ADRESS = "ADRESS";
     private EditText mNameEdit,mAdressEdit,mPhoneEdit;
     private Handler mHandler = new Handler() {
 
@@ -95,7 +94,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new UpLoadAdapter(this, mapList, new UpLoadAdapter.Callback() {
+        mAdapter = new UpLoadAdapter(this,new UpLoadAdapter.Callback() {
             @Override
             public void callback() {
                 showChooseImageDialog();
@@ -120,9 +119,9 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
             case 11://图片选择 返回---zlz
 
                 if (resultCode == RESULT_OK) {
-                    ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra(SelectPictureActivity.INTENT_SELECTED_PICTURE);
+                    ArrayList<String> selectedList = (ArrayList<String>) data.getSerializableExtra(SelectPictureActivity.INTENT_SELECTED_PICTURE);
 
-                    mAdapter.refresh(selected);
+                    mAdapter.refresh(selectedList);
                     //ImageList.size > 0 ? 可提交（红色） ：不可提交（黑色）
                     if (canCommitFromImage()) {
                         mCommit.setTextColor(getResources().getColor(R.color.red));

@@ -121,14 +121,12 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		switch (v.getId()){
 			case R.id.fabu:
 				Intent intent = new Intent(this,IssueActivity.class);
-				intent.putExtra(UpLoadActivity.PIC_LIST,mPicList);
 				intent.putExtra(UpLoadActivity.NAME,mName);
 				intent.putExtra(UpLoadActivity.ADRESS,mAdress);
 				startActivity(intent);
 				break;
 			case R.id.change:
 				Intent intent1 = new Intent(this,ChangePetActivity.class);
-				intent1.putExtra(UpLoadActivity.PIC_LIST,mPicList);
 				intent1.putExtra(UpLoadActivity.NAME,mName);
 				intent1.putExtra(UpLoadActivity.ADRESS,mAdress);
 				startActivity(intent1);

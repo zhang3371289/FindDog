@@ -44,7 +44,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = getIntent().getStringArrayListExtra(UpLoadActivity.PIC_LIST);
+		mPicList = MyManger.loadPicsArray();
 		mName = getIntent().getStringExtra(UpLoadActivity.NAME);
 		mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
 		mContext = this;
@@ -121,7 +121,6 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		switch (v.getId()){
 			case R.id.change:
 				Intent intent1 = new Intent(this,IssueActivity.class);
-				intent1.putExtra(UpLoadActivity.PIC_LIST,mPicList);
 				intent1.putExtra(UpLoadActivity.NAME,mName);
 				intent1.putExtra(UpLoadActivity.ADRESS,mAdress);
 				startActivity(intent1);
