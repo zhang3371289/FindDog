@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
+import com.find.dog.utils.ToastUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
  *上传资料
  */
 public class UpLoadActivity extends BaseActivity implements OnClickListener {
-    public static TextView mCommit;
+    public  Button mCommit;
     private Activity mActivity;
     private ArrayList<Bitmap> mapList = new ArrayList<Bitmap>();//本地图片路径集合
     private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
@@ -93,11 +95,17 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new UpLoadAdapter(this, mapList);
+        mAdapter = new UpLoadAdapter(this, mapList, new UpLoadAdapter.Callback() {
+            @Override
+            public void callback() {
+                showChooseImageDialog();
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
-        mCommit = (TextView) findViewById(R.id.activity_upload_up);
+        mCommit = (Button) findViewById(R.id.activity_upload_up);
         mCommit.setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
+        findViewById(R.id.activity_upload_yzm_text).setOnClickListener(this);
         normalLayout = (LinearLayout) findViewById(R.id.activity_upload_normal_layout);
         if (MyManger.isLogin()) {
             normalLayout.setVisibility(View.GONE);
@@ -202,9 +210,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 if (!MyManger.isLogin()) {
                     MyManger.saveUserInfo(mPhoneEdit.getText().toString());
                 }
-
+                MyManger.savePicsArray(mAdapter.getList());
                 Intent intent = new Intent(mActivity, MyPetActivity.class);
-                intent.putExtra(PIC_LIST, mAdapter.getList());
                 intent.putExtra(NAME, mNameEdit.getText().toString());
                 intent.putExtra(ADRESS, mAdressEdit.getText().toString());
                 startActivity(intent);
@@ -212,6 +219,9 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.back_layout:
                 finish();
+            case R.id.activity_upload_yzm_text:
+                ToastUtil.showTextToast(this,"获取验证码");
+                break;
             default:
                 break;
         }
@@ -231,17 +241,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0://选择本地图片
-
-//								onPermissionRequests(Manifest.permission.WRITE_EXTERNAL_STORAGE, new OnBooleanListener() {
-//									@Override
-//									public void onClick(boolean bln) {
-//										if (bln) {
-//											PhotoUtil.takePhotoForAlbum(mActivity);
-//										} else {
-//											Toast.makeText(mActivity, "未打开相册权限", Toast.LENGTH_SHORT).show();
-//										}
-//									}
-//								});
 
                                 Intent intentImage = new Intent(mActivity, SelectAlbumActivity.class);
                                 //			intentImage.putExtra(SelectPictureActivity.INTENT_MAX_NUM, 3);//选择三张

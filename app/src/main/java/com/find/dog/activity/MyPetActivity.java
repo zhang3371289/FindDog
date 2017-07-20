@@ -44,7 +44,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = getIntent().getStringArrayListExtra(UpLoadActivity.PIC_LIST);
+		mPicList = MyManger.loadPicsArray();
 		mName = getIntent().getStringExtra(UpLoadActivity.NAME);
 		mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
 		mContext = this;

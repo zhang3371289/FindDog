@@ -1,6 +1,7 @@
 package com.find.dog.adapter;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,7 +28,8 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
 
     private ArrayList<Bitmap> mapList = new ArrayList<>();
     private ArrayList<String> mList = new ArrayList<>();
-    private UpLoadActivity mContext;
+    private Context mContext;
+    private Callback callback;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -43,9 +45,10 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
         ;
     };
 
-    public UpLoadAdapter(UpLoadActivity mContext, ArrayList<Bitmap> mImageUrl) {
+    public UpLoadAdapter(Context mContext, ArrayList<Bitmap> mImageUrl,final Callback callback) {
         this.mContext = mContext;
         this.mapList = mImageUrl;
+        this.callback = callback;
     }
 
     //创建新View，被LayoutManager所调用
@@ -65,7 +68,9 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
                 @Override
                 public void onClick(View v) {
 //                    Log.e("H","------"+position);
-                    mContext.showChooseImageDialog();
+                    if (callback != null) {
+                        callback.callback();
+                    }
                 }
             });
         } else {
@@ -76,6 +81,12 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
 //                    .into(viewHolder.mImageView);
 
             viewHolder.mImageView.setImageBitmap((Bitmap) mapList.get(position));
+            viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
             viewHolder.deleteText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -108,7 +119,8 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
     //获取数据的数量
     @Override
     public int getItemCount() {
-        return mapList.size() + 1;
+        int length = mapList.size() + 1 > 3 ? 3 :  mapList.size() + 1;
+        return length;
     }
 
     //自定义的ViewHolder，持有每个Item的的所有界面元素
@@ -180,5 +192,9 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
             e.printStackTrace();
         }
         return null;
+    }
+
+    public interface Callback {
+        public void callback();
     }
 }

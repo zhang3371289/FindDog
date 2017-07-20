@@ -105,7 +105,7 @@
 
                     </LinearLayout>
 
-                    <TextView
+                    <Button
                         android:id="@+id/activity_upload_yzm_text"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -170,18 +170,14 @@
                 android:layout_marginTop="20dp"
                 android:scrollbars="none"/>
 
-            <TextView android:id="@+id/activity_upload_up"
+            <Button android:id="@+id/activity_upload_up"
                 style="@style/PetTextStyle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_marginRight="80dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@color/c_8899a6"
-                android:gravity="center"
-                android:paddingBottom="15dp"
-                android:paddingTop="15dp"
+                android:layout_margin="30dp"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:layout_gravity="center"
                 android:text="保存"/>
         </LinearLayout>
     </ScrollView>

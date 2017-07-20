@@ -150,18 +150,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab1:
                 ToastUtil.showTextToast(mActivity,"扫一扫");
-                //打开扫描界面扫描条形码或二维码
-                onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
-                    @Override
-                    public void onClick(boolean bln) {
-                        if (bln) {
-                            Intent openCameraIntent = new Intent(mActivity, CaptureActivity.class);
-                            startActivityForResult(openCameraIntent, 0);
-                        } else {
-                            Toast.makeText(mActivity, "未打开相机权限", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+//                //打开扫描界面扫描条形码或二维码
+//                onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
+//                    @Override
+//                    public void onClick(boolean bln) {
+//                        if (bln) {
+//                            Intent openCameraIntent = new Intent(mActivity, CaptureActivity.class);
+//                            startActivityForResult(openCameraIntent, 0);
+//                        } else {
+//                            Toast.makeText(mActivity, "未打开相机权限", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
+                startActivity(new Intent(this, UpLoadActivity.class));
                 break;
             case R.id.activity_main_tab2:
                 ToastUtil.showTextToast(mActivity,"发现");
