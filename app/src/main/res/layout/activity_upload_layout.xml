@@ -75,6 +75,8 @@
                         style="@style/PetTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:maxLength="11"
                         android:layout_marginLeft="20dp"/>
 
                 </LinearLayout>

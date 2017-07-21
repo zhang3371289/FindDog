@@ -23,7 +23,6 @@ import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
-import com.google.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,7 +139,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.activity_main_user:
                 Intent intent;
-                if(TextUtils.isEmpty(MyManger.getUserInfo())){
+                if(TextUtils.isEmpty(MyManger.getUserInfo().getPhone())){
                     intent = new Intent(this,LoginActivity.class);
                 }else{
                     intent = new Intent(this,UserActivity.class);

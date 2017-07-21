@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
+import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
@@ -24,15 +25,15 @@ import okhttp3.RequestBody;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private EditText phone_edit,yzm_edit;
-    private TextView sure_text,yzm_text;
+    private Button sure_text,yzm_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_login_layout);
         phone_edit = (EditText) findViewById(R.id.activity_login_phone);
         yzm_edit = (EditText) findViewById(R.id.activity_login_yzm);
-        yzm_text = (TextView) findViewById(R.id.activity_login_yzm_text);
-        sure_text = (TextView) findViewById(R.id.activity_login_sure_text);
+        yzm_text = (Button) findViewById(R.id.activity_login_yzm_text);
+        sure_text = (Button) findViewById(R.id.activity_login_sure_text);
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
     }
@@ -58,7 +59,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void getLoginInfo(final String mPhone){
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", "北京市");
+        map.put("userPhone", mPhone);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getLoginInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<stringInfo>() {
@@ -67,15 +68,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getLoginInfo---->" + infos);
                         if (infos != null) {
-//                            updateUI(infos);
-
-                            MyManger.saveUserInfo(mPhone);
+                            UserInfo info = new UserInfo();
+                            info.setPhone(mPhone);
+                            MyManger.saveUserInfo(info);
                             Intent intent = new Intent(LoginActivity.this,UserActivity.class);
-                            intent.putExtra("phone",mPhone);
                             startActivity(intent);
                             finish();
-
-
+                            ToastUtil.showTextToast(LoginActivity.this,infos.getInfo());
                         } else {
                         }
                     }
@@ -83,6 +82,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onFail() {
                         Log.e("H", "onFail---->");
+                        ToastUtil.showTextToast(LoginActivity.this,getResources().getString(R.string.error_net));
                     }
 
                 });

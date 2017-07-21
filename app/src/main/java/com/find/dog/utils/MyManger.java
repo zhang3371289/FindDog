@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import com.find.dog.data.UserInfo;
 import com.find.dog.main.MyApplication;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by zhangzhongwei on 2017/6/29.
@@ -19,31 +16,64 @@ import java.util.List;
 public class MyManger {
     public static final String BASE = "http://zhaogou.applinzi.com/";//正式环境
 
-    /**
-     * 保存手机号
-     * @param phone
-     */
-    public static void saveUserInfo(String phone) {
-        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
-        editor.putString("phone", phone);
-        editor.commit();//提交修改
-    }
-
-    public static String getUserInfo() {
-        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-        String str = sharedPreferences.getString("phone", "");
-        return str;
-    }
+//    /**
+//     * 保存手机号
+//     * @param phone
+//     */
+//    public static void saveUserInfo(String phone) {
+//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+//        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+//        editor.putString("phone", phone);
+//        editor.commit();//提交修改
+//    }
+//
+//    public static String getUserInfo() {
+//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+//        String str = sharedPreferences.getString("phone", "");
+//        return str;
+//    }
 
     public static boolean isLogin() {
-        if (TextUtils.isEmpty(getUserInfo())) {
+        if (TextUtils.isEmpty(getUserInfo().getPhone())) {
             return false;
         } else {
             return true;
         }
     }
 
+    /**
+     * 保存 用户信息
+     * @param info
+     */
+    public static void saveUserInfo(UserInfo info) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        if(info == null){
+            editor.putString("name", "");
+            editor.putString("adress", "");
+            editor.putString("phone", "");
+        }else {
+            if(!TextUtils.isEmpty(info.getName())){
+                editor.putString("name", info.getName());
+            }
+            if(!TextUtils.isEmpty(info.getAdress())){
+                editor.putString("adress", info.getAdress());
+            }
+            if(!TextUtils.isEmpty(info.getPhone())){
+                editor.putString("phone", info.getPhone());
+            }
+        }
+        editor.commit();//提交修改
+    }
+
+    public static UserInfo getUserInfo() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        UserInfo info = new UserInfo();
+        info.setName(sharedPreferences.getString("name", ""));
+        info.setAdress(sharedPreferences.getString("adress", ""));
+        info.setPhone(sharedPreferences.getString("phone",""));
+        return info;
+    }
 
     /**
      * 保存 图片数组

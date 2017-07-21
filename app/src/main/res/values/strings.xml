@@ -5,4 +5,6 @@
     <string name="code_text">请输入生成二维码的文本信息</string>
     <string name="qrcodetext">这里显示扫描结果</string>
     <string name="intent_no">亲爱哒你现在木有网吖</string>
+
+    <string name="error_net">网络异常,请稍后再试</string>
 </resources>

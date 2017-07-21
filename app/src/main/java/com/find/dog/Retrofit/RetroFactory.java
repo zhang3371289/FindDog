@@ -74,18 +74,6 @@ public class RetroFactory {
     }
 
     private JSONObject addDefaultParams(JSONObject systemObject) {
-//        try {
-//            systemObject.put("app_version", DeviceInfo.getAppVersion());
-//            systemObject.put("os", "Android");
-//            systemObject.put("os_version", android.os.Build.VERSION.RELEASE);
-//            systemObject.put("device_model", android.os.Build.MODEL);
-//            systemObject.put("clientid", DeviceInfo.getClientID());
-//            systemObject.put("user-agent", DeviceInfo.getUserAgent());
-//            systemObject.put("screenwidth", DeviceInfo.getScreenWidth());
-//            systemObject.put("api_version", "v10");
-//            systemObject.put("screenheight", DeviceInfo.getScreenHeight());
-//        } catch (JSONException e) {
-//        }
         return systemObject;
     }
 

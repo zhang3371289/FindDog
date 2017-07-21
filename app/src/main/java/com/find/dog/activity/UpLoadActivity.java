@@ -19,7 +19,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.find.dog.R;
@@ -42,7 +41,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     public  Button mCommit;
     private Activity mActivity;
     private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
-    private String mGetEditText = "";
     private Bitmap tempBitmap;
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
@@ -55,10 +53,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 200:
-                    //图片上传完成开始 提交回复
-                    commitReplay();
-                    break;
                 case 201:
                     uploadImage();
                     break;
@@ -206,9 +200,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         /*提交按钮*/
             case R.id.activity_upload_up:
 
-                if (!MyManger.isLogin()) {
-                    MyManger.saveUserInfo(mPhoneEdit.getText().toString());
-                }
                 MyManger.savePicsArray(mAdapter.getList());
                 Intent intent = new Intent(mActivity, MyPetActivity.class);
                 intent.putExtra(NAME, mNameEdit.getText().toString());
@@ -318,64 +309,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
 
 //		for (String tempPath : mtempList) {
-//			YKUploadImageManager.getInstance().uploadImages(tempPath, new UploadImageCallback()
-//			{
-//				@Override
-//				public void callback(YKResult result, String imageUrl)
-//				{
-//					times ++;
-//					if(result.isSucceeded()){
-//						size ++;
-//						mImageUploadUrl.add(imageUrl);
-//
-//					}else{
-//						Toast.makeText(mActivity, "这一张失败了…", Toast.LENGTH_SHORT).show();
-//					}
-//					if(times == mAdapter.getList().size()){
-//						mHandler.sendEmptyMessage(200);
-//					}
-//				}
-//			});
 //		}
-    }
-
-
-    /**
-     * 请求网络 提交回复
-     */
-    private void commitReplay() {
-
-//		YKCommentreplyManager.getInstance().postAeniorReply(YKCurrentUserManager.getInstance().getUser().getToken(), typeId, mGetEditText, mImageUploadUrl,type,new ReplyCallback()
-//		{
-//			@Override
-//			public void callback(YKResult result)
-//			{
-//
-//				mCommit.setEnabled(true);
-//				AppUtil.dismissDialogSafe(mCustomButterfly);
-//
-//				if(result.isSucceeded()){
-//					Toast.makeText(mActivity, "发布成功", Toast.LENGTH_SHORT).show();
-//					Intent mIntent = new Intent();
-//					mIntent.putStringArrayListExtra("ListViewImag", mImageUploadUrl);
-//					mIntent.putExtra("textChange", mGetEditText);
-//					setResult(66, mIntent);
-//					setResult(22,mIntent);
-//					finish();
-//				}else{
-//					Toast.makeText(mActivity, result.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//				}
-//
-//			}
-//		});
-
-    }
-
-    public boolean canCommit() {
-        if (mGetEditText.length() > 0) {
-            return true;
-        }
-        return false;
     }
 
 

@@ -15,11 +15,8 @@ import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
-import com.find.dog.utils.ToastUtil;
 
 import java.util.ArrayList;
-
-import static android.R.attr.name;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
@@ -110,7 +107,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
 		name_text.setText(mName);
-		phone_text.setText(MyManger.getUserInfo());
+		phone_text.setText(MyManger.getUserInfo().getPhone());
 		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.fabu).setOnClickListener(this);
 		footerView.findViewById(R.id.change).setOnClickListener(this);

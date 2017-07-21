@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import com.find.dog.R;
 import com.find.dog.adapter.PetFooterAdapter;
-import com.find.dog.adapter.PetTopAdapter;
-import com.find.dog.fragment.PetFragment;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 
@@ -110,7 +108,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
 		name_text.setText(mName);
-		phone_text.setText(MyManger.getUserInfo());
+		phone_text.setText(MyManger.getUserInfo().getPhone());
 		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 		footerView.findViewById(R.id.cancel).setOnClickListener(this);

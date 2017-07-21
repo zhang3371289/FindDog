@@ -110,7 +110,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
 		name_text.setText(mName);
-		phone_text.setText(MyManger.getUserInfo());
+		phone_text.setText(MyManger.getUserInfo().getPhone());
 		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 		footerView.findViewById(R.id.cancel).setOnClickListener(this);

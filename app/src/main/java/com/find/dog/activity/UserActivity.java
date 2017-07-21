@@ -17,7 +17,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_layout);
-        phone = getIntent().getStringExtra("phone");
+        phone = MyManger.getUserInfo().getPhone();
         phone_text = (TextView) findViewById(R.id.activity_main_user_phone);
         pay_text = (TextView) findViewById(R.id.activity_main_user_pay);
         findViewById(R.id.activity_main_user_change).setOnClickListener(this);
@@ -33,7 +33,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.activity_main_user_out:
                 ToastUtil.showTextToast(this,"退出登录");
-                MyManger.saveUserInfo("");
+                MyManger.saveUserInfo(null);
                 finish();
                 break;
         }
