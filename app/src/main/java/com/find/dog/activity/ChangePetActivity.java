@@ -40,6 +40,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
+import static com.find.dog.R.id.phone_text;
+
 /**
  * 发布悬赏
  */
@@ -52,8 +54,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private String[] photo_items = new String[]{"选择本地图片", "拍照"};
 	private RecyclerView mRecyclerView;
 	private UpLoadAdapter mAdapter;
-	private LinearLayout normalLayout;
-	private String mName, mAdress;
+	private EditText name_edit,phone_edit,adress_edit,yzm_edit;
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -104,8 +105,14 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.cancel).setOnClickListener(this);
 		findViewById(R.id.back_layout).setOnClickListener(this);
 
-		mName = MyManger.getUserInfo().getName();
-		mAdress = MyManger.getUserInfo().getAdress();
+		name_edit = (EditText) findViewById(R.id.fragment_pet_name);
+		phone_edit = (EditText) findViewById(R.id.fragment_pet_phone);
+		adress_edit = (EditText) findViewById(R.id.fragment_pet_adress);
+		yzm_edit = (EditText) findViewById(R.id.fragment_pet_yzm);
+
+		name_edit.setText(MyManger.getUserInfo().getName());
+		phone_edit.setText(MyManger.getUserInfo().getPhone());
+		adress_edit.setText(MyManger.getUserInfo().getAdress());
 	}
 
 	@Override

@@ -55,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingRight="20dp"
                 android:paddingLeft="20dp">
 
                 <LinearLayout
@@ -71,61 +72,56 @@
                     <EditText
                         android:id="@+id/fragment_pet_name"
                         style="@style/PetTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="可可" />
+                        android:layout_marginLeft="20dp" />
 
                 </LinearLayout>
 
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp">
 
+                    <TextView
+                        style="@style/PetTextStyle"
+                        android:id="@+id/phone_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="手机:" />
+
+                    <EditText
+                        android:id="@+id/fragment_pet_phone"
+                        style="@style/PetTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/phone_text"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp">
-
-                        <TextView
-                            style="@style/PetTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="手机:" />
-
-                        <EditText
-                            android:id="@+id/fragment_pet_phone"
-                            style="@style/PetTextStyle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="20dp"
-                            android:text="1331331" />
-
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_alignLeft="@+id/fragment_pet_phone"
+                        android:layout_below="@+id/fragment_pet_phone">
 
                         <EditText
                             android:id="@+id/fragment_pet_yzm"
                             style="@style/PetTextStyle"
-                            android:layout_width="wrap_content"
+                            android:layout_weight="0.3"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="验证码" />
-                        <TextView
+                            android:hint="请输入验证码" />
+                        <Button
                             android:id="@+id/fragment_pet_yzm_get"
-                            android:layout_width="wrap_content"
+                            android:layout_weight="0.7"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/c_8899a6"
-                            android:padding="20dp"
                             android:text="获取" />
 
                     </LinearLayout>
 
-                </LinearLayout>
+                </RelativeLayout>
 
 
                 <LinearLayout
@@ -140,12 +136,11 @@
                         android:text="住址:" />
 
                     <EditText
-                        android:id="@+id/fragment_pet_zhuzhi"
+                        android:id="@+id/fragment_pet_adress"
                         style="@style/PetTextStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:hint="可可" />
+                        android:layout_marginLeft="20dp" />
 
                 </LinearLayout>
 
@@ -157,6 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fragment_pet_layout"
+                android:layout_marginTop="10dp"
                 android:scrollbars="none" />
 
             <LinearLayout
@@ -167,21 +163,17 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <TextView
+                <Button
                     android:id="@+id/sure"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/c_8899a6"
-                    android:padding="20dp"
                     android:text="确定" />
 
-                <TextView
+                <Button
                     android:id="@+id/cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:background="@color/c_8899a6"
-                    android:padding="20dp"
                     android:text="取消" />
             </LinearLayout>
 

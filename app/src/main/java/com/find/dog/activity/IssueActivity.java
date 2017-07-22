@@ -14,14 +14,10 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,11 +28,8 @@ import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
-import com.find.dog.utils.ToastUtil;
-import com.find.dog.utils.YKDeviceInfo;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -51,8 +44,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
-    private LinearLayout normalLayout;
-    private String mName, mAdress;
+    private TextView name_text,phone_text,losttime_text;
+    private EditText issue_edit,adress_edit,description_edit;
     private Handler mHandler = new Handler() {
 
         @Override
@@ -102,9 +95,20 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.fabu).setOnClickListener(this);
         findViewById(R.id.change).setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
-        mName = MyManger.getUserInfo().getName();
-        mAdress =MyManger.getUserInfo().getAdress();
+
+        description_edit = (EditText) findViewById(R.id.activity_issue_description);
+        adress_edit = (EditText) findViewById(R.id.activity_issue_adress);
+        issue_edit = (EditText) findViewById(R.id.activity_issue_issue);
+        name_text = (TextView) findViewById(R.id.fragment_pet_name);
+        phone_text = (TextView) findViewById(R.id.fragment_pet_phone);
+        losttime_text = (TextView) findViewById(R.id.fragment_pet_time);
+
+        name_text.setText(MyManger.getUserInfo().getName());
+        phone_text.setText(MyManger.getUserInfo().getPhone());
+        adress_edit.setText(MyManger.getUserInfo().getAdress());
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -286,26 +290,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private void uploadImage() {
 
 
-//		for (String tempPath : mtempList) {
-//			YKUploadImageManager.getInstance().uploadImages(tempPath, new UploadImageCallback()
-//			{
-//				@Override
-//				public void callback(YKResult result, String imageUrl)
-//				{
-//					times ++;
-//					if(result.isSucceeded()){
-//						size ++;
-//						mImageUploadUrl.add(imageUrl);
-//
-//					}else{
-//						Toast.makeText(mActivity, "这一张失败了…", Toast.LENGTH_SHORT).show();
-//					}
-//					if(times == mAdapter.getList().size()){
-//						mHandler.sendEmptyMessage(200);
-//					}
-//				}
-//			});
-//		}
     }
 
 
@@ -313,30 +297,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
      * 请求网络 提交回复
      */
     private void commitReplay() {
-
-//		YKCommentreplyManager.getInstance().postAeniorReply(YKCurrentUserManager.getInstance().getUser().getToken(), typeId, mGetEditText, mImageUploadUrl,type,new ReplyCallback()
-//		{
-//			@Override
-//			public void callback(YKResult result)
-//			{
-//
-//				mCommit.setEnabled(true);
-//				AppUtil.dismissDialogSafe(mCustomButterfly);
-//
-//				if(result.isSucceeded()){
-//					Toast.makeText(mActivity, "发布成功", Toast.LENGTH_SHORT).show();
-//					Intent mIntent = new Intent();
-//					mIntent.putStringArrayListExtra("ListViewImag", mImageUploadUrl);
-//					mIntent.putExtra("textChange", mGetEditText);
-//					setResult(66, mIntent);
-//					setResult(22,mIntent);
-//					finish();
-//				}else{
-//					Toast.makeText(mActivity, result.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//				}
-//
-//			}
-//		});
 
     }
 
