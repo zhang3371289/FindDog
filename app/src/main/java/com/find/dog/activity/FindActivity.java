@@ -122,11 +122,10 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-			case R.id.change:
-				Intent intent1 = new Intent(this,IssueActivity.class);
+			case R.id.lianxizhuren:
+				Intent intent1 = new Intent(this,RegisterActivity.class);
 				startActivity(intent1);
 				break;
-			case R.id.cancel:
 			case R.id.back_layout:
 				finish();
 				break;

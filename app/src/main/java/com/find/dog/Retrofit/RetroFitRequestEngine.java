@@ -29,6 +29,9 @@ public interface RetroFitRequestEngine {
     @POST("login.php")
     Call<BaseEntity<stringInfo>> getLoginInfo(@Body RequestBody route);
 
+    //注册
+    @POST("regist_user.php")
+    Call<BaseEntity<stringInfo>> getRegistInfo(@Body RequestBody route);
     //上传图片和描述
     @Multipart
     @POST("url")

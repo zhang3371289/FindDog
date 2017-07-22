@@ -165,6 +165,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab2:
                 ToastUtil.showTextToast(mActivity,"发现");
+                startActivity(new Intent(this, FindActivity.class));
                 break;
             case R.id.activity_main_tab3:
                 ToastUtil.showTextToast(mActivity,"宠物");
