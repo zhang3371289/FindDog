@@ -8,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,8 +32,9 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	private PetFooterAdapter mFooterAdapter;
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
-	private String mName,mAdress;
 	private TextView name_text,type_text,phone_text,adress_text,title;
+	private Button mButton,mSure,mFind;
+	private LinearLayout mSureLayout;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,13 +44,11 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 
 
 	private void intview() {
+		mContext = this;
 		title = (TextView) findViewById(R.id.title);
 		title.setText("发现");
 		findViewById(R.id.back_layout).setOnClickListener(this);
 		mPicList = MyManger.loadPicsArray();
-		mName = MyManger.getUserInfo().getName();
-		mAdress = MyManger.getUserInfo().getAdress();
-		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
 		addFooter();
@@ -102,6 +103,15 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
 		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
 		mTopRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
+		mSure = (Button) footerView.findViewById(R.id.change);
+		mFind = (Button) footerView.findViewById(R.id.cancel);
+		mSure.setOnClickListener(this);
+		mFind.setOnClickListener(this);
+		mSureLayout = (LinearLayout) footerView.findViewById(R.id.bottom_layout);
+		mSureLayout.setVisibility(View.GONE);
+		mButton = (Button) footerView.findViewById(R.id.lianxizhuren);
+		mButton.setOnClickListener(this);
+		mButton.setVisibility(View.VISIBLE);
 		//设置布局管理器
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
 		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -109,21 +119,45 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		mListView.addFooterView(footerView);
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
-		name_text.setText(mName);
+
+		updateData();
+	}
+
+	private void updateData(){
+		name_text.setText(MyManger.getUserInfo().getName());
 		phone_text.setText(MyManger.getUserInfo().getPhone());
-		adress_text.setText(mAdress);
-		footerView.findViewById(R.id.change).setOnClickListener(this);
-		footerView.findViewById(R.id.cancel).setOnClickListener(this);
-		footerView.findViewById(R.id.lianxizhuren).setOnClickListener(this);
-		footerView.findViewById(R.id.lianxizhuren).setVisibility(View.VISIBLE);
-		footerView.findViewById(R.id.bottom_layout).setVisibility(View.GONE);
+		adress_text.setText(MyManger.getUserInfo().getAdress());
+	}
+
+	/**
+	 * 放弃联系
+	 */
+	private void giveUpContac(){
+		updateData();
+		mButton.setText("放弃联系");
+		type_text.setText("确认中");
+	}
+
+	private void sureFind(){
+		mButton.setVisibility(View.GONE);
+		mSureLayout.setVisibility(View.VISIBLE);
+		mSure.setText("确认找回");
+		mFind.setText("继续寻找");
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.lianxizhuren:
-				Intent intent1 = new Intent(this,RegisterActivity.class);
+				if("放弃联系".equals(mButton.getText().toString())){
+					sureFind();
+				}else{
+					Intent intent1 = new Intent(this,RegisterActivity.class);
+					startActivityForResult(intent1,RegisterActivity.REGIST_RESULT);
+				}
+				break;
+			case R.id.change:
+				Intent intent1 = new Intent(this,MyPetActivity.class);
 				startActivity(intent1);
 				break;
 			case R.id.back_layout:
@@ -131,6 +165,14 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 				break;
 		}
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(requestCode==RegisterActivity.REGIST_RESULT && resultCode==RegisterActivity.REGIST_RESULT){
+			giveUpContac();
+		}
 	}
 
 	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {

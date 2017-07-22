@@ -48,8 +48,7 @@
                 android:id="@+id/activity_main_user_phone"
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15522221111"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
@@ -69,35 +68,30 @@
                 android:id="@+id/activity_main_user_pay"
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="支付宝/微信"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
-        <TextView
+        <Button
             android:id="@+id/activity_main_user_change"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginTop="50dp"
-            android:background="@color/c_8899a6"
             android:gravity="center"
             android:text="修改信息"
-            android:textColor="@color/white"
             android:textSize="15sp"/>
 
-        <TextView
+        <Button
             android:id="@+id/activity_main_user_out"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:layout_marginTop="50dp"
-            android:background="@color/c_8899a6"
             android:gravity="center"
             android:text="退出登录"
-            android:textColor="@color/white"
             android:textSize="15sp"/>
 
     </LinearLayout>

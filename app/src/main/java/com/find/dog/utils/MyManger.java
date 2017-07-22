@@ -52,6 +52,8 @@ public class MyManger {
             editor.putString("name", "");
             editor.putString("adress", "");
             editor.putString("phone", "");
+            editor.putString("pay_number", "");
+            editor.putInt("pay_type", 0);
         }else {
             if(!TextUtils.isEmpty(info.getName())){
                 editor.putString("name", info.getName());
@@ -61,6 +63,12 @@ public class MyManger {
             }
             if(!TextUtils.isEmpty(info.getPhone())){
                 editor.putString("phone", info.getPhone());
+            }
+            if(!TextUtils.isEmpty(info.getPayNumber())){
+                editor.putString("pay_number", info.getPayNumber());
+            }
+            if(info.getPayType() != 0){
+                editor.putInt("pay_type", info.getPayType());
             }
         }
         editor.commit();//提交修改
@@ -72,6 +80,8 @@ public class MyManger {
         info.setName(sharedPreferences.getString("name", ""));
         info.setAdress(sharedPreferences.getString("adress", ""));
         info.setPhone(sharedPreferences.getString("phone",""));
+        info.setPayNumber(sharedPreferences.getString("pay_number",""));
+        info.setPayType(sharedPreferences.getInt("pay_type",0));
         return info;
     }
 

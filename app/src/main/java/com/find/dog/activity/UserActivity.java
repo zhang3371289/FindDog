@@ -12,17 +12,16 @@ import com.find.dog.utils.ToastUtil;
 
 public class UserActivity extends BaseActivity implements View.OnClickListener {
     private TextView phone_text,pay_text;
-    private String phone;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_layout);
-        phone = MyManger.getUserInfo().getPhone();
         phone_text = (TextView) findViewById(R.id.activity_main_user_phone);
         pay_text = (TextView) findViewById(R.id.activity_main_user_pay);
         findViewById(R.id.activity_main_user_change).setOnClickListener(this);
         findViewById(R.id.activity_main_user_out).setOnClickListener(this);
-        phone_text.setText(phone);
+        phone_text.setText(MyManger.getUserInfo().getPhone());
+        pay_text.setText( MyManger.getUserInfo().getPayNumber() +"--"+ MyManger.getUserInfo().getPayType());
     }
 
     @Override

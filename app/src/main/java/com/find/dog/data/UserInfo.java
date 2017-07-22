@@ -14,25 +14,17 @@ public class UserInfo implements Serializable {
      * phone : 13311313
      * adress :
      * pay :
+     * alipay : false
+     * wechatpay : false
      */
+
+    public static int WECHATPAY = 1, ALIPAY = 2;
 
     private String name;
     private String phone;
     private String adress;
-    private String pay_money;
-    private PayType pay_type;
-
-    public static enum PayType {
-        alipay, wechatpay
-    }
-
-    public void setPayType(PayType pay_type) {
-        this.pay_type = pay_type;
-    }
-
-    public PayType getPayType() {
-        return pay_type;
-    }
+    private String pay_number;
+    private int pay_type = 0;
 
     public String getName() {
         return name;
@@ -58,12 +50,20 @@ public class UserInfo implements Serializable {
         this.adress = adress;
     }
 
-    public String getPayMoney() {
-        return pay_money;
+    public String getPayNumber() {
+        return pay_number;
     }
 
-    public void setPayMoney(String pay_money) {
-        this.pay_money = pay_money;
+    public void setPayNumber(String pay_number) {
+        this.pay_number = pay_number;
+    }
+
+    public int getPayType() {
+        return pay_type;
+    }
+
+    public void setPayType(int pay_type) {
+        this.pay_type = pay_type;
     }
 
     @Override
@@ -72,8 +72,10 @@ public class UserInfo implements Serializable {
                 "name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
                 ", adress='" + adress + '\'' +
-                ", pay_money='" + pay_money + '\'' +
-                ", pay_type=" + pay_type +
+                ", pay_number='" + pay_number + '\'' +
+                ", pay_type='" + pay_type + '\'' +
                 '}';
     }
+
+
 }

@@ -26,11 +26,12 @@ import okhttp3.RequestBody;
 
 
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
-    private EditText phone_edit,yzm_edit,pay_money_edit;
+    private EditText phone_edit,yzm_edit,pay_number_edit;
     private Button sure_text,yzm_text;
     private RadioGroup radioGroup;
     private RadioButton zhifubaoButton,weixinButton;
-    private UserInfo.PayType pay_type = UserInfo.PayType.wechatpay;
+    private int type ;
+    public static int REGIST_RESULT = 11;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
         phone_edit = (EditText) findViewById(R.id.activity_login_phone);
         yzm_edit = (EditText) findViewById(R.id.activity_login_yzm);
-        pay_money_edit = (EditText) findViewById(R.id.activity_register_pay);
+        pay_number_edit = (EditText) findViewById(R.id.activity_register_pay);
         yzm_text = (Button) findViewById(R.id.activity_login_yzm_text);
         sure_text = (Button) findViewById(R.id.activity_login_sure_text);
         yzm_text.setOnClickListener(this);
@@ -74,8 +75,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void getLoginInfo(){
         final String mPhone = phone_edit.getText().toString();
-        final String mMoney = pay_money_edit.getText().toString();
-        Log.e("H", "pay_type---->" + pay_type);
+        final String mNumber = pay_number_edit.getText().toString();
+        if(zhifubaoButton.isChecked()){
+            type = UserInfo.ALIPAY;
+        }else if(weixinButton.isChecked()){
+            type = UserInfo.WECHATPAY;
+        }
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
         map.put("userPhone", mPhone);
@@ -89,12 +94,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         if (infos != null) {
                             UserInfo info = new UserInfo();
                             info.setPhone(mPhone);
-                            info.setPayType(pay_type);
-                            info.setPayMoney(mMoney);
+                            info.setPayNumber(mNumber);
+                            info.setPayType(type);
                             MyManger.saveUserInfo(info);
-                            Intent intent = new Intent(RegisterActivity.this,UserActivity.class);
-                            startActivity(intent);
+                            Intent intent = getIntent();
+                            setResult(REGIST_RESULT,intent);
                             finish();
+//                            Intent intent = new Intent(RegisterActivity.this,UserActivity.class);
+//                            startActivity(intent);
+//                            finish();
                             ToastUtil.showTextToast(RegisterActivity.this,infos.getInfo());
                         } else {
                         }
@@ -114,9 +122,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             if (checkedId==zhifubaoButton.getId()){
                 ToastUtil.showTextToast(getApplicationContext(),zhifubaoButton.getText().toString());
-                pay_type = UserInfo.PayType.alipay;
             }else if (checkedId==weixinButton.getId()){
-                pay_type = UserInfo.PayType.wechatpay;
                 ToastUtil.showTextToast(getApplicationContext(),weixinButton.getText().toString());
             }
         }
