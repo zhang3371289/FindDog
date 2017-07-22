@@ -45,29 +45,61 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="支付悬赏金额："
+                android:textColor="@color/black" />
+        </LinearLayout>
+
         <RadioGroup
             android:id="@+id/radioGroupID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <RadioButton
+                android:id="@+id/weixinID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:background="@color/transparent"
+                android:drawableLeft="@drawable/pay_wx"
+                android:drawablePadding="50dp"
+                android:drawableRight="@drawable/bg_select"
+                android:padding="20dp"
+                android:text="微信支付"
+                android:textSize="20sp"
+                android:checked="true"/>
 
             <RadioButton
                 android:id="@+id/zhifubaoID"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:button="@null"
+                android:background="@color/transparent"
+                android:drawableLeft="@drawable/pay_zfb"
+                android:drawablePadding="50dp"
+                android:drawableRight="@drawable/bg_select"
+                android:padding="20dp"
                 android:text="支付宝支付"
-                />
-            <RadioButton
-                android:id="@+id/weixinID"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="微信支付"/>
+                android:textSize="20sp" />
+
         </RadioGroup>
 
-        <Button android:id="@+id/pay_button"
+        <Button
+            android:id="@+id/pay_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="支付"/>
+            android:text="支付" />
     </RelativeLayout>
 
 </RelativeLayout>
