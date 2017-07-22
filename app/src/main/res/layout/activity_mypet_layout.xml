@@ -46,5 +46,6 @@
         android:id="@+id/fragment_pet_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@null"
         android:layout_below="@+id/title_layout" />
 </RelativeLayout>

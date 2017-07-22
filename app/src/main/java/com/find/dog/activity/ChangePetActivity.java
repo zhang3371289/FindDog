@@ -104,8 +104,8 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.cancel).setOnClickListener(this);
 		findViewById(R.id.back_layout).setOnClickListener(this);
 
-		mName = getIntent().getStringExtra(UpLoadActivity.NAME);
-		mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
+		mName = MyManger.getUserInfo().getName();
+		mAdress = MyManger.getUserInfo().getAdress();
 	}
 
 	@Override

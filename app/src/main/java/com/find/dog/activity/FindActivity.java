@@ -45,8 +45,8 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		title.setText("发现");
 		findViewById(R.id.back_layout).setOnClickListener(this);
 		mPicList = MyManger.loadPicsArray();
-		mName = getIntent().getStringExtra(UpLoadActivity.NAME);
-		mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
+		mName = MyManger.getUserInfo().getName();
+		mAdress = MyManger.getUserInfo().getAdress();
 		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
@@ -124,8 +124,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		switch (v.getId()){
 			case R.id.change:
 				Intent intent1 = new Intent(this,IssueActivity.class);
-				intent1.putExtra(UpLoadActivity.NAME,mName);
-				intent1.putExtra(UpLoadActivity.ADRESS,mAdress);
 				startActivity(intent1);
 				break;
 			case R.id.cancel:

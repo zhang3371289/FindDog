@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.find.dog.R;
 import com.find.dog.adapter.UpLoadAdapter;
+import com.find.dog.data.UserInfo;
 import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
@@ -46,7 +47,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private LinearLayout normalLayout;
-    public static String NAME="NAME",ADRESS = "ADRESS";
     private EditText mNameEdit,mAdressEdit,mPhoneEdit;
     private Handler mHandler = new Handler() {
 
@@ -200,10 +200,13 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         /*提交按钮*/
             case R.id.activity_upload_up:
 
+                UserInfo info = new UserInfo();
+                info.setName(mNameEdit.getText().toString());
+                info.setAdress(mAdressEdit.getText().toString());
+                info.setPhone(mPhoneEdit.getText().toString());
+                MyManger.saveUserInfo(info);
                 MyManger.savePicsArray(mAdapter.getList());
                 Intent intent = new Intent(mActivity, MyPetActivity.class);
-                intent.putExtra(NAME, mNameEdit.getText().toString());
-                intent.putExtra(ADRESS, mAdressEdit.getText().toString());
                 startActivity(intent);
 
                 break;

@@ -102,8 +102,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.fabu).setOnClickListener(this);
         findViewById(R.id.change).setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
-        mName = getIntent().getStringExtra(UpLoadActivity.NAME);
-        mAdress = getIntent().getStringExtra(UpLoadActivity.ADRESS);
+        mName = MyManger.getUserInfo().getName();
+        mAdress =MyManger.getUserInfo().getAdress();
     }
 
     @Override
