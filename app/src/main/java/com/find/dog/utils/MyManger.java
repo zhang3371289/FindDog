@@ -16,22 +16,6 @@ import java.util.ArrayList;
 public class MyManger {
     public static final String BASE = "http://zhaogou.applinzi.com/";//正式环境
 
-//    /**
-//     * 保存手机号
-//     * @param phone
-//     */
-//    public static void saveUserInfo(String phone) {
-//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-//        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
-//        editor.putString("phone", phone);
-//        editor.commit();//提交修改
-//    }
-//
-//    public static String getUserInfo() {
-//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-//        String str = sharedPreferences.getString("phone", "");
-//        return str;
-//    }
 
     public static boolean isLogin() {
         if (TextUtils.isEmpty(getUserInfo().getPhone())) {

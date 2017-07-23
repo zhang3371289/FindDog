@@ -22,8 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
+import com.find.dog.data.rewardingInfo;
+import com.find.dog.data.stringInfo;
 import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
@@ -34,12 +38,16 @@ import com.find.dog.utils.ToastUtil;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 /**
- *上传资料
+ * 上传资料
  */
 public class UpLoadActivity extends BaseActivity implements OnClickListener {
-    public  Button mCommit;
+    public Button mCommit;
     private Activity mActivity;
     private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
     private Bitmap tempBitmap;
@@ -47,7 +55,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private LinearLayout normalLayout;
-    private EditText mNameEdit,mAdressEdit,mPhoneEdit;
+    private EditText mNameEdit, mAdressEdit, mPhoneEdit;
     private Handler mHandler = new Handler() {
 
         @Override
@@ -88,13 +96,14 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new UpLoadAdapter(this,new UpLoadAdapter.Callback() {
+        mAdapter = new UpLoadAdapter(this, new UpLoadAdapter.Callback() {
             @Override
             public void callback() {
                 showChooseImageDialog();
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.refresh(MyManger.loadPicsArray());
         mCommit = (Button) findViewById(R.id.activity_upload_up);
         mCommit.setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
@@ -106,6 +115,44 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
             normalLayout.setVisibility(View.VISIBLE);
         }
     }
+
+    private void getRegistPetInfo() {
+        //宠物信息录入
+        Map<String, String> map = new HashMap<>();
+        map.put("userPhone", "北京市");
+        map.put("patName", "北京市");
+        map.put("photo1URL", "北京市");
+        map.put("photo1URL", "北京市");
+        map.put("photo1URL", "北京市");
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistPetInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<stringInfo>() {
+
+                    @Override
+                    public void onSuccess(stringInfo infos) {
+                        Log.e("H", "getRegistPetInfo---->" + infos);
+                        if (infos != null) {
+
+                            UserInfo info = new UserInfo();
+                            info.setName(mNameEdit.getText().toString());
+                            info.setAdress(mAdressEdit.getText().toString());
+                            info.setPhone(mPhoneEdit.getText().toString());
+                            MyManger.saveUserInfo(info);
+                            MyManger.savePicsArray(mAdapter.getList());
+                            Intent intent = new Intent(mActivity, MyPetActivity.class);
+                            startActivity(intent);
+
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+
+                });
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -199,21 +246,12 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         /*提交按钮*/
             case R.id.activity_upload_up:
-
-                UserInfo info = new UserInfo();
-                info.setName(mNameEdit.getText().toString());
-                info.setAdress(mAdressEdit.getText().toString());
-                info.setPhone(mPhoneEdit.getText().toString());
-                MyManger.saveUserInfo(info);
-                MyManger.savePicsArray(mAdapter.getList());
-                Intent intent = new Intent(mActivity, MyPetActivity.class);
-                startActivity(intent);
-
+                getRegistPetInfo();
                 break;
             case R.id.back_layout:
                 finish();
             case R.id.activity_upload_yzm_text:
-                ToastUtil.showTextToast(this,"获取验证码");
+                ToastUtil.showTextToast(this, "获取验证码");
                 break;
             default:
                 break;

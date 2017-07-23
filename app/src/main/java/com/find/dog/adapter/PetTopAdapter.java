@@ -9,18 +9,16 @@ import android.widget.ImageView;
 
 import com.find.dog.R;
 import com.find.dog.activity.MyPetActivity;
-import com.find.dog.fragment.PetFragment;
+import com.find.dog.data.UserPetInfo;
+
+import java.util.ArrayList;
 
 public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-    PetFragment mFragment;
-    MyPetActivity mActivity;
-    //    public String[] datas = null;
-    public PetTopAdapter(PetFragment mContext) {
-//        this.datas = datas;
-        this.mFragment = mContext;
-    }
-    public PetTopAdapter(MyPetActivity mActivity) {
-        this.mActivity = mActivity;
+    ArrayList<UserPetInfo> mPetsList;
+    Callback callback;
+    public PetTopAdapter(ArrayList<UserPetInfo> mPetsList,final Callback callback) {
+        this.mPetsList = mPetsList;
+        this.callback = callback;
     }
     //创建新View，被LayoutManager所调用
     @Override
@@ -35,18 +33,14 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mFragment!=null){
-                    mFragment.getData(position);
-                }
-                if(mActivity !=null){
-                    mActivity.getData(position);
-                }
+                callback.callback(position);
             }
         });
     }
     //获取数据的数量
     @Override
     public int getItemCount() {
+        int length = mPetsList == null ? 0 : mPetsList.size();
         return 3;
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
@@ -56,5 +50,9 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
             super(view);
             mImageView = (ImageView) view.findViewById(R.id.fragmet_pet_top_img);
         }
+    }
+
+    public interface Callback {
+        public void callback(int position);
     }
 }

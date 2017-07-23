@@ -5,18 +5,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
@@ -31,11 +40,14 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private String mName,mAdress;
 	private TextView name_text,type_text,phone_text,adress_text;
+	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
+	private PetTopAdapter mTopAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mypet_layout);
 		intview();
+		getUserAllPetInfo();
 	}
 
 
@@ -50,6 +62,33 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		addFooter();
 		mListView.setAdapter(null);
 		getData(0);
+	}
+
+	private void getUserAllPetInfo(){
+		//获取用户所有宠物
+		Map<String, String> map = new HashMap<>();
+//		map.put("userphone", "111");
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserAllPetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+					@Override
+					public void onSuccess(ArrayList<UserPetInfo> infos) {
+						Log.e("H", "getUserAllPetInfo---->" + infos);
+						if (infos != null) {
+							mPetsList = infos;
+							mTopAdapter.notifyDataSetChanged();
+							mFooterAdapter.notifyDataSetChanged();
+						} else {
+						}
+					}
+
+					@Override
+					public void onFail() {
+						Log.e("H", "onFail---->");
+					}
+
+				});
 	}
 
 	/**
@@ -85,7 +124,12 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 		mTopRV.setLayoutManager(linearLayoutManager);
 		mListView.addHeaderView(topView);
-		PetTopAdapter mTopAdapter = new PetTopAdapter(this);
+		mTopAdapter = new PetTopAdapter(mPetsList, new PetTopAdapter.Callback() {
+			@Override
+			public void callback(int position) {
+				ToastUtil.showTextToast(mContext,"选中"+position);
+			}
+		});
 		mTopRV.setAdapter(mTopAdapter);
 	}
 

@@ -104,8 +104,6 @@ public class PetFragment extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mTopRV.setLayoutManager(linearLayoutManager);
         mListView.addHeaderView(topView);
-        PetTopAdapter mTopAdapter = new PetTopAdapter(PetFragment.this);
-        mTopRV.setAdapter(mTopAdapter);
     }
 
     /**

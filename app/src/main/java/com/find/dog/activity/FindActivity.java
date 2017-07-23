@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.PetFooterAdapter;
+import com.find.dog.adapter.PetTopAdapter;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.ToastUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
@@ -35,6 +45,8 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	private TextView name_text,type_text,phone_text,adress_text,title;
 	private Button mButton,mSure,mFind;
 	private LinearLayout mSureLayout;
+	private PetTopAdapter mTopAdapter;
+	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,7 +101,12 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 		mTopRV.setLayoutManager(linearLayoutManager);
 		mListView.addHeaderView(topView);
-		PetTopAdapter mTopAdapter = new PetTopAdapter();
+		mTopAdapter = new PetTopAdapter(mPetsList, new PetTopAdapter.Callback() {
+			@Override
+			public void callback(int position) {
+				ToastUtil.showTextToast(mContext,"选中"+position);
+			}
+		});
 		mTopRV.setAdapter(mTopAdapter);
 	}
 
@@ -167,6 +184,34 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 
 	}
 
+	private void getUserPetInfo(){
+		//获取用户所有宠物
+		Map<String, String> map = new HashMap<>();
+//		map.put("userphone", "111");
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+					@Override
+					public void onSuccess(ArrayList<UserPetInfo> infos) {
+						Log.e("H", "getUserAllPetInfo---->" + infos);
+						if (infos != null) {
+							mPetsList = infos;
+							mTopAdapter.notifyDataSetChanged();
+							mFooterAdapter.notifyDataSetChanged();
+						} else {
+						}
+					}
+
+					@Override
+					public void onFail() {
+						Log.e("H", "onFail---->");
+					}
+
+				});
+	}
+
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -174,42 +219,42 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 			giveUpContac();
 		}
 	}
-
-	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-		//    public String[] datas = null;
-		//创建新View，被LayoutManager所调用
-		@Override
-		public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-			View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_pet_top_item, viewGroup, false);
-			ViewHolder vh = new ViewHolder(view);
-			return vh;
-		}
-
-		//将数据与界面进行绑定的操作
-		@Override
-		public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-			viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					getData(position);
-				}
-			});
-		}
-
-		//获取数据的数量
-		@Override
-		public int getItemCount() {
-			return 3;
-		}
-
-		//自定义的ViewHolder，持有每个Item的的所有界面元素
-		public class ViewHolder extends RecyclerView.ViewHolder {
-			public ImageView mImageView;
-
-			public ViewHolder(View view) {
-				super(view);
-				mImageView = (ImageView) view.findViewById(R.id.fragmet_pet_top_img);
-			}
-		}
-	}
+//
+//	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
+//		//    public String[] datas = null;
+//		//创建新View，被LayoutManager所调用
+//		@Override
+//		public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+//			View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_pet_top_item, viewGroup, false);
+//			ViewHolder vh = new ViewHolder(view);
+//			return vh;
+//		}
+//
+//		//将数据与界面进行绑定的操作
+//		@Override
+//		public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+//			viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					getData(position);
+//				}
+//			});
+//		}
+//
+//		//获取数据的数量
+//		@Override
+//		public int getItemCount() {
+//			return 3;
+//		}
+//
+//		//自定义的ViewHolder，持有每个Item的的所有界面元素
+//		public class ViewHolder extends RecyclerView.ViewHolder {
+//			public ImageView mImageView;
+//
+//			public ViewHolder(View view) {
+//				super(view);
+//				mImageView = (ImageView) view.findViewById(R.id.fragmet_pet_top_img);
+//			}
+//		}
+//	}
 }
