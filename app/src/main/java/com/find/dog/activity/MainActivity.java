@@ -21,6 +21,7 @@ import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.data.rewardingInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
+import com.find.dog.utils.PostServer;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 
@@ -43,7 +44,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         initview();
-        getRewardInfo();
+//        getRewardInfo();
+
+
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                Map<String, String> map = new HashMap<>();
+                map.put("loseAddress", "山东省");
+                PostServer.loginByPost(map);
+            }
+        }).start();
+
     }
     private void initview(){
         mActivity = this;
@@ -89,7 +101,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private void getRewardInfo(){
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", "北京市");
+        map.put("loseAddress", "abc");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<ArrayList<rewardingInfo>>(this, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<rewardingInfo>>() {

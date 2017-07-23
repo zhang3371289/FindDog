@@ -1,6 +1,8 @@
 package com.find.dog.Retrofit;
 
 
+import android.util.Log;
+
 import com.find.dog.utils.MyManger;
 
 import org.json.JSONException;
@@ -113,22 +115,22 @@ public class RetroFactory {
         return object;
     }
     private JSONObject addParamsWithJson(JSONObject obj) {
-        // TODO Auto-generated method stub
-        JSONObject object = new JSONObject();
-        if(systemObject==null){
-            systemObject = new JSONObject();
-            addDefaultParams(systemObject);
-        }
-        try {
-            object.put("system", systemObject);
-        } catch (JSONException e) {
-        }
-        if (obj != null) {
-            try {
-                object.put("postdata", obj);
-            } catch (JSONException e) {
-            }
-        }
-        return object;
+//        // TODO Auto-generated method stub
+//        JSONObject object = new JSONObject();
+//        if(systemObject==null){
+//            systemObject = new JSONObject();
+//            addDefaultParams(systemObject);
+//        }
+//        try {
+//            object.put("system", systemObject);
+//        } catch (JSONException e) {
+//        }
+//        if (obj != null) {
+//            try {
+//                object.put("postdata", obj);
+//            } catch (JSONException e) {
+//            }
+//        }
+        return obj;
     }
 }
