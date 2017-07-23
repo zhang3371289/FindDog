@@ -175,7 +175,7 @@ public class UserPetInfo {
 
     @Override
     public String toString() {
-        return "UserAllPet{" +
+        return "UserPetInfo{" +
                 "id='" + id + '\'' +
                 ", masterPhone='" + masterPhone + '\'' +
                 ", hunterPhone='" + hunterPhone + '\'' +
