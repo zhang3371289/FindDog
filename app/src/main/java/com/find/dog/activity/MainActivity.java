@@ -148,7 +148,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.activity_main_tab1:
-                ToastUtil.showTextToast(mActivity,"扫一扫");
+//                ToastUtil.showTextToast(mActivity,"扫一扫");
 //                //打开扫描界面扫描条形码或二维码
 //                onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
 //                    @Override
@@ -164,11 +164,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(new Intent(this, UpLoadActivity.class));
                 break;
             case R.id.activity_main_tab2:
-                ToastUtil.showTextToast(mActivity,"发现");
+//                ToastUtil.showTextToast(mActivity,"发现");
                 startActivity(new Intent(this, FindActivity.class));
                 break;
             case R.id.activity_main_tab3:
-                ToastUtil.showTextToast(mActivity,"宠物");
+//                ToastUtil.showTextToast(mActivity,"宠物");
                 startActivity(new Intent(this, MyPetActivity.class));
                 break;
             case R.id.activity_main_tab4:

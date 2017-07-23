@@ -131,6 +131,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                     @Override
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getRegistPetInfo---->" + infos);
+                        ToastUtil.showTextToast(getApplicationContext(),infos.toString());
                         if (infos != null) {
 
                             UserInfo info = new UserInfo();

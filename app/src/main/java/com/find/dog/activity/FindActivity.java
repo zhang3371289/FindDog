@@ -52,6 +52,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mypet_layout);
 		intview();
+		getUserPetInfo();
 	}
 
 
@@ -67,6 +68,35 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		mListView.setAdapter(null);
 		getData(0);
 	}
+
+	private void getUserPetInfo(){
+		//获取用户所有宠物
+		Map<String, String> map = new HashMap<>();
+//		map.put("userphone", "111");
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+					@Override
+					public void onSuccess(ArrayList<UserPetInfo> infos) {
+						Log.e("H", "getUserPetInfo---->" + infos);
+						ToastUtil.showTextToast(mContext,infos.toString());
+						if (infos != null) {
+							mPetsList = infos;
+							mTopAdapter.notifyDataSetChanged();
+							mFooterAdapter.notifyDataSetChanged();
+						} else {
+						}
+					}
+
+					@Override
+					public void onFail() {
+						Log.e("H", "onFail---->");
+					}
+
+				});
+	}
+
 
 	/**
 	 * 选中当前项
@@ -184,34 +214,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 
 	}
 
-	private void getUserPetInfo(){
-		//获取用户所有宠物
-		Map<String, String> map = new HashMap<>();
-//		map.put("userphone", "111");
-		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
-				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
-
-					@Override
-					public void onSuccess(ArrayList<UserPetInfo> infos) {
-						Log.e("H", "getUserAllPetInfo---->" + infos);
-						if (infos != null) {
-							mPetsList = infos;
-							mTopAdapter.notifyDataSetChanged();
-							mFooterAdapter.notifyDataSetChanged();
-						} else {
-						}
-					}
-
-					@Override
-					public void onFail() {
-						Log.e("H", "onFail---->");
-					}
-
-				});
-	}
-
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -219,42 +221,4 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 			giveUpContac();
 		}
 	}
-//
-//	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-//		//    public String[] datas = null;
-//		//创建新View，被LayoutManager所调用
-//		@Override
-//		public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//			View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_pet_top_item, viewGroup, false);
-//			ViewHolder vh = new ViewHolder(view);
-//			return vh;
-//		}
-//
-//		//将数据与界面进行绑定的操作
-//		@Override
-//		public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-//			viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					getData(position);
-//				}
-//			});
-//		}
-//
-//		//获取数据的数量
-//		@Override
-//		public int getItemCount() {
-//			return 3;
-//		}
-//
-//		//自定义的ViewHolder，持有每个Item的的所有界面元素
-//		public class ViewHolder extends RecyclerView.ViewHolder {
-//			public ImageView mImageView;
-//
-//			public ViewHolder(View view) {
-//				super(view);
-//				mImageView = (ImageView) view.findViewById(R.id.fragmet_pet_top_img);
-//			}
-//		}
-//	}
 }
