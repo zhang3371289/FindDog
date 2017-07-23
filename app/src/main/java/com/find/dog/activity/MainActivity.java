@@ -46,15 +46,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         initview();
 //        getRewardInfo();
 
-
-        new Thread(new Runnable(){
+        String spec = "http://zhaogou.applinzi.com/getinfo_reward.php";
+        Map<String, String> map = new HashMap<>();
+        map.put("loseAddress", "山东省");
+        PostServer.postData(spec, map, new PostServer.Callback() {
             @Override
-            public void run() {
-                Map<String, String> map = new HashMap<>();
-                map.put("loseAddress", "山东省");
-                PostServer.loginByPost(map);
+            public void callback(String result) {
+                Log.e("H","-------callback----result--------"+result);
             }
-        }).start();
+        });
 
     }
     private void initview(){
