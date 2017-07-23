@@ -67,7 +67,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	private void getUserAllPetInfo(){
 		//获取用户所有宠物
 		Map<String, String> map = new HashMap<>();
-//		map.put("userphone", "111");
+		map.put("userPhone", "18801308610");
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserAllPetInfo(requestBody))
 				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {

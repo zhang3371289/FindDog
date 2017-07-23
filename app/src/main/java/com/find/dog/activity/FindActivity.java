@@ -70,7 +70,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	}
 
 	private void getUserPetInfo(){
-		//获取用户所有宠物
+		//获取用户宠物
 		Map<String, String> map = new HashMap<>();
 //		map.put("userphone", "111");
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);

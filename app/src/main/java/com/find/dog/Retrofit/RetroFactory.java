@@ -81,10 +81,10 @@ public class RetroFactory {
     private JSONObject addParams(Map<String, String> parameters) {
         // TODO Auto-generated method stub
         JSONObject object = new JSONObject();
-        if(systemObject==null){
-            systemObject = new JSONObject();
-            addDefaultParams(systemObject);
-        }
+//        if(systemObject==null){
+//            systemObject = new JSONObject();
+//            addDefaultParams(systemObject);
+//        }
 //        try {
 //            object.put("system", systemObject);
 //        } catch (JSONException e) {
@@ -99,7 +99,8 @@ public class RetroFactory {
                 String value = (String) entry.getValue();
                 if (key != null && value != null) {
                     try {
-                        postObject.put((String) key, value);
+//                        postObject.put((String) key, value);
+                        object.put((String) key, value);
                     } catch (JSONException e) {
                     }
                 }
