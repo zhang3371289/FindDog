@@ -71,9 +71,9 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
 
     private void getUserInfo() {
         Log.e("H", "getUserInfo---->");
-        //宠物信息录入
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", "18801308610");
+        map.put("userPhone", MyManger.getUserInfo().getPhone());
+//        map.put("userPhone", "18801308610");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<GetUserInfo>(this, RetroFactory.getIstance().getStringService().getUserInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<GetUserInfo>() {

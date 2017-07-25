@@ -26,7 +26,6 @@ import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
-import com.find.dog.data.rewardingInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
@@ -119,11 +118,12 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private void getRegistPetInfo() {
         //宠物信息录入
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", "北京市");
-        map.put("patName", "北京市");
-        map.put("photo1URL", "北京市");
-        map.put("photo1URL", "北京市");
-        map.put("photo1URL", "北京市");
+        map.put("userPhone", mPhoneEdit.getText().toString());
+        map.put("patName", mNameEdit.getText().toString());
+        map.put("homeAddress", mAdressEdit.getText().toString());
+//        map.put("photo1URL", "北京市");
+//        map.put("photo2URL", "北京市");
+//        map.put("photo3URL", "北京市");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistPetInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<stringInfo>() {

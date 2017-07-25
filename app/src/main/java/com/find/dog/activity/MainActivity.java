@@ -143,7 +143,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     intent = new Intent(this,LoginActivity.class);
                 }else{
                     intent = new Intent(this,UserActivity.class);
-                    intent.putExtra("phone", MyManger.getUserInfo());
                 }
                 startActivity(intent);
                 break;
