@@ -21,7 +21,6 @@ import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.data.rewardingInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
-import com.find.dog.utils.PostServer;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 
@@ -44,18 +43,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
         initview();
-//        getRewardInfo();
-
-        String spec = "http://zhaogou.applinzi.com/getinfo_reward.php";
-        Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", "山东省");
-        PostServer.postData(spec, map, new PostServer.Callback() {
-            @Override
-            public void callback(String result) {
-                Log.e("H","-------callback----result--------"+result);
-            }
-        });
-
+        getRewardInfo();
     }
     private void initview(){
         mActivity = this;
@@ -101,7 +89,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private void getRewardInfo(){
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", "abc");
+        map.put("loseAddress", "城阳区");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<ArrayList<rewardingInfo>>(this, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<rewardingInfo>>() {
@@ -160,19 +148,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.activity_main_tab1:
-//                ToastUtil.showTextToast(mActivity,"扫一扫");
-//                //打开扫描界面扫描条形码或二维码
-//                onPermissionRequests(Manifest.permission.CAMERA, new OnBooleanListener() {
-//                    @Override
-//                    public void onClick(boolean bln) {
-//                        if (bln) {
-//                            Intent openCameraIntent = new Intent(mActivity, CaptureActivity.class);
-//                            startActivityForResult(openCameraIntent, 0);
-//                        } else {
-//                            Toast.makeText(mActivity, "未打开相机权限", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
                 startActivity(new Intent(this, UpLoadActivity.class));
                 break;
             case R.id.activity_main_tab2:

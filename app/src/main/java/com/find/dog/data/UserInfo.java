@@ -14,8 +14,6 @@ public class UserInfo implements Serializable {
      * phone : 13311313
      * adress :
      * pay :
-     * alipay : false
-     * wechatpay : false
      */
 
     public static int WECHATPAY = 1, ALIPAY = 2;
