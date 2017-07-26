@@ -18,6 +18,7 @@ import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 
@@ -67,7 +68,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	private void getUserAllPetInfo(){
 		//获取用户所有宠物
 		Map<String, String> map = new HashMap<>();
-		map.put("userPhone", "18801308610");
+		map.put("userPhone", MyManger.getUserInfo().getPhone());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserAllPetInfo(requestBody))
 				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {

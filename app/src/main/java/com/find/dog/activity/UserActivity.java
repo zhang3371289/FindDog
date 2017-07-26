@@ -32,6 +32,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
         pay_text = (TextView) findViewById(R.id.activity_main_user_pay);
         findViewById(R.id.activity_main_user_change).setOnClickListener(this);
         findViewById(R.id.activity_main_user_out).setOnClickListener(this);
+        phone_text.setText(MyManger.getUserInfo().getPhone());
         getUserInfo();
     }
 

@@ -13,19 +13,27 @@ public class stringInfo implements Serializable {
      */
 
     private String info;
+    private String erro;
 
     public String getInfo() {
         return info;
     }
+    public String getErro() {
+        return erro;
+    }
 
     public void setInfo(String info) {
         this.info = info;
+    }
+    public void setErro(String erro) {
+        this.erro = erro;
     }
 
     @Override
     public String toString() {
         return "stringInfo{" +
                 "info='" + info + '\'' +
+                "erro='" + erro + '\'' +
                 '}';
     }
 }

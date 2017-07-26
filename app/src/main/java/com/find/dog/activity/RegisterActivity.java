@@ -91,7 +91,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     @Override
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getRegistInfo---->" + infos);
-                        if (infos != null) {
+                        if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setPhone(mPhone);
                             info.setPayNumber(mNumber);
@@ -103,8 +103,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 //                            Intent intent = new Intent(RegisterActivity.this,UserActivity.class);
 //                            startActivity(intent);
 //                            finish();
-                            ToastUtil.showTextToast(RegisterActivity.this,infos.getInfo());
+                            ToastUtil.showTextToast(RegisterActivity.this,infos.getInfo().toString());
                         } else {
+                            ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
                         }
                     }
 

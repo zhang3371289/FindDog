@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -131,9 +132,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                     @Override
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getRegistPetInfo---->" + infos);
-                        ToastUtil.showTextToast(getApplicationContext(),infos.toString());
-                        if (infos != null) {
-
+                        if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setName(mNameEdit.getText().toString());
                             info.setAdress(mAdressEdit.getText().toString());
@@ -142,18 +141,28 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             MyManger.savePicsArray(mAdapter.getList());
                             Intent intent = new Intent(mActivity, MyPetActivity.class);
                             startActivity(intent);
-
                         } else {
+                            ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
+//                            Intent intent = new Intent(mActivity, RegisterActivity.class);
+//                            startActivityForResult(intent,RegisterActivity.REGIST_RESULT);
                         }
                     }
 
                     @Override
                     public void onFail() {
+                        ToastUtil.showTextToast(getApplicationContext(),getResources().getString(R.string.error_net));
                     }
 
                 });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mNameEdit.setText(MyManger.getUserInfo().getName());
+        mAdressEdit.setText(MyManger.getUserInfo().getAdress());
+        mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

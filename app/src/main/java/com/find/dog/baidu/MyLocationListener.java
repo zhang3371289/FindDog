@@ -115,7 +115,7 @@ public class MyLocationListener implements BDLocationListener {
         Log.i("BaiduLocationApiDem", sb.toString());
 //        ToastUtil.showTextToast(MyApplication.getInstance(),sb.toString());
 
-        String result = province+"-"+city+"-"+district;
+        String result = province+city+district;
         if(!TextUtils.isEmpty(province)){
             MainActivity.setLocation(result);
         }

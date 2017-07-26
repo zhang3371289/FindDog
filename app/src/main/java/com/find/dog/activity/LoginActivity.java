@@ -57,7 +57,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void getLoginInfo(final String mPhone){
-        //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
         map.put("userPhone", mPhone);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
@@ -67,7 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getLoginInfo---->" + infos);
-                        if (infos != null) {
+                        if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setPhone(mPhone);
                             MyManger.saveUserInfo(info);
@@ -76,6 +75,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             finish();
                             ToastUtil.showTextToast(LoginActivity.this,infos.getInfo());
                         } else {
+                            ToastUtil.showTextToast(LoginActivity.this,infos.getErro());
                         }
                     }
 

@@ -2,6 +2,7 @@ package com.find.dog.activity;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,16 +35,16 @@ import okhttp3.RequestBody;
 public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static Activity mActivity;
     private static TextView locationTextView;
-    private static int showCount;
     private RecyclerView mRecyclerView;
-    private MyAdapter mAdapter;
-    private ArrayList<rewardingInfo> mList = new ArrayList<>();
+    private static MyAdapter mAdapter;
+    private static ArrayList<rewardingInfo> mList = new ArrayList<>();
+    private static Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_layout);
+        mContext = this;
         initview();
-        getRewardInfo();
     }
     private void initview(){
         mActivity = this;
@@ -66,7 +67,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onClick(boolean bln) {
                 if (bln) {
-                    showCount = 1;
                     MyApplication.getInstance().mLocationClient.start();
                 } else {
                     Toast.makeText(MyApplication.getInstance(), "未获取位置权限", Toast.LENGTH_SHORT).show();
@@ -86,12 +86,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     }
 
-    private void getRewardInfo(){
+    private static void getRewardInfo(){
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
         map.put("loseAddress", "城阳区");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-        new RetroFitUtil<ArrayList<rewardingInfo>>(this, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
+        new RetroFitUtil<ArrayList<rewardingInfo>>(mContext, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<rewardingInfo>>() {
 
                     @Override
@@ -168,8 +168,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             locationTextView.post(new Runnable() {
                 @Override
                 public void run() {
-                    locationTextView.setText(showCount+"\t"+result);
-                    showCount++;
+                    locationTextView.setText(result);
+                    getRewardInfo();
                 }
             });
         }
