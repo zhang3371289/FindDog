@@ -17,6 +17,7 @@ import com.find.dog.utils.ToastUtil;
 public class PayActivity extends BaseActivity implements View.OnClickListener{
     private RadioGroup radioGroup;
     private RadioButton zhifubaoButton,weixinButton;
+    private String money;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

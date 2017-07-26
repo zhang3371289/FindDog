@@ -24,6 +24,7 @@ public class MyManger {
     private static final String user_pay_type = "user_pay_type";
     private static final String pic_Status_size = "pic_Status_size";
     private static final String pic_Status_ = "pic_Status_";
+    private static final String issue_money = "issue_money";
 
     /**
      * 保存登录是否
@@ -40,6 +41,23 @@ public class MyManger {
         boolean is_login = sharedPreferences.getBoolean(user_islogin,false);
         return is_login;
     }
+
+    /**
+     * 保存 悬赏金额
+     * @param money
+     */
+    public static void saveMoney(String money){
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putString(issue_money,money).commit();
+    }
+
+    public static String getMoney() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        String money = sharedPreferences.getString(issue_money,"");
+        return money;
+    }
+
     /**
      * 保存 用户信息
      * @param info

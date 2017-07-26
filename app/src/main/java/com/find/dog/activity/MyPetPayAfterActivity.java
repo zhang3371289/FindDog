@@ -14,9 +14,14 @@ import android.widget.TextView;
 
 import com.find.dog.R;
 import com.find.dog.adapter.PetFooterAdapter;
+import com.find.dog.adapter.PetTopAdapter;
+import com.find.dog.adapter.UpLoadAdapter;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.ToastUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -31,7 +36,8 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private String mName,mAdress;
-	private TextView name_text,type_text,phone_text,adress_text;
+	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
+	private TextView name_text,type_text,phone_text,adress_text,losttime_text,money_text;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,7 +92,12 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 		mTopRV.setLayoutManager(linearLayoutManager);
 		mListView.addHeaderView(topView);
-		PetTopAdapter mTopAdapter = new PetTopAdapter();
+		PetTopAdapter mTopAdapter = new PetTopAdapter(mPetsList, new PetTopAdapter.Callback() {
+			@Override
+			public void callback(int position) {
+				ToastUtil.showTextToast(mContext,"选中"+position);
+			}
+		});
 		mTopRV.setAdapter(mTopAdapter);
 	}
 
@@ -99,6 +110,8 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		phone_text = (TextView) footerView.findViewById(R.id.fragment_pet_phone);
 		adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
 		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
+		losttime_text = (TextView) footerView.findViewById(R.id.fragment_pet_time);
+		money_text = (TextView) footerView.findViewById(R.id.activity_issue_xuanshang);
 		mTopRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
 		//设置布局管理器
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -112,6 +125,10 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 		footerView.findViewById(R.id.cancel).setOnClickListener(this);
+		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = sDateFormat.format(new java.util.Date());
+		losttime_text.setText(date);
+		money_text.setText(MyManger.getMoney());
 	}
 
 	@Override
@@ -129,42 +146,4 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 
 	}
 
-
-	class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-		//    public String[] datas = null;
-		//创建新View，被LayoutManager所调用
-		@Override
-		public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-			View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_pet_top_item, viewGroup, false);
-			ViewHolder vh = new ViewHolder(view);
-			return vh;
-		}
-
-		//将数据与界面进行绑定的操作
-		@Override
-		public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-			viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					getData(position);
-				}
-			});
-		}
-
-		//获取数据的数量
-		@Override
-		public int getItemCount() {
-			return 3;
-		}
-
-		//自定义的ViewHolder，持有每个Item的的所有界面元素
-		public class ViewHolder extends RecyclerView.ViewHolder {
-			public ImageView mImageView;
-
-			public ViewHolder(View view) {
-				super(view);
-				mImageView = (ImageView) view.findViewById(R.id.fragmet_pet_top_img);
-			}
-		}
-	}
 }

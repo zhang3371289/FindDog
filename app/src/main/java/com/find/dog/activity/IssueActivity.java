@@ -31,6 +31,7 @@ import com.find.dog.utils.PhotoUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -106,6 +107,10 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         name_text.setText(MyManger.getUserInfo().getName());
         phone_text.setText(MyManger.getUserInfo().getPhone());
         adress_edit.setText(MyManger.getUserInfo().getAdress());
+
+        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sDateFormat.format(new java.util.Date());
+        losttime_text.setText(date);
     }
 
 
@@ -190,6 +195,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         /*提交按钮*/
             case R.id.fabu:
                 Intent intent = new Intent(this,PayActivity.class);
+                MyManger.saveMoney(issue_edit.getText().toString());
                 startActivity(intent);
                 break;
             case R.id.change:

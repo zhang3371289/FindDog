@@ -14,7 +14,7 @@ import com.find.dog.data.UserPetInfo;
 import java.util.ArrayList;
 
 public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder> {
-    ArrayList<UserPetInfo> mPetsList;
+    ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
     Callback callback;
     public PetTopAdapter(ArrayList<UserPetInfo> mPetsList,final Callback callback) {
         this.mPetsList = mPetsList;
@@ -41,7 +41,7 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
     @Override
     public int getItemCount() {
         int length = mPetsList == null ? 0 : mPetsList.size();
-        return 3;
+        return length;
     }
     //自定义的ViewHolder，持有每个Item的的所有界面元素
     public static class ViewHolder extends RecyclerView.ViewHolder {
