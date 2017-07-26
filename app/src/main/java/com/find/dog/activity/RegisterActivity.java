@@ -31,7 +31,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private RadioGroup radioGroup;
     private RadioButton zhifubaoButton,weixinButton;
     private int type ;
-    public static int REGIST_RESULT = 11;
+    public static final int REGIST_RESULT = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +76,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private void getLoginInfo(){
         final String mPhone = phone_edit.getText().toString();
         final String mNumber = pay_number_edit.getText().toString();
-        if(zhifubaoButton.isChecked()){
-            type = UserInfo.ALIPAY;
-        }else if(weixinButton.isChecked()){
-            type = UserInfo.WECHATPAY;
-        }
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
         map.put("userPhone", mPhone);
+        if(zhifubaoButton.isChecked()){
+            type = UserInfo.ALIPAY;
+            map.put("alipay",mNumber);
+        }else if(weixinButton.isChecked()){
+            type = UserInfo.WECHATPAY;
+            map.put("wechatpay",mNumber);
+        }
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<stringInfo>() {
@@ -97,6 +99,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             info.setPayNumber(mNumber);
                             info.setPayType(type);
                             MyManger.saveUserInfo(info);
+                            MyManger.saveLogin(true);
                             Intent intent = getIntent();
                             setResult(REGIST_RESULT,intent);
                             finish();

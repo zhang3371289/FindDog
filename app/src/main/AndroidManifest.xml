@@ -83,7 +83,12 @@
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="GuRZ2XkrD35UEb1iDAl74VUkIt2463x5" />       //key:开发者申请的Key
+            android:value="GuRZ2XkrD35UEb1iDAl74VUkIt2463x5" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        //key:开发者申请的Key
     </application>
 
 </manifest>

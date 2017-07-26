@@ -37,22 +37,14 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void update(GetUserInfo infos){
-        UserInfo infoBean = new UserInfo();
         phone_text.setText(infos.getUserPhone());
         if(!TextUtils.isEmpty(infos.getWechatpay())){
             pay_type.setText("微信账号:");
             pay_text.setText(infos.getWechatpay());
-            infoBean.setName(infos.getWechatpay());
-            infoBean.setPayType(UserInfo.WECHATPAY);
         }else{
             pay_type.setText("支付宝账号:");
             pay_text.setText(infos.getAlipay());
-            infoBean.setName(infos.getAlipay());
-            infoBean.setPayType(UserInfo.ALIPAY);
         }
-        infoBean.setAdress(infos.getHomeAddress());
-        infoBean.setPhone(infos.getUserPhone());
-        MyManger.saveUserInfo(infoBean);
 
     }
 
@@ -65,6 +57,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
             case R.id.activity_main_user_out:
                 ToastUtil.showTextToast(this,"退出登录");
                 MyManger.saveUserInfo(null);
+                MyManger.saveLogin(false);
                 finish();
                 break;
         }

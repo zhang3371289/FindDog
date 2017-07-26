@@ -34,6 +34,10 @@ import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.ToastUtil;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -73,6 +77,11 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         }
 
     };
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
 
     @Override
@@ -81,6 +90,9 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_upload_layout);
         mActivity = this;
         initView();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -109,10 +121,12 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.back_layout).setOnClickListener(this);
         findViewById(R.id.activity_upload_yzm_text).setOnClickListener(this);
         normalLayout = (LinearLayout) findViewById(R.id.activity_upload_normal_layout);
-        if (MyManger.isLogin()) {
-            normalLayout.setVisibility(View.GONE);
-        } else {
-            normalLayout.setVisibility(View.VISIBLE);
+        mNameEdit.setText(MyManger.getUserInfo().getName());
+        mAdressEdit.setText(MyManger.getUserInfo().getAdress());
+        mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
+        if (!MyManger.isLogin()) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
         }
     }
 
@@ -142,27 +156,18 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             Intent intent = new Intent(mActivity, MyPetActivity.class);
                             startActivity(intent);
                         } else {
-                            ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
-//                            Intent intent = new Intent(mActivity, RegisterActivity.class);
-//                            startActivityForResult(intent,RegisterActivity.REGIST_RESULT);
+                            ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
                         }
                     }
 
                     @Override
                     public void onFail() {
-                        ToastUtil.showTextToast(getApplicationContext(),getResources().getString(R.string.error_net));
+                        ToastUtil.showTextToast(getApplicationContext(), getResources().getString(R.string.error_net));
                     }
 
                 });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mNameEdit.setText(MyManger.getUserInfo().getName());
-        mAdressEdit.setText(MyManger.getUserInfo().getAdress());
-        mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -212,11 +217,15 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                break;
+
+            case RegisterActivity.REGIST_RESULT:
+                mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
+                break;
 
             default:
                 break;
         }
-
 
     }
 
@@ -256,7 +265,12 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         /*提交按钮*/
             case R.id.activity_upload_up:
-                getRegistPetInfo();
+                if(MyManger.isLogin()){
+                    getRegistPetInfo();
+                }else {
+                    Intent intent = new Intent(this, RegisterActivity.class);
+                    startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
+                }
                 break;
             case R.id.back_layout:
                 finish();
@@ -370,4 +384,39 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         super.onDestroy();
     }
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("UpLoad Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
 }

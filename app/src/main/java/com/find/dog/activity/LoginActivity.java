@@ -67,9 +67,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getLoginInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
-                            UserInfo info = new UserInfo();
-                            info.setPhone(mPhone);
-                            MyManger.saveUserInfo(info);
                             Intent intent = new Intent(LoginActivity.this,UserActivity.class);
                             startActivity(intent);
                             finish();
