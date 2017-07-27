@@ -11,10 +11,8 @@ import android.widget.EditText;
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
-import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
-import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 
 import java.util.HashMap;
@@ -68,6 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         Log.e("H", "getLoginInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             Intent intent = new Intent(LoginActivity.this,UserActivity.class);
+                            intent.putExtra("phone",mPhone);
                             startActivity(intent);
                             finish();
                             ToastUtil.showTextToast(LoginActivity.this,infos.getInfo());

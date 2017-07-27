@@ -70,6 +70,7 @@ public class CaptureActivity extends Activity implements Callback {
     private String photo_path;
     private Bitmap scanBitmap;
 
+    public final static int PIC_RESULT = 300,CAMERA_RESULT = 301;
 
     /**
      * Called when the activity is first created.
@@ -156,7 +157,7 @@ public class CaptureActivity extends Activity implements Callback {
             Bundle bundle = new Bundle();
             bundle.putString("result", resultString);
             resultIntent.putExtras(bundle);
-            this.setResult(RESULT_OK, resultIntent);
+            this.setResult(CAMERA_RESULT, resultIntent);
         }
         CaptureActivity.this.finish();
     }
@@ -321,7 +322,7 @@ public class CaptureActivity extends Activity implements Callback {
                                 Intent data = new Intent();
 
                                 data.putExtra("result", recode);
-                                setResult(300, data);
+                                setResult(PIC_RESULT, data);
 
                                 finish();
                             }

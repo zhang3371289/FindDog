@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +106,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         name_text.setText(MyManger.getUserInfo().getName());
         phone_text.setText(MyManger.getUserInfo().getPhone());
         adress_edit.setText(MyManger.getUserInfo().getAdress());
+        issue_edit.setText(MyManger.getMoney());
+        description_edit.setText(MyManger.getDescrib());
 
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String date = sDateFormat.format(new java.util.Date());
@@ -194,8 +195,9 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         switch (v.getId()) {
         /*提交按钮*/
             case R.id.fabu:
-                Intent intent = new Intent(this,PayActivity.class);
                 MyManger.saveMoney(issue_edit.getText().toString());
+                MyManger.saveDescrib(description_edit.getText().toString());
+                Intent intent = new Intent(this,PayActivity.class);
                 startActivity(intent);
                 break;
             case R.id.change:

@@ -105,13 +105,12 @@
                 android:layout_height="wrap_content"
                 android:text="描述:" />
 
-            <EditText
+            <TextView
                 android:id="@+id/activity_issue_miaoshu"
                 style="@style/PetTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:hint="添加描述" />
+                android:layout_marginLeft="20dp" />
 
         </LinearLayout>
 

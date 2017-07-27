@@ -5,24 +5,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
-import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserPetInfo;
+import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
@@ -37,7 +43,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private String mName,mAdress;
 	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
-	private TextView name_text,type_text,phone_text,adress_text,losttime_text,money_text;
+	private TextView name_text,type_text,phone_text,adress_text,losttime_text,money_text,describ_text;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -65,17 +71,6 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 	 */
 	public void getData(int position){
 		selectPosition = position;
-//		switch (position){
-//			case 0:
-//				datas = data1;
-//				break;
-//			case 1:
-//				datas = data2;
-//				break;
-//			case 2:
-//				datas = data3;
-//				break;
-//		}
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
 		mFooterAdapter.notifyDataSetChanged();
@@ -112,6 +107,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
 		losttime_text = (TextView) footerView.findViewById(R.id.fragment_pet_time);
 		money_text = (TextView) footerView.findViewById(R.id.activity_issue_xuanshang);
+		describ_text = (TextView) footerView.findViewById(R.id.activity_issue_miaoshu);
 		mTopRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
 		//设置布局管理器
 		LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
@@ -129,6 +125,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		String date = sDateFormat.format(new java.util.Date());
 		losttime_text.setText(date);
 		money_text.setText(MyManger.getMoney());
+		describ_text.setText(MyManger.getDescrib());
 	}
 
 	@Override
@@ -139,10 +136,46 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 				startActivity(intent1);
 				break;
 			case R.id.cancel:
+				cancleIssue();
+				break;
 			case R.id.back_layout:
 				finish();
 				break;
 		}
+
+	}
+
+	private void cancleIssue(){
+
+		if("正常".equals(type_text.getText().toString())){
+			finish();
+			return;
+		}
+		//改变宠物状态(取消悬赏) lose->normal
+		Map<String, String> map = new HashMap<>();
+		map.put("userPhone", MyManger.getUserInfo().getPhone());
+		map.put("2dCode", MyManger.getQRCode());
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistPetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
+
+					@Override
+					public void onSuccess(stringInfo infos) {
+						Log.e("H", "getRegistPetInfo---->" + infos);
+						if (!TextUtils.isEmpty(infos.getInfo())) {
+							ToastUtil.showTextToast(getApplicationContext(), infos.getInfo());
+							type_text.setText("正常");
+						} else {
+							ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
+						}
+					}
+
+					@Override
+					public void onFail() {
+						ToastUtil.showTextToast(getApplicationContext(), getResources().getString(R.string.error_net));
+					}
+
+				});
 
 	}
 

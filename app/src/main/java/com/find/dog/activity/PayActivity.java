@@ -46,6 +46,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
             case R.id.pay_button:
                 Intent intent = new Intent(this,MyPetPayAfterActivity.class);
                 startActivity(intent);
+                finish();
                 break;
         }
     }

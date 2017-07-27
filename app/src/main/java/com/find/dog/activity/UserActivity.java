@@ -37,14 +37,24 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void update(GetUserInfo infos){
+        UserInfo info = new UserInfo();
         phone_text.setText(infos.getUserPhone());
         if(!TextUtils.isEmpty(infos.getWechatpay())){
             pay_type.setText("微信账号:");
             pay_text.setText(infos.getWechatpay());
+            info.setPayNumber(infos.getWechatpay());
+            info.setPayType(UserInfo.WECHATPAY);
         }else{
             pay_type.setText("支付宝账号:");
             pay_text.setText(infos.getAlipay());
+            info.setPayNumber(infos.getAlipay());
+            info.setPayType(UserInfo.ALIPAY);
         }
+        info.setPhone(infos.getUserPhone());
+        info.setAdress(infos.getHomeAddress());
+        MyManger.saveUserInfo(info);
+        MyManger.saveLogin(true);
+
 
     }
 
@@ -66,7 +76,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
     private void getUserInfo() {
         Log.e("H", "getUserInfo---->");
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", MyManger.getUserInfo().getPhone());
+        map.put("userPhone", getIntent().getStringExtra("phone"));
 //        map.put("userPhone", "18801308610");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<GetUserInfo>(this, RetroFactory.getIstance().getStringService().getUserInfo(requestBody))

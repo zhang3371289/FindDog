@@ -25,6 +25,8 @@ public class MyManger {
     private static final String pic_Status_size = "pic_Status_size";
     private static final String pic_Status_ = "pic_Status_";
     private static final String issue_money = "issue_money";
+    private static final String pet_describ = "pet_describ";
+    private static final String pet_QRCode = "pet_QRCode";
 
     /**
      * 保存登录是否
@@ -43,6 +45,22 @@ public class MyManger {
     }
 
     /**
+     * 保存 二维码
+     * @param code
+     */
+    public static void saveQRCode(String code){
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putString(pet_QRCode,code).commit();
+    }
+
+    public static String getQRCode() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        String code = sharedPreferences.getString(pet_QRCode,"");
+        return code;
+    }
+
+    /**
      * 保存 悬赏金额
      * @param money
      */
@@ -57,6 +75,23 @@ public class MyManger {
         String money = sharedPreferences.getString(issue_money,"");
         return money;
     }
+
+    /**
+     * 保存 描述
+     * @param describ
+     */
+    public static void saveDescrib(String describ){
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putString(pet_describ,describ).commit();
+    }
+
+    public static String getDescrib() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        String describ = sharedPreferences.getString(pet_describ,"");
+        return describ;
+    }
+
 
     /**
      * 保存 用户信息

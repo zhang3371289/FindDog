@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.find.dog.R;
-import com.find.dog.activity.FindActivity;
 import com.find.dog.activity.UpLoadActivity;
 import com.find.dog.utils.RGBLuminanceSource;
 import com.google.zxing.BinaryBitmap;
@@ -97,11 +96,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
         if (data != null) {
             Log.e("H",requestCode+"-------------"+resultCode);
             resultTextView.setText(data.getStringExtra("result"));
-            if(resultCode == 300){
-                startActivity(new Intent(getActivity(), FindActivity.class));
-            }else {
-                startActivity(new Intent(getActivity(), UpLoadActivity.class));
-            }
+            startActivity(new Intent(getActivity(), UpLoadActivity.class));
 
         }
     }
@@ -118,7 +113,7 @@ public class ScanFragment extends Fragment implements View.OnClickListener {
 //                    public void onClick(boolean bln) {
 //                        if (bln) {
 //                            Intent openCameraIntent = new Intent(getActivity(), CaptureActivity.class);
-//                            startActivityForResult(openCameraIntent, 0);
+//                            startActivityForResult(openCameraIntent, CaptureActivity.CAMERA_RESULT);
 //                        } else {
 //                            Toast.makeText(getActivity(), "未打开相机权限", Toast.LENGTH_SHORT).show();
 //                        }

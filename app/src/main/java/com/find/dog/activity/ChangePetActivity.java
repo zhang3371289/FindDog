@@ -14,14 +14,9 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,17 +28,14 @@ import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.ToastUtil;
-import com.find.dog.utils.YKDeviceInfo;
+import com.google.zxing.activity.CaptureActivity;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-import static com.find.dog.R.id.phone_text;
-
 /**
- * 发布悬赏
+ * 修改信息
  */
 public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private Activity mActivity;
@@ -54,7 +46,8 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private String[] photo_items = new String[]{"选择本地图片", "拍照"};
 	private RecyclerView mRecyclerView;
 	private UpLoadAdapter mAdapter;
-	private EditText name_edit,phone_edit,adress_edit,yzm_edit;
+	private EditText name_edit,adress_edit;
+	private TextView QrCode_text;
 	private Handler mHandler = new Handler() {
 
 		@Override
@@ -106,12 +99,10 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.back_layout).setOnClickListener(this);
 
 		name_edit = (EditText) findViewById(R.id.fragment_pet_name);
-		phone_edit = (EditText) findViewById(R.id.fragment_pet_phone);
 		adress_edit = (EditText) findViewById(R.id.fragment_pet_adress);
-		yzm_edit = (EditText) findViewById(R.id.fragment_pet_yzm);
-
+		QrCode_text = (TextView) findViewById(R.id.fragment_pet_QrCode);
+		QrCode_text.setOnClickListener(this);
 		name_edit.setText(MyManger.getUserInfo().getName());
-		phone_edit.setText(MyManger.getUserInfo().getPhone());
 		adress_edit.setText(MyManger.getUserInfo().getAdress());
 	}
 
@@ -156,6 +147,18 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 					e.printStackTrace();
 				}
 
+			case CaptureActivity.CAMERA_RESULT://二维码 回调
+				switch (resultCode) {
+					case CaptureActivity.CAMERA_RESULT:
+						break;
+					case CaptureActivity.PIC_RESULT:
+						break;
+				}
+				if (data != null) {
+					QrCode_text.setText(data.getStringExtra("result"));
+				}
+				break;
+
 			default:
 				break;
 		}
@@ -199,6 +202,19 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 			case R.id.cancel:
 			case R.id.back_layout:
 				finish();
+			case R.id.fragment_pet_QrCode:
+				//打开扫描界面扫描条形码或二维码
+                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
+                    @Override
+                    public void onClick(boolean bln) {
+                        if (bln) {
+                            Intent openCameraIntent = new Intent(mActivity, CaptureActivity.class);
+                            startActivityForResult(openCameraIntent, CaptureActivity.CAMERA_RESULT);
+                        } else {
+                            Toast.makeText(mActivity, "未打开相机权限", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 			default:
 				break;
 		}
@@ -293,27 +309,6 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void uploadImage() {
 
-
-//		for (String tempPath : mtempList) {
-//			YKUploadImageManager.getInstance().uploadImages(tempPath, new UploadImageCallback()
-//			{
-//				@Override
-//				public void callback(YKResult result, String imageUrl)
-//				{
-//					times ++;
-//					if(result.isSucceeded()){
-//						size ++;
-//						mImageUploadUrl.add(imageUrl);
-//
-//					}else{
-//						Toast.makeText(mActivity, "这一张失败了…", Toast.LENGTH_SHORT).show();
-//					}
-//					if(times == mAdapter.getList().size()){
-//						mHandler.sendEmptyMessage(200);
-//					}
-//				}
-//			});
-//		}
 	}
 
 
@@ -322,29 +317,6 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	 */
 	private void commitReplay() {
 
-//		YKCommentreplyManager.getInstance().postAeniorReply(YKCurrentUserManager.getInstance().getUser().getToken(), typeId, mGetEditText, mImageUploadUrl,type,new ReplyCallback()
-//		{
-//			@Override
-//			public void callback(YKResult result)
-//			{
-//
-//				mCommit.setEnabled(true);
-//				AppUtil.dismissDialogSafe(mCustomButterfly);
-//
-//				if(result.isSucceeded()){
-//					Toast.makeText(mActivity, "发布成功", Toast.LENGTH_SHORT).show();
-//					Intent mIntent = new Intent();
-//					mIntent.putStringArrayListExtra("ListViewImag", mImageUploadUrl);
-//					mIntent.putExtra("textChange", mGetEditText);
-//					setResult(66, mIntent);
-//					setResult(22,mIntent);
-//					finish();
-//				}else{
-//					Toast.makeText(mActivity, result.getMessage().toString(), Toast.LENGTH_SHORT).show();
-//				}
-//
-//			}
-//		});
 
 	}
 

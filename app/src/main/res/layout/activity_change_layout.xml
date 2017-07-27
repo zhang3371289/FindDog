@@ -78,52 +78,6 @@
 
                 </LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        style="@style/PetTextStyle"
-                        android:id="@+id/phone_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:text="手机:" />
-
-                    <EditText
-                        android:id="@+id/fragment_pet_phone"
-                        style="@style/PetTextStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/phone_text"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/fragment_pet_phone"
-                        android:layout_below="@+id/fragment_pet_phone">
-
-                        <EditText
-                            android:id="@+id/fragment_pet_yzm"
-                            style="@style/PetTextStyle"
-                            android:layout_weight="0.3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="请输入验证码" />
-                        <Button
-                            android:id="@+id/fragment_pet_yzm_get"
-                            android:layout_weight="0.7"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="获取" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -141,6 +95,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        style="@style/PetTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="二维码:" />
+
+                    <TextView
+                        android:id="@+id/fragment_pet_QrCode"
+                        style="@style/PetTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text="点击扫描二维码"/>
 
                 </LinearLayout>
 

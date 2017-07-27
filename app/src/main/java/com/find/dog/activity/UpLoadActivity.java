@@ -136,7 +136,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         map.put("userPhone", mPhoneEdit.getText().toString());
         map.put("patName", mNameEdit.getText().toString());
         map.put("homeAddress", mAdressEdit.getText().toString());
-        map.put("2dCode", mPhoneEdit.getText().toString());
+        map.put("2dCode", MyManger.getQRCode());
 //        map.put("photo1URL", "北京市");
 //        map.put("photo2URL", "北京市");
 //        map.put("photo3URL", "北京市");

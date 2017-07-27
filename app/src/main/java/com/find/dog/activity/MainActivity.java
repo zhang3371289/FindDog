@@ -118,7 +118,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
         if (data != null) {
-            ToastUtil.showTextToast(this,data.getStringExtra("result"));
+            String resul = data.getStringExtra("result");
+            ToastUtil.showTextToast(this,resul);
+            MyManger.saveQRCode(resul);
             if(resultCode == 300){
                 startActivity(new Intent(this, FindActivity.class));
             }else {
@@ -147,6 +149,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 startActivity(intent);
                 break;
             case R.id.activity_main_tab1:
+                //打开扫描界面扫描条形码或二维码
+//                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
+//                    @Override
+//                    public void onClick(boolean bln) {
+//                        if (bln) {
+//                            Intent openCameraIntent = new Intent(getActivity(), CaptureActivity.class);
+//                            startActivityForResult(openCameraIntent, 0);
+//                        } else {
+//                            Toast.makeText(getActivity(), "未打开相机权限", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
                 startActivity(new Intent(this, UpLoadActivity.class));
                 break;
             case R.id.activity_main_tab2:
