@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +22,7 @@ import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
 import com.google.zxing.activity.CaptureActivity;
 
@@ -136,13 +136,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_main_user:
-                Intent intent;
-                if(TextUtils.isEmpty(MyManger.getUserInfo().getPhone())){
-                    intent = new Intent(this,LoginActivity.class);
-                }else{
-                    intent = new Intent(this,UserActivity.class);
-                }
-                startActivity(intent);
+//                Intent intent;
+//                if(TextUtils.isEmpty(MyManger.getUserInfo().getPhone())){
+//                    intent = new Intent(this,LoginActivity.class);
+//                }else{
+//                    intent = new Intent(this,UserActivity.class);
+//                }
+//                startActivity(intent);
+
+                QINiuUtil.getInstance().uploadPic("");
+
+
                 break;
             case R.id.activity_main_tab1:
                 //打开扫描界面扫描条形码或二维码
