@@ -275,6 +275,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.back_layout:
                 finish();
+                break;
             case R.id.activity_upload_yzm_text:
                 ToastUtil.showTextToast(this, "获取验证码");
                 break;

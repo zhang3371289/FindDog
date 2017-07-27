@@ -8,9 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ import okhttp3.RequestBody;
 
 /**
  *  Created by zhangzhongwei on 2017/7/11.
- * 我的宠物
+ * 发现页
  */
 public class FindActivity extends BaseActivity implements View.OnClickListener{
 	private ListView mListView;
@@ -74,7 +72,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		Map<String, String> map = new HashMap<>();
 //		map.put("userphone", "111");
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindInfo(requestBody))
 				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
 
 					@Override

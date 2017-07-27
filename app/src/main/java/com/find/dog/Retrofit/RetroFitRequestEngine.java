@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -33,6 +30,10 @@ public interface RetroFitRequestEngine {
     //注册
     @POST("regist_user.php")
     Call<BaseEntity<stringInfo>> getRegistInfo(@Body RequestBody route);
+
+    //修改user信息
+    @POST("alter_user.php")
+    Call<BaseEntity<stringInfo>> alterUserInfo(@Body RequestBody route);
 
     //发送心跳(客户端发送)登陆后开始间隔发送
     @POST("alive.php")
@@ -61,6 +62,10 @@ public interface RetroFitRequestEngine {
     //获取正在悬赏的宠物(XX省XX市XX区/镇)
     @POST("getinfo_reward.php")
     Call<BaseEntity<ArrayList<rewardingInfo>>> getRewardInfo(@Body RequestBody route);
+
+    //获取“发现”数据
+    @POST("getfindinfo.php")
+    Call<BaseEntity<ArrayList<rewardingInfo>>> getFindInfo(@Body RequestBody route);
 
     //改变宠物状态（确认中） lose->confirming
     @POST("state_loseToConfirming.php")

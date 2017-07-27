@@ -24,6 +24,7 @@ import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
+import com.google.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,12 +122,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             String resul = data.getStringExtra("result");
             ToastUtil.showTextToast(this,resul);
             MyManger.saveQRCode(resul);
-            if(resultCode == 300){
-                startActivity(new Intent(this, FindActivity.class));
-            }else {
-                startActivity(new Intent(this, UpLoadActivity.class));
-            }
-
+            startActivity(new Intent(this, UpLoadActivity.class));
         }
     }
 
@@ -150,18 +146,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab1:
                 //打开扫描界面扫描条形码或二维码
-//                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
-//                    @Override
-//                    public void onClick(boolean bln) {
-//                        if (bln) {
-//                            Intent openCameraIntent = new Intent(getActivity(), CaptureActivity.class);
-//                            startActivityForResult(openCameraIntent, 0);
-//                        } else {
-//                            Toast.makeText(getActivity(), "未打开相机权限", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-                startActivity(new Intent(this, UpLoadActivity.class));
+                MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
+                    @Override
+                    public void onClick(boolean bln) {
+                        if (bln) {
+                            Intent openCameraIntent = new Intent(getApplicationContext(), CaptureActivity.class);
+                            startActivityForResult(openCameraIntent, CaptureActivity.CAMERA_RESULT);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "未打开相机权限", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 break;
             case R.id.activity_main_tab2:
 //                ToastUtil.showTextToast(mActivity,"发现");

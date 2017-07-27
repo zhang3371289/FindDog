@@ -1,5 +1,6 @@
 package com.find.dog.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -54,15 +55,14 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
         info.setAdress(infos.getHomeAddress());
         MyManger.saveUserInfo(info);
         MyManger.saveLogin(true);
-
-
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_main_user_change:
-                ToastUtil.showTextToast(this,"修改信息");
+                Intent intent = new Intent(this,ChangeUserActivity.class);
+                startActivityForResult(intent,ChangeUserActivity.REGIST_RESULT);
                 break;
             case R.id.activity_main_user_out:
                 ToastUtil.showTextToast(this,"退出登录");
@@ -73,10 +73,30 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode){
+            case ChangeUserActivity.REGIST_RESULT:
+                getUserInfo();
+                break;
+        }
+    }
+
+
+
+
+    /**
+     * 获取用户信息
+     */
     private void getUserInfo() {
         Log.e("H", "getUserInfo---->");
+        String phone = getIntent().getStringExtra("phone");
+        if(TextUtils.isEmpty(phone)){
+            phone = MyManger.getUserInfo().getPhone();
+        }
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", getIntent().getStringExtra("phone"));
+        map.put("userPhone", phone);
 //        map.put("userPhone", "18801308610");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<GetUserInfo>(this, RetroFactory.getIstance().getStringService().getUserInfo(requestBody))

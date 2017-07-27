@@ -67,6 +67,8 @@
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.RegisterActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity android:name="com.find.dog.activity.ChangeUserActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <!--  百度定位  -->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
 
