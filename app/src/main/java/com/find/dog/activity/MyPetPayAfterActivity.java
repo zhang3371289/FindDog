@@ -156,7 +156,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
 		map.put("2dCode", MyManger.getQRCode());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistPetInfo(requestBody))
+		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changeLoseToNormalState(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
 
 					@Override

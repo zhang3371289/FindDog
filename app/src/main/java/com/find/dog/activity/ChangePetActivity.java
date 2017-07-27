@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.find.dog.R;
+import com.find.dog.Retrofit.RetroFactory;
+import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.UpLoadAdapter;
+import com.find.dog.data.UserInfo;
+import com.find.dog.data.stringInfo;
 import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.BitmapUtilImage;
@@ -33,6 +38,10 @@ import com.google.zxing.activity.CaptureActivity;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.RequestBody;
 
 /**
  * 修改信息
@@ -156,6 +165,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				}
 				if (data != null) {
 					QrCode_text.setText(data.getStringExtra("result"));
+					QrCode_text.setClickable(false);
 				}
 				break;
 
@@ -197,7 +207,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		switch (v.getId()) {
         /*提交按钮*/
 			case R.id.sure:
-				ToastUtil.showTextToast(this, "确定");
+				changePetInfo();
 				break;
 			case R.id.cancel:
 			case R.id.back_layout:
@@ -219,6 +229,44 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				break;
 		}
 
+	}
+
+
+	private void changePetInfo(){
+		//改变宠物信息
+		Map<String, String> map = new HashMap<>();
+		map.put("userPhone", MyManger.getUserInfo().getPhone());
+		map.put("patName", name_edit.getText().toString());
+		map.put("homeAddress", adress_edit.getText().toString());
+		map.put("2dCode", MyManger.getQRCode());
+		map.put("new2dCode", QrCode_text.getText().toString());
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changePetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
+
+					@Override
+					public void onSuccess(stringInfo infos) {
+						Log.e("H", "changePetInfo---->" + infos);
+						if (!TextUtils.isEmpty(infos.getInfo())) {
+							ToastUtil.showTextToast(getApplicationContext(),infos.getInfo().toString());
+							UserInfo info = new UserInfo();
+							info.setName(name_edit.getText().toString());
+							info.setAdress(adress_edit.getText().toString());
+							MyManger.saveUserInfo(info);
+							MyManger.saveQRCode(QrCode_text.getText().toString());
+							MyManger.savePicsArray(mAdapter.getList());
+						} else {
+							ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
+						}
+					}
+
+					@Override
+					public void onFail() {
+						Log.e("H", "onFail---->");
+						ToastUtil.showTextToast(getApplicationContext(),getResources().getString(R.string.error_net));
+					}
+
+				});
 	}
 
 	/**
