@@ -32,6 +32,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         yzm_edit = (EditText) findViewById(R.id.activity_login_yzm);
         yzm_text = (Button) findViewById(R.id.activity_login_yzm_text);
         sure_text = (Button) findViewById(R.id.activity_login_sure_text);
+        findViewById(R.id.register_text).setOnClickListener(this);
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
     }
@@ -41,6 +42,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         switch (v.getId()){
             case R.id.activity_login_yzm_text:
                 ToastUtil.showTextToast(this,yzm_edit.getText().toString());
+                break;
+            case R.id.register_text:
+                startActivity(new Intent(this,RegisterActivity.class));
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();

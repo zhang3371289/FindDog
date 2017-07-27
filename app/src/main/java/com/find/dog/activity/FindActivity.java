@@ -21,7 +21,6 @@ import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
-import com.find.dog.utils.ToastUtil;
 import com.find.dog.utils.YKUtil;
 
 import java.util.ArrayList;
@@ -111,7 +110,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		mTopAdapter = new PetTopAdapter(mPetsList, new PetTopAdapter.Callback() {
 			@Override
 			public void callback(int position) {
-				ToastUtil.showTextToast(mContext,"选中"+position);
+				selectPosition = position;
 				updateData(position);
 			}
 		});
@@ -181,11 +180,11 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.lianxizhuren:
+				MyManger.savePetInfo(mPetsList.get(selectPosition));
 				if("放弃联系".equals(mButton.getText().toString())){
 					sureFind();
-				}else{
-					Intent intent1 = new Intent(this,RegisterActivity.class);
-					startActivityForResult(intent1,RegisterActivity.REGIST_RESULT);
+				}else {
+					giveUpContac();
 				}
 				break;
 			case R.id.change:
@@ -197,13 +196,5 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 				break;
 		}
 
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if(requestCode==RegisterActivity.REGIST_RESULT && resultCode==RegisterActivity.REGIST_RESULT){
-			giveUpContac();
-		}
 	}
 }

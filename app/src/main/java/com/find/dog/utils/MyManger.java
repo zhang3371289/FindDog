@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.find.dog.data.UserInfo;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.MyApplication;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class MyManger {
     private static final String issue_money = "issue_money";
     private static final String pet_describ = "pet_describ";
     private static final String pet_QRCode = "pet_QRCode";
+    private static final String pet_lost_time = "pet_lost_time";
+    private static final String pet_type = "pet_type";
 
     /**
      * 保存登录是否
@@ -134,6 +137,62 @@ public class MyManger {
         info.setPhone(sharedPreferences.getString(user_phone,""));
         info.setPayNumber(sharedPreferences.getString(user_pay_number,""));
         info.setPayType(sharedPreferences.getInt(user_pay_type,0));
+        return info;
+    }
+
+    /**
+     * 保存 发现页 宠物信息
+     * @param info
+     */
+    public static void savePetInfo(UserPetInfo info) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("pet", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        if(info == null){
+            editor.putString(user_name, "");
+            editor.putString(user_adress, "");
+            editor.putString(user_phone, "");
+            editor.putString(user_pay_number, "");
+
+            editor.putString(pet_lost_time, "");
+            editor.putString(pet_type, "");
+            editor.putString(pet_describ, "");
+
+        }else {
+            if(!TextUtils.isEmpty(info.getPatName())){
+                editor.putString(user_name, info.getPatName());
+            }
+            if(!TextUtils.isEmpty(info.getLoseAddress())){
+                editor.putString(user_adress, info.getLoseAddress());
+            }
+            if(!TextUtils.isEmpty(info.getMasterPhone())){
+                editor.putString(user_phone, info.getMasterPhone());
+            }
+            if(!TextUtils.isEmpty(info.getReward())){
+                editor.putString(user_pay_number, info.getReward());
+            }
+            if(!TextUtils.isEmpty(info.getLoseDate())){
+                editor.putString(pet_lost_time, info.getLoseDate());
+            }
+            if(!TextUtils.isEmpty(info.getState())){
+                editor.putString(pet_type, info.getState());
+            }
+            if(!TextUtils.isEmpty(info.getDescrib())){
+                editor.putString(pet_describ, info.getDescrib());
+            }
+        }
+        editor.commit();//提交修改
+    }
+
+    public static UserPetInfo getPetInfo() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("pet", Context.MODE_PRIVATE); //私有数据
+        UserPetInfo info = new UserPetInfo();
+        info.setPatName(sharedPreferences.getString(user_name, ""));
+        info.setLoseAddress(sharedPreferences.getString(user_adress, ""));
+        info.setMasterPhone(sharedPreferences.getString(user_phone,""));
+        info.setReward(sharedPreferences.getString(user_pay_number,""));
+        info.setLoseDate(sharedPreferences.getString(pet_lost_time,""));
+        info.setState(sharedPreferences.getString(pet_type,""));
+        info.setDescrib(sharedPreferences.getString(pet_describ,""));
         return info;
     }
 
