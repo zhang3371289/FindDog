@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
-import com.find.dog.data.rewardingInfo;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static TextView locationTextView;
     private RecyclerView mRecyclerView;
     private static MyAdapter mAdapter;
-    private static ArrayList<rewardingInfo> mList = new ArrayList<>();
+    private static ArrayList<UserPetInfo> mList = new ArrayList<>();
     private static Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +92,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         Map<String, String> map = new HashMap<>();
         map.put("loseAddress", "城阳区");
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-        new RetroFitUtil<ArrayList<rewardingInfo>>(mContext, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
-                .request(new RetroFitUtil.ResponseListener<ArrayList<rewardingInfo>>() {
+        new RetroFitUtil<ArrayList<UserPetInfo>>(mContext, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
 
                     @Override
-                    public void onSuccess(ArrayList<rewardingInfo> infos) {
-                        Log.e("H", "rewardingInfo---->" + infos);
+                    public void onSuccess(ArrayList<UserPetInfo> infos) {
+                        Log.e("H", "UserPetInfo---->" + infos);
                         if (infos != null) {
 //                            updateUI(infos);
                             mList = infos;
@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         //将数据与界面进行绑定的操作
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            rewardingInfo info = mList.get(position);
+            UserPetInfo info = mList.get(position);
             viewHolder.mName.setText(info.getPatName());
             viewHolder.mMoney.setText(info.getReward());
             viewHolder.mType.setText(info.getState());

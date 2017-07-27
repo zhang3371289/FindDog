@@ -22,6 +22,7 @@ import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
+import com.find.dog.utils.YKUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 	private PetFooterAdapter mFooterAdapter;
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
-	private TextView name_text,type_text,phone_text,adress_text,title;
+	private TextView name_text,type_text,phone_text,adress_text,title,describ_text,raward_text,tiem_text;
 	private Button mButton,mSure,mFind;
 	private LinearLayout mSureLayout;
 	private PetTopAdapter mTopAdapter;
@@ -64,24 +65,24 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		addTop();
 		addFooter();
 		mListView.setAdapter(null);
-		getData(0);
 	}
 
 	private void getUserPetInfo(){
-		//获取用户宠物
+		//获取“发现”数据
 		Map<String, String> map = new HashMap<>();
-//		map.put("userphone", "111");
+//		map.put("userPhone", MyManger.getUserInfo().getPhone());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindInfo(requestBody))
 				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
 
 					@Override
 					public void onSuccess(ArrayList<UserPetInfo> infos) {
-						Log.e("H", "getUserPetInfo---->" + infos);
-						ToastUtil.showTextToast(mContext,infos.toString());
+						Log.e("H", "getFindInfo---->" + infos);
 						if (infos != null) {
 							mPetsList = infos;
-							mTopAdapter.notifyDataSetChanged();
+//							mTopAdapter.notifyDataSetChanged();
+							updateData(0);
+							mTopAdapter.updateData(infos);
 							mFooterAdapter.notifyDataSetChanged();
 						} else {
 						}
@@ -95,28 +96,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 				});
 	}
 
-
-	/**
-	 * 选中当前项
-	 * @param position
-	 */
-	public void getData(int position){
-		selectPosition = position;
-//		switch (position){
-//			case 0:
-//				datas = data1;
-//				break;
-//			case 1:
-//				datas = data2;
-//				break;
-//			case 2:
-//				datas = data3;
-//				break;
-//		}
-		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
-		mTopRV.setAdapter(mFooterAdapter);
-		mFooterAdapter.notifyDataSetChanged();
-	}
 
 	/**
 	 * 添加头部
@@ -133,6 +112,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 			@Override
 			public void callback(int position) {
 				ToastUtil.showTextToast(mContext,"选中"+position);
+				updateData(position);
 			}
 		});
 		mTopRV.setAdapter(mTopAdapter);
@@ -147,6 +127,9 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		phone_text = (TextView) footerView.findViewById(R.id.fragment_pet_phone);
 		adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
 		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
+		describ_text = (TextView) footerView.findViewById(R.id.activity_issue_miaoshu);
+		raward_text = (TextView) footerView.findViewById(R.id.activity_issue_xuanshang);
+		tiem_text = (TextView) footerView.findViewById(R.id.fragment_pet_time);
 		mTopRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
 		mSure = (Button) footerView.findViewById(R.id.change);
 		mFind = (Button) footerView.findViewById(R.id.cancel);
@@ -165,20 +148,24 @@ public class FindActivity extends BaseActivity implements View.OnClickListener{
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
 
-		updateData();
 	}
 
-	private void updateData(){
-		name_text.setText(MyManger.getUserInfo().getName());
-		phone_text.setText(MyManger.getUserInfo().getPhone());
-		adress_text.setText(MyManger.getUserInfo().getAdress());
+	private void updateData(int position){
+		UserPetInfo petInfo = mPetsList.get(position);
+		name_text.setText(petInfo.getPatName());
+		phone_text.setText(petInfo.getMasterPhone());
+		adress_text.setText(petInfo.getLoseAddress());
+		type_text.setText(petInfo.getState());
+		describ_text.setText(petInfo.getDescrib());
+		raward_text.setText(petInfo.getReward());
+		tiem_text.setText(YKUtil.getStrTime(petInfo.getLoseDate()));
 	}
 
 	/**
 	 * 放弃联系
 	 */
 	private void giveUpContac(){
-		updateData();
+//		updateData();
 		mButton.setText("放弃联系");
 		type_text.setText("确认中");
 	}

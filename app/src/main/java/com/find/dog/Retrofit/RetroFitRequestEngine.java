@@ -4,7 +4,6 @@ import android.database.Observable;
 
 import com.find.dog.data.GetUserInfo;
 import com.find.dog.data.UserPetInfo;
-import com.find.dog.data.rewardingInfo;
 import com.find.dog.data.stringInfo;
 
 import java.util.ArrayList;
@@ -61,11 +60,11 @@ public interface RetroFitRequestEngine {
 
     //获取正在悬赏的宠物(XX省XX市XX区/镇)
     @POST("getinfo_reward.php")
-    Call<BaseEntity<ArrayList<rewardingInfo>>> getRewardInfo(@Body RequestBody route);
+    Call<BaseEntity<ArrayList<UserPetInfo>>> getRewardInfo(@Body RequestBody route);
 
     //获取“发现”数据
     @POST("getfindinfo.php")
-    Call<BaseEntity<ArrayList<rewardingInfo>>> getFindInfo(@Body RequestBody route);
+    Call<BaseEntity<ArrayList<UserPetInfo>>> getFindInfo(@Body RequestBody route);
 
     //改变宠物状态（确认中） lose->confirming
     @POST("state_loseToConfirming.php")

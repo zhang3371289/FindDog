@@ -1,6 +1,5 @@
 package com.find.dog.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.find.dog.R;
-import com.find.dog.activity.MyPetActivity;
 import com.find.dog.data.UserPetInfo;
 
 import java.util.ArrayList;
@@ -19,6 +17,10 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
     public PetTopAdapter(ArrayList<UserPetInfo> mPetsList,final Callback callback) {
         this.mPetsList = mPetsList;
         this.callback = callback;
+    }
+    public void updateData(ArrayList<UserPetInfo> mPetsList){
+        this.mPetsList = mPetsList;
+        notifyDataSetChanged();
     }
     //创建新View，被LayoutManager所调用
     @Override

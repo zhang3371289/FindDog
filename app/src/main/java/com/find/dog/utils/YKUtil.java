@@ -60,6 +60,15 @@ public class YKUtil {
         return dm.heightPixels;
     }
 
+    //时间戳转字符串
+    public static String getStrTime(String timeStamp){
+        String timeString = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 hh:mm");
+        long  l = Long.valueOf(timeStamp);
+        timeString = sdf.format(new Date(l));//单位秒
+        return timeString;
+    }
+
     public static boolean hasSDCard() {
         return Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED);
@@ -268,7 +277,7 @@ public class YKUtil {
      * 将sp值转换为px值，保证文字大小不变
      *
      * @param spValue
-     * @param fontScale （DisplayMetrics类中属性scaledDensity）
+     * @param  （DisplayMetrics类中属性scaledDensity）
      * @return
      */
     public static int sp2px(Context context, float spValue) {
