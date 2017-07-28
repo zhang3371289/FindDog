@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
@@ -28,6 +29,7 @@ import okhttp3.RequestBody;
 public class RegisterActivity extends BaseActivity implements View.OnClickListener {
     private EditText phone_edit,yzm_edit,pay_number_edit;
     private Button sure_text,yzm_text;
+    private TextView login_text;
     private RadioGroup radioGroup;
     private RadioButton zhifubaoButton,weixinButton;
     private int type ;
@@ -46,7 +48,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         weixinButton=(RadioButton)findViewById(R.id.weixinID);
         //设置监听
         radioGroup.setOnCheckedChangeListener(new RadioGroupListener());
-
         phone_edit = (EditText) findViewById(R.id.activity_login_phone);
         yzm_edit = (EditText) findViewById(R.id.activity_login_yzm);
         pay_number_edit = (EditText) findViewById(R.id.activity_register_pay);
@@ -54,12 +55,17 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         sure_text = (Button) findViewById(R.id.activity_login_sure_text);
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
+        findViewById(R.id.login_textView).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_login_yzm_text:
+                break;
+            case R.id.login_textView:
+                startActivity(new Intent(this,LoginActivity.class));
+                finish();
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();
