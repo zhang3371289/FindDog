@@ -30,6 +30,7 @@ public class MyManger {
     private static final String pet_QRCode = "pet_QRCode";
     private static final String pet_lost_time = "pet_lost_time";
     private static final String pet_type = "pet_type";
+    private static final String qiniu_token = "qiniu_token";
 
     /**
      * 保存登录是否
@@ -60,6 +61,22 @@ public class MyManger {
     public static String getQRCode() {
         SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
         String code = sharedPreferences.getString(pet_QRCode,"");
+        return code;
+    }
+
+    /**
+     * 保存 七牛token
+     * @param token
+     */
+    public static void saveQiNiuToken(String token){
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putString(qiniu_token,token).commit();
+    }
+
+    public static String getQiNiuToken() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        String code = sharedPreferences.getString(qiniu_token,"");
         return code;
     }
 

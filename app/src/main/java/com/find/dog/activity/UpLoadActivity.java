@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -28,16 +26,12 @@ import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
-import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
-import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
+import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
+import com.find.dog.utils.YKUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,35 +47,11 @@ import okhttp3.RequestBody;
 public class UpLoadActivity extends BaseActivity implements OnClickListener {
     public Button mCommit;
     private Activity mActivity;
-    private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
-    private Bitmap tempBitmap;
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private LinearLayout normalLayout;
     private EditText mNameEdit, mAdressEdit, mPhoneEdit;
-    private Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 201:
-                    uploadImage();
-                    break;
-                case 203:
-                    mCommit.setEnabled(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    };
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
 
     @Override
@@ -90,9 +60,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_upload_layout);
         mActivity = this;
         initView();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -127,26 +94,55 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         if (!MyManger.isLogin()) {
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
+        }else{
+            normalLayout.setVisibility(View.GONE);
         }
     }
 
-    private void getRegistPetInfo() {
+
+    /**
+     * 七牛 上传图片
+     */
+    private void uploadPic(){
+        if(!YKUtil.isNetworkAvailable()){
+            ToastUtil.showTextToast(this,getResources().getString(R.string.intent_no));
+            return;
+        }
+
+        mCommit.setEnabled(false);
+        QINiuUtil.getInstance().uploadPic(mAdapter.getList(), new QINiuUtil.Callback() {
+            @Override
+            public void callback(boolean isOk,Map<String, String> pic_map) {
+                if(isOk){
+                    getRegistPetInfo(pic_map);
+                }else{
+                    mCommit.setEnabled(true);
+                }
+            }
+        });
+    }
+
+    /**
+     * 上传 信息
+     * @param pic_map
+     */
+    private void getRegistPetInfo(Map<String, String> pic_map) {
+
         //宠物信息录入
         Map<String, String> map = new HashMap<>();
         map.put("userPhone", mPhoneEdit.getText().toString());
         map.put("patName", mNameEdit.getText().toString());
         map.put("homeAddress", mAdressEdit.getText().toString());
         map.put("2dCode", MyManger.getQRCode());
-//        map.put("photo1URL", "北京市");
-//        map.put("photo2URL", "北京市");
-//        map.put("photo3URL", "北京市");
+        map.putAll(pic_map);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().getRegistPetInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<stringInfo>() {
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        Log.e("H", "getRegistPetInfo---->" + infos);
+                        mCommit.setEnabled(true);
+//                        Log.e("H", "getRegistPetInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setName(mNameEdit.getText().toString());
@@ -167,8 +163,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                     }
 
                 });
-    }
 
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -180,13 +176,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
                     mAdapter.refresh(selectedList);
                     //ImageList.size > 0 ? 可提交（红色） ：不可提交（黑色）
-                    if (canCommitFromImage()) {
-                        mCommit.setTextColor(getResources().getColor(R.color.red));
-                        mCommit.setEnabled(true);
-                    } else {
-                        mCommit.setTextColor(getResources().getColor(R.color.location_city_gps));
-                        mCommit.setEnabled(false);
-                    }
+                    updateCommitState();
                 }
 
                 break;
@@ -234,32 +224,21 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         if (path != null) {
             mAdapter.update(path);
             /*提交按钮可点击*/
-            mCommit.setTextColor(getResources().getColor(R.color.red));
-            mCommit.setEnabled(true);
-
         } else {
             Toast.makeText(mActivity, "裁剪失败，请重试一下吧~", Toast.LENGTH_SHORT).show();
-            mCommit.setTextColor(getResources().getColor(R.color.location_city_gps));
+        }
+        updateCommitState();
+    }
+
+    private void updateCommitState(){
+        if (mAdapter.getList().size() > 0) {
+            mCommit.setTextColor(getResources().getColor(R.color.red));
+            mCommit.setEnabled(true);
+        } else {
+            mCommit.setTextColor(getResources().getColor(R.color.c_8899a6));
             mCommit.setEnabled(false);
         }
     }
-
-    /**
-     * 判断图片 是否可 提交
-     *
-     * @return
-     */
-    private boolean canCommitFromImage() {
-        boolean canCommit = false;
-        if (mAdapter.getList().size() <= 0) {
-            canCommit = false;
-        } else {
-            canCommit = true;
-        }
-        return canCommit;
-
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -267,7 +246,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         /*提交按钮*/
             case R.id.activity_upload_up:
                 if(MyManger.isLogin()){
-                    getRegistPetInfo();
+                    uploadPic();
                 }else {
                     Intent intent = new Intent(this, RegisterActivity.class);
                     startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
@@ -335,90 +314,4 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
     }
 
-
-    private void zoomPicture() {
-        new Thread() {
-
-            @Override
-            public void run() {
-                //循环挨个压缩
-                for (int i = 0; i < mAdapter.getList().size(); i++) {
-
-                    tempBitmap = BitmapUtilImage.getLocationBitmap(mAdapter.getList().get(i));
-                    if (tempBitmap != null) {
-                        String path = BitmapUtil.saveMyBitmap("temp" + i, tempBitmap, mActivity);
-                        mtempList.add(path);
-
-                        if (null != tempBitmap) {
-
-                            tempBitmap.recycle();
-                        }
-                    } else {
-                        mHandler.sendEmptyMessage(203);
-                    }
-
-                }
-
-                mHandler.sendEmptyMessage(201);
-            }
-        }.start();
-
-
-    }
-
-
-    /**
-     * 请求网络
-     * 1.上传图片
-     * 2.完成开始提交
-     */
-    private void uploadImage() {
-
-
-//		for (String tempPath : mtempList) {
-//		}
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        tempBitmap = null;
-        super.onDestroy();
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("UpLoad Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }

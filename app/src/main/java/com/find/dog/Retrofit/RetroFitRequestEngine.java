@@ -3,6 +3,7 @@ package com.find.dog.Retrofit;
 import android.database.Observable;
 
 import com.find.dog.data.GetUserInfo;
+import com.find.dog.data.QiNiuInfo;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.data.stringInfo;
 
@@ -93,6 +94,10 @@ public interface RetroFitRequestEngine {
     //删除宠物
     @POST("delet_pat.php")
     Call<BaseEntity<stringInfo>> deletePetInfo(@Body RequestBody route);
+
+    //获取七牛token
+    @POST("phpsdk/examples/upload_token.php")
+    Call<BaseEntity<QiNiuInfo>> getTokenInfo(@Body RequestBody route);
 
     //上传图片和描述
     @Multipart

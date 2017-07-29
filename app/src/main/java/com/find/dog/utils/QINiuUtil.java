@@ -2,13 +2,19 @@ package com.find.dog.utils;
 
 import android.util.Log;
 
+import com.find.dog.main.MyApplication;
 import com.qiniu.android.common.AutoZone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhangzhongwei on 2017/7/27.
@@ -17,17 +23,18 @@ import org.json.JSONObject;
 public class QINiuUtil {
     private static QINiuUtil mContext;
     private UploadManager uploadManager;
-    String key = "";   //<指定七牛服务上的文件名，或 null>;
-    String token = ""; //<从服务端SDK获取>;
+    private boolean isOk;
+//    String key = "";   //<指定七牛服务上的文件名，或 null>;
+//    String token = "w0cn8ryZtHVtqPBNPFikTpUqqc4lBZbX1N6lwWPc:mmgRURHhu6AiBgvN1AJQzk4LMXc=:eyJzY29wZSI6InpoYW9nb3UiLCJkZWFkbGluZSI6MTUwMTMyNzIyNSwidXBIb3N0cyI6WyJodHRwOlwvXC91cC16MS5xaW5pdS5jb20iLCJodHRwOlwvXC91cGxvYWQtejEucWluaXUuY29tIiwiLUggdXAtejEucWluaXUuY29tIGh0dHA6XC9cLzEwNi4zOC4yMjcuMjgiXX0="; //<从服务端SDK获取>;
 
-    public static QINiuUtil getInstance(){
-        if(mContext == null){
+    public static QINiuUtil getInstance() {
+        if (mContext == null) {
             mContext = new QINiuUtil();
         }
         return mContext;
     }
 
-    public QINiuUtil(){
+    public QINiuUtil() {
         //FixedZone.zone0   华东机房
         //FixedZone.zone1   华北机房
         //FixedZone.zone2   华南机房
@@ -45,30 +52,67 @@ public class QINiuUtil {
                 .zone(AutoZone.autoZone)        // 设置区域，指定不同区域的上传域名、备用域名、备用IP。
                 .build();
         // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-         uploadManager = new UploadManager(config);
-        Log.e("H", "---------QINiuUtil-----------");
+        uploadManager = new UploadManager(config);
+//        Log.e("H", "---------QINiuUtil-----------");
     }
 
     /**
      * 上传图片
-     * @param filePath  <File对象、或 文件路径、或 字节数组>
+     *
+     * @param mtempList <File对象、或 文件路径、或 字节数组>
      */
-    public void uploadPic(String filePath){
-        Log.e("H", "--------上传---------");
-        uploadManager.put(filePath, key, token,
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                        //res包含hash、key等信息，具体字段取决于上传策略的设置
-                        if (info.isOK()) {
-                            Log.i("qiniu", "Upload Success");
-                        } else {
-                            Log.i("qiniu", "Upload Fail");
-                            //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+    public void uploadPic(final ArrayList<String> mtempList, final Callback callback) {
+        final Map<String, String> map = new HashMap<>();
+        String token = MyManger.getQiNiuToken();
+        final int length = mtempList.size();
+        final String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
+        if(length == 0){
+            ToastUtil.showTextToast(MyApplication.getInstance(), "未添加图片");
+            if (callback != null) {
+                callback.callback(isOk,map);
+            }
+        }
+        for (int i = 0; i < length; i++) {
+            String key = MyManger.getUserInfo().getPhone() + YKUtil.getUnixStamp() + "_" + i + ".jpg";
+            final String photo_key = "photo"+ (i+1) +"URL";
+            uploadManager.put(mtempList.get(i), key, token,
+                    new UpCompletionHandler() {
+                        @Override
+                        public void complete(String key, ResponseInfo info, JSONObject res) {
+                            //res包含hash、key等信息，具体字段取决于上传策略的设置
+                            if (info.isOK()) {
+                                isOk = true;
+                                Log.i("qiniu", "Upload Success");
+                                if (res != null) {
+                                    try {
+                                        String key_back = res.getString("key");
+                                        map.put(photo_key, photo_value+key_back);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            } else {
+                                Log.i("qiniu", "Upload Fail");
+                                isOk = false;
+                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+//                                ToastUtil.showTextToast(MyApplication.getInstance(), info.error);
+                                if (callback != null) {
+                                    callback.callback(isOk,map);
+                                }
+                            }
+                            if (callback != null && map.size() == length) {
+                                callback.callback(isOk,map);
+                            }
+                            Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                         }
-                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                    }
-                }, null);
+                    }, null);
+        }
+
+    }
+
+    public interface Callback {
+        public void callback(boolean isOk,Map<String, String> pic_map);
     }
 
 }

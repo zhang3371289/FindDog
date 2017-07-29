@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
+import com.find.dog.data.QiNiuInfo;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
@@ -47,6 +48,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setContentView(R.layout.activity_main_layout);
         mContext = this;
         initview();
+        getTokenInfo();
     }
     private void initview(){
         mActivity = this;
@@ -114,6 +116,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                 });
     }
+
+    private void getTokenInfo(){
+        //获取 七牛token
+        Map<String, String> map = new HashMap<>();
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<QiNiuInfo>(mContext, RetroFactory.getIstance().getStringService().getTokenInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<QiNiuInfo>() {
+
+                    @Override
+                    public void onSuccess(QiNiuInfo info) {
+                        Log.e("H", "getTokenInfo---->" + info);
+                        if (!TextUtils.isEmpty(info.getRes())) {
+                            MyManger.saveQiNiuToken(info.getRes());
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                    }
+
+                });
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
