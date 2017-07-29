@@ -18,6 +18,8 @@ import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.find.dog.main.MyApplication;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -73,16 +75,17 @@ public class PhotoUtil {
     private static void init(Activity context){
 //        /** * 清除本应用内部缓存(/data/data/com.xxx.xxx/cache) * * @param context */
 //        deleteFilesByDirectory(context.getCacheDir());
-        /**
-         * * 清除外部cache下的内容(/mnt/sdcard/android/data/com.xxx.xxx/cache) * * @param
-         * context
-         */
-        if (Environment.getExternalStorageState().equals(
-                Environment.MEDIA_MOUNTED)) {
-            deleteFilesByDirectory(context.getExternalCacheDir());
-        }
+
+//        /**
+//         * * 清除外部cache下的内容(/mnt/sdcard/android/data/com.xxx.xxx/cache) * * @param
+//         * context
+//         */
+//        if (Environment.getExternalStorageState().equals(
+//                Environment.MEDIA_MOUNTED)) {
+//            deleteFilesByDirectory(context.getExternalCacheDir());
+//        }
         mContext = context;
-//        image_name = "crop_image_"+System.currentTimeMillis()+".jpg";
+        image_name = "crop_image_"+System.currentTimeMillis()+".jpg";
         cachPath = getDiskCacheDir(context) + "/"+ image_name;
         cacheFile = getCacheFile(new File(getDiskCacheDir(context)), image_name);
     }

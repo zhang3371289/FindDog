@@ -166,6 +166,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
