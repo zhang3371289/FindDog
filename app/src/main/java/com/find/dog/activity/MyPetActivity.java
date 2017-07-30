@@ -55,8 +55,8 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mName = MyManger.getUserInfo().getName();
-		mAdress =MyManger.getUserInfo().getAdress();
+//		mName = MyManger.getUserInfo().getName();
+//		mAdress =MyManger.getUserInfo().getAdress();
 		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
@@ -74,11 +74,10 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 					@Override
 					public void onSuccess(ArrayList<UserPetInfo> infos) {
-						ToastUtil.showTextToast(mContext,infos.toString());
 						if (infos != null) {
 							mPetsList = infos;
-							mTopAdapter.notifyDataSetChanged();
-							getData(0);
+							mTopAdapter.updateData(infos);
+							getData(infos.size()-1);
 						} else {
 						}
 					}
@@ -99,7 +98,8 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 			return;
 		}
 		selectPosition = position;
-		ToastUtil.showTextToast(mContext,"选中"+position);
+//		ToastUtil.showTextToast(mContext,"选中"+position);
+		mPicList.clear();
 		UserPetInfo mUserPetInfo = mPetsList.get(position);
 		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto1URL())){
 			mPicList.add(mUserPetInfo.getPhoto1URL());
@@ -110,6 +110,11 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto3URL())){
 			mPicList.add(mUserPetInfo.getPhoto3URL());
 		}
+
+		name_text.setText(mUserPetInfo.getPatName());
+		phone_text.setText(mUserPetInfo.getMasterPhone());
+		adress_text.setText(mUserPetInfo.getLoseAddress());
+		type_text.setText(mUserPetInfo.getState());
 //		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 //		mTopRV.setAdapter(mFooterAdapter);
 		mFooterAdapter.notifyDataSetChanged();
@@ -152,9 +157,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		mListView.addFooterView(footerView);
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
-		name_text.setText(mName);
-		phone_text.setText(MyManger.getUserInfo().getPhone());
-		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.fabu).setOnClickListener(this);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 	}

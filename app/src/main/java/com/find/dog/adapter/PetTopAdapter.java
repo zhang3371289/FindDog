@@ -6,8 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.find.dog.R;
 import com.find.dog.data.UserPetInfo;
+import com.find.dog.main.MyApplication;
+import com.find.dog.utils.QINiuUtil;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,9 @@ public class PetTopAdapter extends RecyclerView.Adapter<PetTopAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        String phot_url = mPetsList.get(position).getPhoto1URL()+ QINiuUtil.photo_suffix;
+        Glide.with(MyApplication.getInstance()).load(phot_url)
+                .into(viewHolder.mImageView);
         viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

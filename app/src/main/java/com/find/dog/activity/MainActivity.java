@@ -97,10 +97,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     }
 
-    private static void getRewardInfo(){
+    private static void getRewardInfo(String location){
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", "城阳区");
+        map.put("loseAddress", location);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<ArrayList<UserPetInfo>>(mContext, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
@@ -211,7 +211,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 @Override
                 public void run() {
                     locationTextView.setText(result);
-                    getRewardInfo();
+                    getRewardInfo(result);
                 }
             });
         }

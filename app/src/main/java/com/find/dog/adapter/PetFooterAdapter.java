@@ -35,7 +35,7 @@ public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.View
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 //        viewHolder.mImageView.setBackgroundResource();
         String phot_url = mPicList.get(position)+ QINiuUtil.photo_suffix;
-        Glide.with(mContext).load(mPicList.get(position))
+        Glide.with(mContext).load(phot_url)
 //                .placeholder(R.mipmap.ic_launcher)
 //                .error(R.mipmap.ic_launcher)
                 .into(viewHolder.mImageView);

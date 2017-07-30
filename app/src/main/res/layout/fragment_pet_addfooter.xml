@@ -27,8 +27,7 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="可可" />
+                android:layout_marginLeft="20dp"/>
 
         </LinearLayout>
 
@@ -48,8 +47,7 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="正常" />
+                android:layout_marginLeft="20dp" />
 
         </LinearLayout>
 
@@ -69,8 +67,7 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="1331331" />
+                android:layout_marginLeft="20dp"/>
 
         </LinearLayout>
 
@@ -90,8 +87,7 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="可可" />
+                android:layout_marginLeft="20dp" />
 
         </LinearLayout>
 
