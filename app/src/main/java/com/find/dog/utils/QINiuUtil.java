@@ -173,7 +173,7 @@ public class QINiuUtil {
     private void initProgressBar() {
         progressDialog = new ProgressDialog(mContext);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setTitle("图片上传中");
+        progressDialog.setTitle("资料上传中");
         progressDialog.setCancelable(false);
         progressDialog.setCanceledOnTouchOutside(false);
 //        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {

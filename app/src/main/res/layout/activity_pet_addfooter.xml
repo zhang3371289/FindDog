@@ -4,13 +4,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/fragment_pet_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_pet_layout"
+        android:layout_marginTop="10dp"
+        android:scrollbars="none" />
+
+    <LinearLayout android:id="@+id/bottom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_pet_rv"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/change"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="修改悬赏" />
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:padding="20dp"
+            android:text="取消悬赏" />
+    </LinearLayout>
+
+    <Button android:id="@+id/lianxizhuren"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_pet_rv"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:text="联系主人"/>
+
     <LinearLayout
         android:id="@+id/fragment_pet_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingRight="20dp"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,8 +93,7 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="丢失" />
+                android:layout_marginLeft="20dp" />
 
         </LinearLayout>
 
@@ -155,47 +199,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/fragment_pet_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_pet_layout"
-        android:layout_marginTop="10dp"
-        android:scrollbars="none" />
-
-    <LinearLayout android:id="@+id/bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_pet_rv"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="20dp"
-            android:text="修改悬赏" />
-
-        <Button
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:padding="20dp"
-            android:text="取消悬赏" />
-    </LinearLayout>
-
-    <Button android:id="@+id/lianxizhuren"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fragment_pet_rv"
-        android:layout_margin="20dp"
-        android:padding="20dp"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
-        android:text="联系主人"/>
 
 </RelativeLayout>

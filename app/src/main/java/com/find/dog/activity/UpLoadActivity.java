@@ -94,8 +94,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         mAdressEdit.setText(MyManger.getUserInfo().getAdress());
         mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
         if (!MyManger.isLogin()) {
-            Intent intent = new Intent(this, RegisterActivity.class);
-            startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent, LoginActivity.LOGIN_RESULT);
         }else{
             normalLayout.setVisibility(View.GONE);
         }
@@ -212,7 +212,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
 
-            case RegisterActivity.REGIST_RESULT:
+            case LoginActivity.LOGIN_RESULT:
                 mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
                 break;
 
@@ -250,8 +250,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 if(MyManger.isLogin()){
                     uploadPic();
                 }else {
-                    Intent intent = new Intent(this, RegisterActivity.class);
-                    startActivityForResult(intent, RegisterActivity.REGIST_RESULT);
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivityForResult(intent,  LoginActivity.LOGIN_RESULT);
                 }
                 break;
             case R.id.back_layout:

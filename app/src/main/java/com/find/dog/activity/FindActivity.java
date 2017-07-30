@@ -74,36 +74,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		mListView.setAdapter(null);
 	}
 
-	private void getUserPetInfo() {
-		//获取“发现”数据
-		Map<String, String> map = new HashMap<>();
-//		map.put("userPhone", MyManger.getUserInfo().getPhone());
-		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindInfo(requestBody))
-				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
-
-					@Override
-					public void onSuccess(ArrayList<UserPetInfo> infos) {
-						Log.e("H", "getFindInfo---->" + infos);
-						if (infos != null) {
-							mPetsList = infos;
-//							mTopAdapter.notifyDataSetChanged();
-							updateData(0);
-							mTopAdapter.updateData(infos);
-							mFooterAdapter.notifyDataSetChanged();
-						} else {
-						}
-					}
-
-					@Override
-					public void onFail() {
-						Log.e("H", "onFail---->");
-					}
-
-				});
-	}
-
-
 	/**
 	 * 添加头部
 	 */
@@ -207,6 +177,36 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 				finish();
 				break;
 		}
+	}
+
+	private void getUserPetInfo() {
+		//获取“发现”数据
+		Map<String, String> map = new HashMap<>();
+		map.put("userPhone", MyManger.getUserInfo().getPhone());
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+					@Override
+					public void onSuccess(ArrayList<UserPetInfo> infos) {
+//						Log.e("H", "getFindInfo---->" + infos);
+						if (infos != null && infos.size()>0) {
+							mPetsList = infos;
+//							mTopAdapter.notifyDataSetChanged();
+							updateData(0);
+							mTopAdapter.updateData(infos);
+							mFooterAdapter.notifyDataSetChanged();
+						} else {
+							mListView.setVisibility(View.GONE);
+						}
+					}
+
+					@Override
+					public void onFail() {
+//						Log.e("H", "onFail---->");
+					}
+
+				});
 	}
 
 	private void getSureInfo() {

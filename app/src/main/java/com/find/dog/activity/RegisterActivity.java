@@ -33,7 +33,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private RadioGroup radioGroup;
     private RadioButton zhifubaoButton,weixinButton;
     private int type ;
-    public static final int REGIST_RESULT = 101;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +54,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         sure_text = (Button) findViewById(R.id.activity_login_sure_text);
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
-        findViewById(R.id.login_textView).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_login_yzm_text:
-                break;
-            case R.id.login_textView:
-                startActivity(new Intent(this,LoginActivity.class));
-                finish();
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();
@@ -106,12 +100,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                             info.setPayType(type);
                             MyManger.saveUserInfo(info);
                             MyManger.saveLogin(true);
-                            Intent intent = getIntent();
-                            setResult(REGIST_RESULT,intent);
                             finish();
-//                            Intent intent = new Intent(RegisterActivity.this,UserActivity.class);
-//                            startActivity(intent);
-//                            finish();
                             ToastUtil.showTextToast(RegisterActivity.this,infos.getInfo().toString());
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
