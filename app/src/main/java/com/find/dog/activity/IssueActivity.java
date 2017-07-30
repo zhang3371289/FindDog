@@ -90,7 +90,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 showChooseImageDialog();
             }
         });
-//        mAdapter.refresh(MyManger.loadPicsArray());
+        mAdapter.refreshPic(MyManger.loadPicsArray());
         mRecyclerView.setAdapter(mAdapter);
         findViewById(R.id.fabu).setOnClickListener(this);
         findViewById(R.id.change).setOnClickListener(this);

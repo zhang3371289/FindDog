@@ -212,30 +212,30 @@ public class MyManger {
         info.setDescrib(sharedPreferences.getString(pet_describ,""));
         return info;
     }
-//
-//    /**
-//     * 保存 图片数组
-//     * @param list
-//     */
-//    public static void savePicsArray(ArrayList<String> list) {
-//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-//        SharedPreferences.Editor mEdit1= sharedPreferences.edit();
-//        mEdit1.putInt(pic_Status_size,list.size());
-//        for(int i=0;i<list.size();i++) {
-//            mEdit1.remove(pic_Status_ + i);
-//            mEdit1.putString(pic_Status_ + i, list.get(i));
-//        }
-//        mEdit1.commit();
-//    }
-//
-//    public static ArrayList<String> loadPicsArray() {
-//        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
-//        ArrayList<String> list = new ArrayList<>();
-//        list.clear();
-//        int size = sharedPreferences.getInt(pic_Status_size, 0);
-//        for(int i=0;i<size;i++) {
-//            list.add(sharedPreferences.getString(pic_Status_ + i, null));
-//        }
-//        return list;
-//    }
+
+    /**
+     * 保存 图片数组
+     * @param list
+     */
+    public static void savePicsArray(ArrayList<String> list) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor mEdit1= sharedPreferences.edit();
+        mEdit1.putInt(pic_Status_size,list.size());
+        for(int i=0;i<list.size();i++) {
+            mEdit1.remove(pic_Status_ + i);
+            mEdit1.putString(pic_Status_ + i, list.get(i));
+        }
+        mEdit1.commit();
+    }
+
+    public static ArrayList<String> loadPicsArray() {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        ArrayList<String> list = new ArrayList<>();
+        list.clear();
+        int size = sharedPreferences.getInt(pic_Status_size, 0);
+        for(int i=0;i<size;i++) {
+            list.add(sharedPreferences.getString(pic_Status_ + i, null));
+        }
+        return list;
+    }
 }

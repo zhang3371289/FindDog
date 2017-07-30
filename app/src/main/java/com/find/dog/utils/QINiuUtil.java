@@ -122,11 +122,12 @@ public class QINiuUtil {
         key_map = new HashMap<>();
         String token = MyManger.getQiNiuToken();
         list_length = mtempList.size();
-        if(list_length == 0){
+        if(list_length <= 0){
             ToastUtil.showTextToast(MyApplication.getInstance(), "未添加图片");
             if (callback != null) {
                 callback.callback(false,key_map);
             }
+            return;
         }
         initProgressBar();
         for (int i = 0; i < list_length; i++) {

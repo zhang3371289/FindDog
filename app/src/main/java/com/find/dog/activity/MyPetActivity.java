@@ -55,8 +55,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-//		mName = MyManger.getUserInfo().getName();
-//		mAdress =MyManger.getUserInfo().getAdress();
 		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
@@ -98,7 +96,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 			return;
 		}
 		selectPosition = position;
-//		ToastUtil.showTextToast(mContext,"选中"+position);
 		mPicList.clear();
 		UserPetInfo mUserPetInfo = mPetsList.get(position);
 		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto1URL())){
@@ -115,8 +112,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		phone_text.setText(mUserPetInfo.getMasterPhone());
 		adress_text.setText(mUserPetInfo.getLoseAddress());
 		type_text.setText(mUserPetInfo.getState());
-//		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
-//		mTopRV.setAdapter(mFooterAdapter);
 		mFooterAdapter.notifyDataSetChanged();
 	}
 
@@ -165,10 +160,14 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.fabu:
+				MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
+				MyManger.savePicsArray(mPicList);
 				Intent intent = new Intent(this,IssueActivity.class);
 				startActivity(intent);
 				break;
 			case R.id.change:
+				MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
+				MyManger.savePicsArray(mPicList);
 				Intent intent1 = new Intent(this,ChangePetActivity.class);
 				startActivity(intent1);
 				break;
