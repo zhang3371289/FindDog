@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -84,7 +85,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-        mAdapter.refresh(MyManger.loadPicsArray());
+//        mAdapter.refresh(MyManger.loadPicsArray());
         mCommit = (Button) findViewById(R.id.activity_upload_up);
         mCommit.setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
@@ -126,7 +127,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
      * 上传 信息
      * @param pic_map
      */
-    private void getRegistPetInfo(Map<String, String> pic_map) {
+    private void getRegistPetInfo(final Map<String, String> pic_map) {
 
         //宠物信息录入
         Map<String, String> map = new HashMap<>();
@@ -142,14 +143,12 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                     @Override
                     public void onSuccess(stringInfo infos) {
                         QINiuUtil.dismissDialog();
-//                        Log.e("H", "getRegistPetInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setName(mNameEdit.getText().toString());
                             info.setAdress(mAdressEdit.getText().toString());
                             info.setPhone(mPhoneEdit.getText().toString());
                             MyManger.saveUserInfo(info);
-                            MyManger.savePicsArray(mAdapter.getList());
                             Intent intent = new Intent(mActivity, MyPetActivity.class);
                             startActivity(intent);
 //                            finish();

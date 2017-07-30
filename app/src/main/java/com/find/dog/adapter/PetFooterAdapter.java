@@ -2,6 +2,7 @@ package com.find.dog.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.find.dog.R;
+import com.find.dog.data.UserPetInfo;
+import com.find.dog.utils.QINiuUtil;
 
 import java.util.ArrayList;
 
@@ -31,6 +34,7 @@ public class PetFooterAdapter extends RecyclerView.Adapter<PetFooterAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
 //        viewHolder.mImageView.setBackgroundResource();
+        String phot_url = mPicList.get(position)+ QINiuUtil.photo_suffix;
         Glide.with(mContext).load(mPicList.get(position))
 //                .placeholder(R.mipmap.ic_launcher)
 //                .error(R.mipmap.ic_launcher)

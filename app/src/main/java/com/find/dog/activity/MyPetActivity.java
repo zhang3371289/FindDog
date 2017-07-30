@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +38,12 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	private RecyclerView mTopRV;
 	private Context mContext;
 	private PetFooterAdapter mFooterAdapter;
-	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private String mName,mAdress;
 	private TextView name_text,type_text,phone_text,adress_text;
 	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
 	private PetTopAdapter mTopAdapter;
+	private int selectPosition = 0;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +55,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = MyManger.loadPicsArray();
 		mName = MyManger.getUserInfo().getName();
 		mAdress =MyManger.getUserInfo().getAdress();
 		mContext = this;
@@ -62,7 +62,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		addTop();
 		addFooter();
 		mListView.setAdapter(null);
-		getData(0);
 	}
 
 	private void getUserAllPetInfo(){
@@ -79,7 +78,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 						if (infos != null) {
 							mPetsList = infos;
 							mTopAdapter.notifyDataSetChanged();
-							mFooterAdapter.notifyDataSetChanged();
+							getData(0);
 						} else {
 						}
 					}
@@ -96,20 +95,23 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	 * @param position
 	 */
 	public void getData(int position){
+		if(mPetsList.size()<=0){
+			return;
+		}
 		selectPosition = position;
-//		switch (position){
-//			case 0:
-//				datas = data1;
-//				break;
-//			case 1:
-//				datas = data2;
-//				break;
-//			case 2:
-//				datas = data3;
-//				break;
-//		}
-		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
-		mTopRV.setAdapter(mFooterAdapter);
+		ToastUtil.showTextToast(mContext,"选中"+position);
+		UserPetInfo mUserPetInfo = mPetsList.get(position);
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto1URL())){
+			mPicList.add(mUserPetInfo.getPhoto1URL());
+		}
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto2URL())){
+			mPicList.add(mUserPetInfo.getPhoto2URL());
+		}
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto3URL())){
+			mPicList.add(mUserPetInfo.getPhoto3URL());
+		}
+//		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
+//		mTopRV.setAdapter(mFooterAdapter);
 		mFooterAdapter.notifyDataSetChanged();
 	}
 
@@ -127,7 +129,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		mTopAdapter = new PetTopAdapter(mPetsList, new PetTopAdapter.Callback() {
 			@Override
 			public void callback(int position) {
-				ToastUtil.showTextToast(mContext,"选中"+position);
+				getData(position);
 			}
 		});
 		mTopRV.setAdapter(mTopAdapter);

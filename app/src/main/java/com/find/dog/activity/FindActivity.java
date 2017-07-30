@@ -67,7 +67,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		title = (TextView) findViewById(R.id.title);
 		title.setText("发现");
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = MyManger.loadPicsArray();
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
 		addFooter();

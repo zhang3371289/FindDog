@@ -27,7 +27,13 @@ import com.find.dog.utils.DialogUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.google.zxing.activity.CaptureActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -101,7 +101,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				showChooseImageDialog();
 			}
 		});
-		mAdapter.refresh(MyManger.loadPicsArray());
+//		mAdapter.refresh(MyManger.loadPicsArray());
 		mRecyclerView.setAdapter(mAdapter);
 		findViewById(R.id.sure).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
@@ -254,7 +254,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 							info.setAdress(adress_edit.getText().toString());
 							MyManger.saveUserInfo(info);
 							MyManger.saveQRCode(QrCode_text.getText().toString());
-							MyManger.savePicsArray(mAdapter.getList());
+//							MyManger.savePicsArray(mAdapter.getList());
 						} else {
 							ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
 						}

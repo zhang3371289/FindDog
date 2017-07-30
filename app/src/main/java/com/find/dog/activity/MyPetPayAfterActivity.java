@@ -54,7 +54,7 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 
 	private void intview() {
 		findViewById(R.id.back_layout).setOnClickListener(this);
-		mPicList = MyManger.loadPicsArray();
+//		mPicList = MyManger.loadPicsArray();
 		mName = MyManger.getUserInfo().getName();
 		mAdress =MyManger.getUserInfo().getAdress();
 		mContext = this;
