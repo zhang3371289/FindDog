@@ -39,7 +39,6 @@ public class QINiuUtil {
     private UploadOptions uploadOptions;  //七牛SDK的上传选项
     private UpProgressHandler upProgressHandler;  //七牛SDK的上传进度监听
     private UpCancellationSignal upCancellationSignal;  //七牛SDK的上传过程取消监听
-    private boolean isOk;//是否请求成功
     private int list_length = 0;
     private Map<String, String> key_map = new HashMap<>();//
     double percent0 , percent1 , percent2 ;
@@ -126,7 +125,7 @@ public class QINiuUtil {
         if(list_length == 0){
             ToastUtil.showTextToast(MyApplication.getInstance(), "未添加图片");
             if (callback != null) {
-                callback.callback(isOk,key_map);
+                callback.callback(false,key_map);
             }
         }
         initProgressBar();
@@ -139,7 +138,6 @@ public class QINiuUtil {
                         public void complete(String key, ResponseInfo info, JSONObject res) {
                             //res包含hash、key等信息，具体字段取决于上传策略的设置
                             if (info.isOK()) {
-                                isOk = true;
                                 Log.i("qiniu", "Upload Success");
                                 if (res != null) {
                                     try {
@@ -152,16 +150,14 @@ public class QINiuUtil {
 
                             } else {
                                 Log.i("qiniu", "Upload Fail");
-                                isOk = false;
                                 //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
 //                                ToastUtil.showTextToast(MyApplication.getInstance(), info.error);
                                 if (callback != null) {
-                                    callback.callback(isOk,key_map);
+                                    callback.callback(false,key_map);
                                 }
                             }
                             if (callback != null && key_map.size() == list_length) {
-                                dismissDialog();
-                                callback.callback(isOk,key_map);
+                                callback.callback(true,key_map);
                             }
                             Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                         }
