@@ -38,32 +38,11 @@ import java.util.ArrayList;
  */
 public class IssueActivity extends BaseActivity implements OnClickListener {
     private Activity mActivity;
-    private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
-    private String mGetEditText = "";
-    private Bitmap tempBitmap;
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
     private TextView name_text,phone_text,losttime_text;
     private EditText issue_edit,adress_edit,description_edit;
-    private Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 200:
-                    //图片上传完成开始 提交回复
-                    commitReplay();
-                    break;
-                case 201:
-                    uploadImage();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    };
 
 
     @Override
@@ -90,7 +69,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 showChooseImageDialog();
             }
         });
-        mAdapter.refreshPic(MyManger.loadPicsArray());
+        mAdapter.refreshNetPic(MyManger.loadPicsArray());
         mRecyclerView.setAdapter(mAdapter);
         findViewById(R.id.fabu).setOnClickListener(this);
         findViewById(R.id.change).setOnClickListener(this);
@@ -123,7 +102,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
 
                 if (resultCode == RESULT_OK) {
                     ArrayList<String> selected = (ArrayList<String>) data.getSerializableExtra(SelectPictureActivity.INTENT_SELECTED_PICTURE);
-
                     mAdapter.refresh(selected);
                 }
 
@@ -167,7 +145,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private void addCropPicture(String path) {
         if (path != null) {
             mAdapter.update(path);
-
         } else {
             Toast.makeText(mActivity, "裁剪失败，请重试一下吧~", Toast.LENGTH_SHORT).show();
         }
@@ -258,68 +235,5 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
 
     }
 
-
-    private void zoomPicture() {
-        new Thread() {
-
-            @Override
-            public void run() {
-                //循环挨个压缩
-                for (int i = 0; i < mAdapter.getList().size(); i++) {
-
-                    tempBitmap = BitmapUtilImage.getLocationBitmap(mAdapter.getList().get(i));
-                    if (tempBitmap != null) {
-                        String path = BitmapUtil.saveMyBitmap("temp" + i, tempBitmap, mActivity);
-                        mtempList.add(path);
-
-                        if (null != tempBitmap) {
-
-                            tempBitmap.recycle();
-                        }
-                    } else {
-                        mHandler.sendEmptyMessage(203);
-                    }
-
-                }
-
-                mHandler.sendEmptyMessage(201);
-            }
-        }.start();
-
-
-    }
-
-
-    /**
-     * 请求网络
-     * 1.上传图片
-     * 2.完成开始提交
-     */
-    private void uploadImage() {
-
-
-    }
-
-
-    /**
-     * 请求网络 提交回复
-     */
-    private void commitReplay() {
-
-    }
-
-    public boolean canCommit() {
-        if (mGetEditText.length() > 0) {
-            return true;
-        }
-        return false;
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        tempBitmap = null;
-        super.onDestroy();
-    }
 
 }

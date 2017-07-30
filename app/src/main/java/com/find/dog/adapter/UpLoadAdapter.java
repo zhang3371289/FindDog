@@ -15,9 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.find.dog.activity.UpLoadActivity;
 import com.find.dog.R;
 import com.find.dog.utils.BitmapUtilImage;
+import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.YKDeviceInfo;
 
 import java.io.FileInputStream;
@@ -30,6 +34,7 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
     private ArrayList<String> mList = new ArrayList<>();
     private Context mContext;
     private Callback callback;
+    private ViewHolder mHolder;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -61,6 +66,7 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        mHolder = viewHolder;
         if (mapList.size() == position) {
             viewHolder.deleteLayout.setVisibility(View.GONE);
             viewHolder.mLayout.setOnClickListener(new View.OnClickListener() {
@@ -74,10 +80,6 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
             });
         } else {
             viewHolder.deleteLayout.setVisibility(View.VISIBLE);
-//            Glide.with(mContext).load(datas[position])
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .error(R.mipmap.ic_launcher)
-//                    .into(viewHolder.mImageView);
 
             viewHolder.mImageView.setImageBitmap((Bitmap) mapList.get(position));
             viewHolder.mImageView.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +152,26 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
 
             ;
         }.start();
+
+    }
+
+    /**
+     * 网络图片转换bitmap
+     * @param _list
+     */
+    public void refreshNetPic(final ArrayList<String> _list) {
+        mList = _list;
+        mapList.clear();
+        for (String path : _list) {
+            Glide.with(mContext).load(path+ QINiuUtil.photo_suffix).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    mapList.add(resource);
+                    mHandler.sendEmptyMessage(200);
+                }
+            });
+        }
+
 
     }
 
