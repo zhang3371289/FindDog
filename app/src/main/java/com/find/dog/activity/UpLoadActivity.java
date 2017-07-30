@@ -3,6 +3,7 @@ package com.find.dog.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.utils.DialogUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.QINiuUtil;
@@ -99,7 +101,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-
     /**
      * 七牛 上传图片
      */
@@ -109,14 +110,14 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
             return;
         }
 
-        mCommit.setEnabled(false);
+        DialogUtil.showWaitingDialog(this);
         QINiuUtil.getInstance().uploadPic(mAdapter.getList(), new QINiuUtil.Callback() {
             @Override
             public void callback(boolean isOk,Map<String, String> pic_map) {
                 if(isOk){
                     getRegistPetInfo(pic_map);
                 }else{
-                    mCommit.setEnabled(true);
+                    DialogUtil.dismissDialog();
                 }
             }
         });
@@ -141,7 +142,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        mCommit.setEnabled(true);
+                        DialogUtil.dismissDialog();
 //                        Log.e("H", "getRegistPetInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();

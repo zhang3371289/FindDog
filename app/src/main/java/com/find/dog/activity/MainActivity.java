@@ -23,6 +23,7 @@ import com.find.dog.data.QiNiuInfo;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
+import com.find.dog.utils.DialogUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
@@ -100,7 +101,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onSuccess(ArrayList<UserPetInfo> infos) {
-                        Log.e("H", "UserPetInfo---->" + infos);
                         if (infos != null) {
 //                            updateUI(infos);
                             mList = infos;
@@ -111,7 +111,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onFail() {
-                        Log.e("H", "onFail---->");
                     }
 
                 });
@@ -126,7 +125,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onSuccess(QiNiuInfo info) {
-                        Log.e("H", "getTokenInfo---->" + info);
+//                        Log.e("H", "getTokenInfo---->" + info);
                         if (!TextUtils.isEmpty(info.getRes())) {
                             MyManger.saveQiNiuToken(info.getRes());
                         } else {

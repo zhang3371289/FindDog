@@ -21,11 +21,13 @@ import java.util.Map;
  */
 
 public class QINiuUtil {
+    final String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
+    public static String photo_suffix= "?imageMogr2/thumbnail/500x/strip/quality/50/format/webp";
     private static QINiuUtil mContext;
     private UploadManager uploadManager;
     private boolean isOk;
 //    String key = "";   //<指定七牛服务上的文件名，或 null>;
-//    String token = "w0cn8ryZtHVtqPBNPFikTpUqqc4lBZbX1N6lwWPc:mmgRURHhu6AiBgvN1AJQzk4LMXc=:eyJzY29wZSI6InpoYW9nb3UiLCJkZWFkbGluZSI6MTUwMTMyNzIyNSwidXBIb3N0cyI6WyJodHRwOlwvXC91cC16MS5xaW5pdS5jb20iLCJodHRwOlwvXC91cGxvYWQtejEucWluaXUuY29tIiwiLUggdXAtejEucWluaXUuY29tIGh0dHA6XC9cLzEwNi4zOC4yMjcuMjgiXX0="; //<从服务端SDK获取>;
+//    String token = ""; //<从服务端SDK获取>;
 
     public static QINiuUtil getInstance() {
         if (mContext == null) {
@@ -65,7 +67,6 @@ public class QINiuUtil {
         final Map<String, String> map = new HashMap<>();
         String token = MyManger.getQiNiuToken();
         final int length = mtempList.size();
-        final String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
         if(length == 0){
             ToastUtil.showTextToast(MyApplication.getInstance(), "未添加图片");
             if (callback != null) {
