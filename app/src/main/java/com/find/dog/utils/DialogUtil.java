@@ -21,7 +21,7 @@ public class DialogUtil {
     /**
      * 等待Dialog
      */
-    public static void showWaitingDialog(Context context) {
+    public static void showWaitingDialog(Context context,int value) {
        /* 等待Dialog具有屏蔽其他控件的交互能力
         * setCancelable 为使屏幕不可点击，设置为不可取消(false)
         * 下载等事件完成后，主动调用函数关闭该Dialog
@@ -32,8 +32,8 @@ public class DialogUtil {
         * 而“明确”就是根据你的进度可以设置现在的进度值。
         */
         progressDialog = new ProgressDialog(context);
-//        progressDialog.setTitle("等待Dialog");
-        progressDialog.setMessage("数据上传中...");
+        progressDialog.setTitle("数据上传中");
+        progressDialog.setMessage(value * 100 +"%...");
         progressDialog.setIndeterminate(true);
         progressDialog.setCancelable(false);
         progressDialog.show();

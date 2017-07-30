@@ -75,7 +75,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 					@Override
 					public void onSuccess(ArrayList<UserPetInfo> infos) {
-						Log.e("H", "getUserAllPetInfo---->" + infos);
 						ToastUtil.showTextToast(mContext,infos.toString());
 						if (infos != null) {
 							mPetsList = infos;
@@ -87,7 +86,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 
 					@Override
 					public void onFail() {
-						Log.e("H", "onFail---->");
 					}
 
 				});

@@ -1,20 +1,28 @@
 package com.find.dog.utils;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 
 import com.find.dog.main.MyApplication;
 import com.qiniu.android.common.AutoZone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
+import com.qiniu.android.storage.UpCancellationSignal;
 import com.qiniu.android.storage.UpCompletionHandler;
+import com.qiniu.android.storage.UpProgressHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.storage.UploadOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by zhangzhongwei on 2017/7/27.
@@ -23,17 +31,26 @@ import java.util.Map;
 public class QINiuUtil {
     final String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
     public static String photo_suffix= "?imageMogr2/thumbnail/500x/strip/quality/50/format/webp";
-    private static QINiuUtil mContext;
-    private UploadManager uploadManager;
-    private boolean isOk;
+    private static QINiuUtil mInstance;
+    private static Context mContext;
+    private static ProgressDialog progressDialog;
+    private boolean isProgressCancel;  //网络请求过程中是否取消上传或下载
+    private UploadManager uploadManager;  //七牛SDK的上传管理者
+    private UploadOptions uploadOptions;  //七牛SDK的上传选项
+    private UpProgressHandler upProgressHandler;  //七牛SDK的上传进度监听
+    private UpCancellationSignal upCancellationSignal;  //七牛SDK的上传过程取消监听
+    private boolean isOk;//是否请求成功
+    private int list_length = 0;
+    private Map<String, String> key_map = new HashMap<>();//
+    double percent0 , percent1 , percent2 ;
 //    String key = "";   //<指定七牛服务上的文件名，或 null>;
 //    String token = ""; //<从服务端SDK获取>;
 
     public static QINiuUtil getInstance() {
-        if (mContext == null) {
-            mContext = new QINiuUtil();
+        if (mInstance == null) {
+            mInstance = new QINiuUtil();
         }
-        return mContext;
+        return mInstance;
     }
 
     public QINiuUtil() {
@@ -56,6 +73,44 @@ public class QINiuUtil {
         // 重用uploadManager。一般地，只需要创建一个uploadManager对象
         uploadManager = new UploadManager(config);
 //        Log.e("H", "---------QINiuUtil-----------");
+
+        upProgressHandler = new UpProgressHandler() {
+            /**
+             * @param key 上传时的upKey；
+             * @param percent 上传进度；
+             */
+            @Override
+            public void progress(String key, double percent) {
+
+                String result = key.substring(key.indexOf("_")+1, key.indexOf("."));
+                if("0".equals(result)){
+                    percent0 = percent;
+                }if("1".equals(result)){
+                    percent1 = percent;
+                }
+                if("2".equals(result)){
+                    percent2 = percent;
+                }
+//                progressDialog.setProgress((int) ((list_length+1) * percent));
+                progressDialog.setProgress((int) ((percent0+percent1+percent2)*100/list_length));
+//                Log.e("H",percent0+"-----"+percent1+"-----------"+percent2);
+//                Log.e("H",result+"---percent--"+(percent0+percent1+percent2)*100/list_length+"-----------"+percent0+percent1+percent2);
+            }
+        };
+        upCancellationSignal = new UpCancellationSignal() {
+            @Override
+            public boolean isCancelled() {
+                return isProgressCancel;
+            }
+        };
+        //定义数据或文件上传时的可选项
+        uploadOptions = new UploadOptions(
+                null,  //扩展参数，以<code>x:</code>开头的用户自定义参数
+                "mime_type",  //指定上传文件的MimeType
+                true,  //是否启用上传内容crc32校验
+                upProgressHandler,  //上传内容进度处理
+                upCancellationSignal  //取消上传信号
+        );
     }
 
     /**
@@ -63,17 +118,19 @@ public class QINiuUtil {
      *
      * @param mtempList <File对象、或 文件路径、或 字节数组>
      */
-    public void uploadPic(final ArrayList<String> mtempList, final Callback callback) {
-        final Map<String, String> map = new HashMap<>();
+    public void uploadPic(Context mContext,final ArrayList<String> mtempList, final Callback callback) {
+        this.mContext = mContext;
+        key_map = new HashMap<>();
         String token = MyManger.getQiNiuToken();
-        final int length = mtempList.size();
-        if(length == 0){
+        list_length = mtempList.size();
+        if(list_length == 0){
             ToastUtil.showTextToast(MyApplication.getInstance(), "未添加图片");
             if (callback != null) {
-                callback.callback(isOk,map);
+                callback.callback(isOk,key_map);
             }
         }
-        for (int i = 0; i < length; i++) {
+        initProgressBar();
+        for (int i = 0; i < list_length; i++) {
             String key = MyManger.getUserInfo().getPhone() + YKUtil.getUnixStamp() + "_" + i + ".jpg";
             final String photo_key = "photo"+ (i+1) +"URL";
             uploadManager.put(mtempList.get(i), key, token,
@@ -87,7 +144,7 @@ public class QINiuUtil {
                                 if (res != null) {
                                     try {
                                         String key_back = res.getString("key");
-                                        map.put(photo_key, photo_value+key_back);
+                                        key_map.put(photo_key, photo_value+key_back);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -99,15 +156,16 @@ public class QINiuUtil {
                                 //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
 //                                ToastUtil.showTextToast(MyApplication.getInstance(), info.error);
                                 if (callback != null) {
-                                    callback.callback(isOk,map);
+                                    callback.callback(isOk,key_map);
                                 }
                             }
-                            if (callback != null && map.size() == length) {
-                                callback.callback(isOk,map);
+                            if (callback != null && key_map.size() == list_length) {
+                                dismissDialog();
+                                callback.callback(isOk,key_map);
                             }
                             Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                         }
-                    }, null);
+                    }, uploadOptions);
         }
 
     }
@@ -116,4 +174,35 @@ public class QINiuUtil {
         public void callback(boolean isOk,Map<String, String> pic_map);
     }
 
+    private void initProgressBar() {
+        progressDialog = new ProgressDialog(mContext);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("图片上传中");
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+//        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                isProgressCancel = true;
+//            }
+//        });
+
+        progressDialog.setMax(100);
+        progressDialog.show();
+        isProgressCancel = false;
+        percent0 = percent1 = percent2 = 0;
+    }
+
+    /**
+     * 等待Dialog
+     */
+    public static void dismissDialog() {
+        if (progressDialog == null) {
+            return;
+        }
+        try {
+            progressDialog.dismiss();
+        } catch (Exception e) {
+        }
+    }
 }

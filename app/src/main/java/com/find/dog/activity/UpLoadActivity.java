@@ -110,8 +110,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
             return;
         }
 
-        DialogUtil.showWaitingDialog(this);
-        QINiuUtil.getInstance().uploadPic(mAdapter.getList(), new QINiuUtil.Callback() {
+        QINiuUtil.getInstance().uploadPic(this,mAdapter.getList(), new QINiuUtil.Callback() {
             @Override
             public void callback(boolean isOk,Map<String, String> pic_map) {
                 if(isOk){
@@ -142,7 +141,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        DialogUtil.dismissDialog();
 //                        Log.e("H", "getRegistPetInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
@@ -153,6 +151,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             MyManger.savePicsArray(mAdapter.getList());
                             Intent intent = new Intent(mActivity, MyPetActivity.class);
                             startActivity(intent);
+                            finish();
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
                         }
