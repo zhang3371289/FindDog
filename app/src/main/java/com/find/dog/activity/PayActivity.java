@@ -17,6 +17,7 @@ import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
 import com.find.dog.utils.YKUtil;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,9 +93,9 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
         });
     }
 
-    private void sendIssue(Map<String, String> pic_map){
+    private void sendIssue(final Map<String, String> pic_map){
         //发布悬赏
-        Map<String, String> map = new HashMap<>();
+        final Map<String, String> map = new HashMap<>();
         map.put("userPhone", MyManger.getPetInfo().getMasterPhone());
         map.put("alipay", "");
         map.put("wechatpay", "");
@@ -111,6 +112,9 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onSuccess(stringInfo result) {
                         if (!TextUtils.isEmpty(result.getInfo())) {
+                            // 将Map value 转化为List
+                            ArrayList<String> mapValuesList = new ArrayList<String>(pic_map.values());
+                            MyManger.savePicsArray(mapValuesList);
                             Intent intent = new Intent(PayActivity.this,MyPetPayAfterActivity.class);
                             startActivity(intent);
                             finish();

@@ -20,13 +20,14 @@ import android.widget.Toast;
 
 import com.find.dog.R;
 import com.find.dog.adapter.UpLoadAdapter;
+import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
+import com.find.dog.utils.YKUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -86,9 +87,9 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         issue_edit.setText(MyManger.getMoney());
         description_edit.setText(MyManger.getDescrib());
 
-        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String date = sDateFormat.format(new java.util.Date());
-        losttime_text.setText(date);
+//        SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String date = sDateFormat.format(new java.util.Date());
+        losttime_text.setText(YKUtil.getStrTime(YKUtil.getUnixStamp()+""));
     }
 
 
@@ -173,6 +174,12 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 MyManger.saveMoney(issue_edit.getText().toString());
                 MyManger.saveDescrib(description_edit.getText().toString());
                 MyManger.savePicsArray(mAdapter.getList());
+                UserPetInfo pet = new UserPetInfo();
+                pet.setLoseAddress(adress_edit.getText().toString());
+                pet.setPatName(name_text.getText().toString());
+                pet.setMasterPhone(phone_text.getText().toString());
+                pet.setLoseDate(losttime_text.getText().toString());
+                MyManger.savePetInfo(pet);
                 Intent intent = new Intent(this,PayActivity.class);
                 startActivity(intent);
                 break;

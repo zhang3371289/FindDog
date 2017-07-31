@@ -1,36 +1,15 @@
 package com.find.dog.utils;
 
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 
 import com.find.dog.main.MyApplication;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class YKUtil {
@@ -42,11 +21,16 @@ public class YKUtil {
      * @return
      */
     public static String getStrTime(String timeStamp){
-        String timeString = null;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH:mm");
-        long  time = Long.valueOf(timeStamp);
-        timeString = sdf.format(new Date(time));//单位豪秒
-        return timeString;
+        if(timeStamp.contains("-")){
+            return timeStamp;
+        }else {
+            String timeString = null;
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            long  time = Long.valueOf(timeStamp);
+            timeString = sdf.format(new Date(time));//单位豪秒
+            return timeString;
+        }
     }
 
     /**

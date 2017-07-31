@@ -41,7 +41,6 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 	private PetFooterAdapter mFooterAdapter;
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
-	private String mName,mAdress;
 	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
 	private TextView name_text,type_text,phone_text,adress_text,losttime_text,money_text,describ_text;
 	@Override
@@ -53,10 +52,8 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 
 
 	private void intview() {
+		mPicList = MyManger.loadPicsArray();
 		findViewById(R.id.back_layout).setOnClickListener(this);
-//		mPicList = MyManger.loadPicsArray();
-		mName = MyManger.getUserInfo().getName();
-		mAdress =MyManger.getUserInfo().getAdress();
 		mContext = this;
 		mListView = (ListView) findViewById(R.id.fragment_pet_listview);
 		addTop();
@@ -116,9 +113,6 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		mListView.addFooterView(footerView);
 		mFooterAdapter = new PetFooterAdapter(mPicList,mContext);
 		mTopRV.setAdapter(mFooterAdapter);
-		name_text.setText(mName);
-		phone_text.setText(MyManger.getUserInfo().getPhone());
-		adress_text.setText(mAdress);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 		footerView.findViewById(R.id.cancel).setOnClickListener(this);
 		SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -126,6 +120,10 @@ public class MyPetPayAfterActivity extends BaseActivity implements View.OnClickL
 		losttime_text.setText(date);
 		money_text.setText(MyManger.getMoney());
 		describ_text.setText(MyManger.getDescrib());
+		phone_text.setText(MyManger.getPetInfo().getMasterPhone());
+		name_text.setText(MyManger.getPetInfo().getPatName());
+		adress_text.setText(MyManger.getPetInfo().getLoseAddress());
+		type_text.setText("丢失");
 	}
 
 	@Override
