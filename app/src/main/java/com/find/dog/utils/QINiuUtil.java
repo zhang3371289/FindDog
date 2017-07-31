@@ -39,7 +39,6 @@ public class QINiuUtil {
     private int list_length = 0;
     private Map<String, String> key_map = new HashMap<>();//
     private double percent0 , percent1 , percent2 ;
-    private int newPicLength = 0;
 //    String key = "";   //<指定七牛服务上的文件名，或 null>;
 //    String token = ""; //<从服务端SDK获取>;
 
@@ -88,14 +87,6 @@ public class QINiuUtil {
                 if("2".equals(result)){
                     percent2 = percent;
                 }
-                switch (newPicLength){
-                    case 1:
-                        percent0 = percent1 = 1;
-                        break;
-                    case 2:
-                        percent0 =1;
-                        break;
-                }
 //                progressDialog.setProgress((int) ((list_length+1) * percent));
                 progressDialog.setProgress((int) ((percent0+percent1+percent2)*100/list_length));
 //                Log.e("H",percent0+"-----"+percent1+"-----------"+percent2);
@@ -141,7 +132,6 @@ public class QINiuUtil {
             final String photo_key = "photo"+ (i+1) +"URL";
             String url_path = mtempList.get(i);
             if(url_path.contains(photo_value)){
-                newPicLength ++;
                 key_map.put(photo_key, url_path);
                 if (callback != null && key_map.size() == list_length) {
                     callback.callback(true,key_map);

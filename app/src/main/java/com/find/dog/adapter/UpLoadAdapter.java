@@ -148,7 +148,8 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
                    @Override
                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                        mapList.add(resource);
-                       mHandler.sendEmptyMessage(200);
+                       notifyDataSetChanged();
+//                       mHandler.sendEmptyMessage(200);
                    }
                });
            }else {//本地图片转bitmap

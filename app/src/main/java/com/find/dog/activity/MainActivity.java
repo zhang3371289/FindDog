@@ -268,12 +268,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                                 Intent intent = new Intent(getApplicationContext(), FindActivity.class);
                                 intent.putExtra("objectList", result);
                                 startActivity(intent);
-                            }else {
+                            }else if("-1".equals(result.get(0).getId())){
+                                startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
+                            }else{
                                 ToastUtil.showTextToast(getApplicationContext(),"你好，我是"+result.get(0).getPatName());
                             }
-
-                        } else {
-                            startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
                         }
                     }
 
