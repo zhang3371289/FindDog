@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.find.dog.activity.UpLoadActivity;
 import com.find.dog.R;
 import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.QINiuUtil;
@@ -142,38 +141,28 @@ public class UpLoadAdapter extends RecyclerView.Adapter<UpLoadAdapter.ViewHolder
     public void refresh(final ArrayList<String> _list) {
         mList = _list;
         mapList.clear();
-        new Thread() {
-            public void run() {
-                for (String path : _list) {
-                    mapList.add(getLocationBitmap(path, 6));
-                }
-                mHandler.sendEmptyMessage(200);
-            }
+        for (final String path : _list) {
 
-            ;
-        }.start();
-
-    }
-
-    /**
-     * 网络图片转换bitmap
-     * @param _list
-     */
-    public void refreshNetPic(final ArrayList<String> _list) {
-        mList = _list;
-        mapList.clear();
-        for (String path : _list) {
-            Glide.with(mContext).load(path+ QINiuUtil.photo_suffix).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    mapList.add(resource);
-                    mHandler.sendEmptyMessage(200);
-                }
-            });
+           if(path.contains(QINiuUtil.photo_value)){//网络图片转bitmap
+               Glide.with(mContext).load(path+ QINiuUtil.photo_suffix).asBitmap().into(new SimpleTarget<Bitmap>() {
+                   @Override
+                   public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                       mapList.add(resource);
+                       mHandler.sendEmptyMessage(200);
+                   }
+               });
+           }else {//本地图片转bitmap
+               new Thread() {
+                   public void run() {
+                       mapList.add(getLocationBitmap(path, 6));
+                       mHandler.sendEmptyMessage(200);
+                   } ;
+               }.start();
+           }
         }
 
-
     }
+
 
     public void update(final String path) {
         mList.add(path);

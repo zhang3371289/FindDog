@@ -2,7 +2,6 @@ package com.find.dog.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 
 import com.find.dog.main.MyApplication;
@@ -20,17 +19,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by zhangzhongwei on 2017/7/27.
  */
 
 public class QINiuUtil {
-    final String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
-    public static String photo_suffix= "?imageMogr2/thumbnail/500x/strip/quality/50/format/webp";
+    public final static String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
+    public final static String photo_suffix= "?imageMogr2/thumbnail/500x/strip/quality/50/format/webp";
     private static QINiuUtil mInstance;
     private static Context mContext;
     private static ProgressDialog progressDialog;
