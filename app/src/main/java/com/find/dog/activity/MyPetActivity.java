@@ -113,7 +113,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		type_text.setText(PetState.getState(mUserPetInfo.getState()));
 		mFooterAdapter.notifyDataSetChanged();
 
-		MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
+		MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
 		MyManger.savePicsArray(mPicList);
 		UserPetInfo savePetInfo = new UserPetInfo();
 		savePetInfo.setPatName(mUserPetInfo.getPatName());
