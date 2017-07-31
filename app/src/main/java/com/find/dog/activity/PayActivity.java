@@ -111,6 +111,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onSuccess(stringInfo result) {
+                        QINiuUtil.dismissDialog();
                         if (!TextUtils.isEmpty(result.getInfo())) {
                             // 将Map value 转化为List
                             ArrayList<String> mapValuesList = new ArrayList<String>(pic_map.values());
@@ -124,6 +125,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onFail() {
+                        QINiuUtil.dismissDialog();
                     }
 
                 });

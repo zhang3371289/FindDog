@@ -149,21 +149,6 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         }
     }
 
-    /**
-     * 判断图片 是否可 提交
-     *
-     * @return
-     */
-    private boolean canCommitFromImage() {
-        boolean canCommit = false;
-        if (mAdapter.getList().size() <= 0) {
-            canCommit = false;
-        } else {
-            canCommit = true;
-        }
-        return canCommit;
-
-    }
 
 
     @Override

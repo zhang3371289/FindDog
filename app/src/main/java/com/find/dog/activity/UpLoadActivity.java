@@ -162,6 +162,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
                     @Override
                     public void onFail() {
+                        QINiuUtil.dismissDialog();
                         ToastUtil.showTextToast(getApplicationContext(), getResources().getString(R.string.error_net));
                     }
 

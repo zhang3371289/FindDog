@@ -279,7 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onFail() {
-                        startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
+                        ToastUtil.showTextToast(getApplicationContext(),"二维码不合法");
                     }
 
                 });

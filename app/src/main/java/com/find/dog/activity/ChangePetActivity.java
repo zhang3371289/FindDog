@@ -28,7 +28,9 @@ import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
+import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
+import com.find.dog.utils.YKUtil;
 import com.google.zxing.activity.CaptureActivity;
 
 import java.io.File;
@@ -182,7 +184,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		switch (v.getId()) {
         /*提交按钮*/
 			case R.id.sure:
-				changePetInfo();
+				uploadPic();
 				break;
 			case R.id.cancel:
 			case R.id.back_layout:
@@ -207,8 +209,29 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 
 	}
 
+	/**
+	 * 七牛 上传图片
+	 */
+	private void uploadPic(){
+		if(!YKUtil.isNetworkAvailable()){
+			ToastUtil.showTextToast(this,getResources().getString(R.string.intent_no));
+			return;
+		}
 
-	private void changePetInfo(){
+		QINiuUtil.getInstance().uploadPic(this,mAdapter.getList(), new QINiuUtil.Callback() {
+			@Override
+			public void callback(boolean isOk,Map<String, String> pic_map) {
+				if(isOk){
+					changePetInfo(pic_map);
+				}else{
+					QINiuUtil.dismissDialog();
+				}
+			}
+		});
+	}
+
+
+	private void changePetInfo(Map<String, String> pic_map){
 		//改变宠物信息
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
@@ -216,12 +239,14 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		map.put("homeAddress", adress_edit.getText().toString());
 		map.put("2dCode", MyManger.getQRCode());
 		map.put("new2dCode", QrCode_text.getText().toString());
+		map.putAll(pic_map);
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changePetInfo(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
 
 					@Override
 					public void onSuccess(stringInfo infos) {
+						QINiuUtil.dismissDialog();
 						Log.e("H", "changePetInfo---->" + infos);
 						if (!TextUtils.isEmpty(infos.getInfo())) {
 							ToastUtil.showTextToast(getApplicationContext(),infos.getInfo().toString());
@@ -238,6 +263,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 
 					@Override
 					public void onFail() {
+						QINiuUtil.dismissDialog();
 						Log.e("H", "onFail---->");
 						ToastUtil.showTextToast(getApplicationContext(),getResources().getString(R.string.error_net));
 					}
