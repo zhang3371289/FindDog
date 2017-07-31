@@ -142,9 +142,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onActivityResult(requestCode, resultCode, data);
         //处理扫描结果（在界面上显示）
         if (data != null) {
-            String resul = data.getStringExtra("result");
-            MyManger.saveQRCode(resul);
-            getPetInfo(resul);
+            String result = data.getStringExtra("result");
+            MyManger.saveQRCode(result);
+            if(MyManger.isLogin()){
+                getIsLoginPetInfo();
+            }else {
+                getPetInfo();
+            }
         }
     }
 
@@ -243,10 +247,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void getPetInfo(String qrCode){
+    /**
+     *
+     * 未登录情况下
+     */
+    private void getPetInfo(){
         //获取单个宠物
         final Map<String, String> map = new HashMap<>();
-        map.put("2dCode", qrCode);
+        map.put("2dCode", MyManger.getQRCode());
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
@@ -265,6 +273,32 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onFail() {
                         startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
+                    }
+
+                });
+    }
+
+    private void getIsLoginPetInfo() {
+        //获取“发现”数据 登录情况下
+        Map<String, String> map = new HashMap<>();
+        map.put("userPhone", MyManger.getUserInfo().getPhone());
+        map.put("2dCode", MyManger.getQRCode());
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindIsLoginInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<UserPetInfo> result) {
+//						Log.e("H", "getFindInfo---->" + infos);
+                        if (result != null && result.size()>0) {
+                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                            intent.putExtra("objectList", result);
+                            startActivity(intent);
+                        }
+                    }
+                    @Override
+                    public void onFail() {
+//						Log.e("H", "onFail---->");
                     }
 
                 });

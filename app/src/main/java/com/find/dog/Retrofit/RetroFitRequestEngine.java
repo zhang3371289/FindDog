@@ -67,6 +67,10 @@ public interface RetroFitRequestEngine {
     @POST("getfindinfo.php")
     Call<BaseEntity<ArrayList<UserPetInfo>>> getFindInfo(@Body RequestBody route);
 
+    //获取 扫一扫 登录后 “发现”数据
+    @POST("getfindinfo_login_sao.php")
+    Call<BaseEntity<ArrayList<UserPetInfo>>> getFindIsLoginInfo(@Body RequestBody route);
+
     //改变宠物状态（确认中） lose->confirming
     @POST("state_loseToConfirming.php")
     Call<BaseEntity<stringInfo>> changeLoseToConfirmingState(@Body RequestBody route);
