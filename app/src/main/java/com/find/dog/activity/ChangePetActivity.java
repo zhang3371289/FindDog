@@ -187,6 +187,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 			case R.id.cancel:
 			case R.id.back_layout:
 				finish();
+				break;
 			case R.id.fragment_pet_QrCode:
 				//打开扫描界面扫描条形码或二维码
                 MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {

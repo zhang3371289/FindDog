@@ -195,6 +195,10 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.lianxizhuren:
+				if(!MyManger.isLogin()){
+					startActivity(new Intent(this,LoginActivity.class));
+					return;
+				}
 				if ("放弃联系".equals(mButton.getText().toString())) {
 					getCancelInfo();
 				} else {

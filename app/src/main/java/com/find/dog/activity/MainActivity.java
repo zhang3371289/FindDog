@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,11 +145,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         if (data != null) {
             String result = data.getStringExtra("result");
             MyManger.saveQRCode(result);
-            if(MyManger.isLogin()){
-                getIsLoginPetInfo();
-            }else {
-                getPetInfo();
-            }
+            getPetInfo();
+//            if(MyManger.isLogin()){
+//                getIsLoginPetInfo();
+//            }else {
+//                getPetInfo();
+//            }
         }
     }
 
@@ -261,10 +263,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onSuccess(ArrayList<UserPetInfo> result) {
-                        if (result != null) {
-                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
-                            intent.putExtra("objectList", result);
-                            startActivity(intent);
+                        if (result != null && result.size()>0) {
+                            if("lose".equals(result.get(0).getState())){
+                                Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                                intent.putExtra("objectList", result);
+                                startActivity(intent);
+                            }else {
+                                ToastUtil.showTextToast(getApplicationContext(),"你好，我是"+result.get(0).getPatName());
+                            }
+
                         } else {
                             startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
                         }
@@ -278,30 +285,30 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 });
     }
 
-    private void getIsLoginPetInfo() {
-        //获取“发现”数据 登录情况下
-        Map<String, String> map = new HashMap<>();
-        map.put("userPhone", MyManger.getUserInfo().getPhone());
-        map.put("2dCode", MyManger.getQRCode());
-        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
-        new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindIsLoginInfo(requestBody))
-                .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
-
-                    @Override
-                    public void onSuccess(ArrayList<UserPetInfo> result) {
-//						Log.e("H", "getFindInfo---->" + infos);
-                        if (result != null && result.size()>0) {
-                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
-                            intent.putExtra("objectList", result);
-                            startActivity(intent);
-                        }
-                    }
-                    @Override
-                    public void onFail() {
-//						Log.e("H", "onFail---->");
-                    }
-
-                });
-    }
+//    private void getIsLoginPetInfo() {
+//        //获取“发现”数据 登录情况下
+//        Map<String, String> map = new HashMap<>();
+//        map.put("userPhone", MyManger.getUserInfo().getPhone());
+//        map.put("2dCode", MyManger.getQRCode());
+//        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+//        new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getFindIsLoginInfo(requestBody))
+//                .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+//
+//                    @Override
+//                    public void onSuccess(ArrayList<UserPetInfo> result) {
+////						Log.e("H", "getFindInfo---->" + infos);
+//                        if (result != null && result.size()>0) {
+//                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+//                            intent.putExtra("objectList", result);
+//                            startActivity(intent);
+//                        }
+//                    }
+//                    @Override
+//                    public void onFail() {
+////						Log.e("H", "onFail---->");
+//                    }
+//
+//                });
+//    }
 
 }

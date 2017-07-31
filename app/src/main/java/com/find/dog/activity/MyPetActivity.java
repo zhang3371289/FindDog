@@ -111,7 +111,6 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		phone_text.setText(mUserPetInfo.getMasterPhone());
 		adress_text.setText(mUserPetInfo.getLoseAddress());
 		type_text.setText(PetState.getState(mUserPetInfo.getState()));
-		mFooterAdapter.notifyDataSetChanged();
 
 		MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
 		MyManger.savePicsArray(mPicList);
@@ -121,6 +120,8 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		savePetInfo.setMasterPhone(mUserPetInfo.getMasterPhone());
 		savePetInfo.setLoseAddress(mUserPetInfo.getLoseAddress());
 		MyManger.savePetInfo(savePetInfo);
+
+		mFooterAdapter.notifyDataSetChanged();
 	}
 
 	/**
