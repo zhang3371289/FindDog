@@ -9,8 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,9 +25,7 @@ import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
-import com.find.dog.image.BitmapUtil;
 import com.find.dog.main.BaseActivity;
-import com.find.dog.utils.BitmapUtilImage;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.ToastUtil;
@@ -49,32 +45,11 @@ import okhttp3.RequestBody;
 public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private Activity mActivity;
 	private ArrayList<Bitmap> mapList = new ArrayList<Bitmap>();//本地图片路径集合
-	private ArrayList<String> mtempList = new ArrayList<String>();//压缩后图片路径集合
-	private String mGetEditText = "";
-	private Bitmap tempBitmap;
 	private String[] photo_items = new String[]{"选择本地图片", "拍照"};
 	private RecyclerView mRecyclerView;
 	private UpLoadAdapter mAdapter;
 	private EditText name_edit,adress_edit;
 	private TextView QrCode_text;
-	private Handler mHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-				case 200:
-					//图片上传完成开始 提交回复
-					commitReplay();
-					break;
-				case 201:
-					uploadImage();
-					break;
-				default:
-					break;
-			}
-		}
-
-	};
 
 
 	@Override
@@ -101,7 +76,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				showChooseImageDialog();
 			}
 		});
-//		mAdapter.refresh(MyManger.loadPicsArray());
+		mAdapter.refresh(MyManger.loadPicsArray());
 		mRecyclerView.setAdapter(mAdapter);
 		findViewById(R.id.sure).setOnClickListener(this);
 		findViewById(R.id.cancel).setOnClickListener(this);
@@ -316,70 +291,6 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 					}
 				}).show();
 
-	}
-
-
-	private void zoomPicture() {
-		new Thread() {
-
-			@Override
-			public void run() {
-				//循环挨个压缩
-				for (int i = 0; i < mAdapter.getList().size(); i++) {
-
-					tempBitmap = BitmapUtilImage.getLocationBitmap(mAdapter.getList().get(i));
-					if (tempBitmap != null) {
-						String path = BitmapUtil.saveMyBitmap("temp" + i, tempBitmap, mActivity);
-						mtempList.add(path);
-
-						if (null != tempBitmap) {
-
-							tempBitmap.recycle();
-						}
-					} else {
-						mHandler.sendEmptyMessage(203);
-					}
-
-				}
-
-				mHandler.sendEmptyMessage(201);
-			}
-		}.start();
-
-
-	}
-
-
-	/**
-	 * 请求网络
-	 * 1.上传图片
-	 * 2.完成开始提交
-	 */
-	private void uploadImage() {
-
-	}
-
-
-	/**
-	 * 请求网络 提交回复
-	 */
-	private void commitReplay() {
-
-
-	}
-
-	public boolean canCommit() {
-		if (mGetEditText.length() > 0) {
-			return true;
-		}
-		return false;
-	}
-
-
-	@Override
-	protected void onDestroy() {
-		tempBitmap = null;
-		super.onDestroy();
 	}
 
 }

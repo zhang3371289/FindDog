@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,15 +19,13 @@ import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
 import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
-import com.find.dog.data.UserInfo;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.PetState;
 import com.find.dog.utils.ToastUtil;
 import com.find.dog.utils.YKUtil;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,7 +55,15 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mypet_layout);
 		intview();
-		getUserPetInfo();
+		mPetsList = (ArrayList) getIntent().getSerializableExtra("objectList");
+		if(mPetsList == null){
+			getUserPetInfo();
+		}else {
+			getData(0);
+			mTopAdapter.updateData(mPetsList);
+			mFooterAdapter.notifyDataSetChanged();
+			mListView.setVisibility(View.VISIBLE);
+		}
 	}
 
 
@@ -88,7 +93,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 			@Override
 			public void callback(int position) {
 				selectPosition = position;
-				updateData(position);
+				getData(position);
 			}
 		});
 		mTopRV.setAdapter(mTopAdapter);
@@ -123,18 +128,48 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		mListView.addFooterView(footerView);
 		mFooterAdapter = new PetFooterAdapter(mPicList, mContext);
 		mFootRV.setAdapter(mFooterAdapter);
-
+		mListView.setVisibility(View.GONE);
 	}
 
-	private void updateData(int position) {
-		UserPetInfo petInfo = mPetsList.get(position);
-		name_text.setText(petInfo.getPatName());
-		phone_text.setText(petInfo.getMasterPhone());
-		adress_text.setText(petInfo.getLoseAddress());
-		type_text.setText(petInfo.getState());
-		describ_text.setText(petInfo.getDescrib());
-		raward_text.setText(petInfo.getReward());
-		tiem_text.setText(YKUtil.getStrTime(petInfo.getLoseDate()));
+	/**
+	 * 选中当前项
+	 * @param position
+	 */
+	public void getData(int position){
+		if(mPetsList.size()<=0){
+			return;
+		}
+		selectPosition = position;
+		mPicList.clear();
+		UserPetInfo mUserPetInfo = mPetsList.get(position);
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto1URL())){
+			mPicList.add(mUserPetInfo.getPhoto1URL());
+		}
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto2URL())){
+			mPicList.add(mUserPetInfo.getPhoto2URL());
+		}
+		if(!TextUtils.isEmpty(mUserPetInfo.getPhoto3URL())){
+			mPicList.add(mUserPetInfo.getPhoto3URL());
+		}
+
+		name_text.setText(mUserPetInfo.getPatName());
+		phone_text.setText(mUserPetInfo.getMasterPhone());
+		adress_text.setText(mUserPetInfo.getLoseAddress());
+		type_text.setText(PetState.getState(mUserPetInfo.getState()));
+		describ_text.setText(mUserPetInfo.getDescrib());
+		raward_text.setText(mUserPetInfo.getReward());
+		tiem_text.setText(YKUtil.getStrTime(mUserPetInfo.getLoseDate()));
+
+		mFooterAdapter.notifyDataSetChanged();
+
+		MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
+		MyManger.savePicsArray(mPicList);
+		UserPetInfo savePetInfo = new UserPetInfo();
+		savePetInfo.setPatName(mUserPetInfo.getPatName());
+		savePetInfo.setState(mUserPetInfo.getState());
+		savePetInfo.setMasterPhone(mUserPetInfo.getMasterPhone());
+		savePetInfo.setLoseAddress(mUserPetInfo.getLoseAddress());
+		MyManger.savePetInfo(savePetInfo);
 	}
 
 
@@ -192,11 +227,10 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 						if (infos != null && infos.size()>0) {
 							mPetsList = infos;
 //							mTopAdapter.notifyDataSetChanged();
-							updateData(0);
+							getData(0);
 							mTopAdapter.updateData(infos);
 							mFooterAdapter.notifyDataSetChanged();
-						} else {
-							mListView.setVisibility(View.GONE);
+							mListView.setVisibility(View.VISIBLE);
 						}
 					}
 
@@ -284,6 +318,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 					public void onSuccess(stringInfo infos) {
 						if (!TextUtils.isEmpty(infos.getInfo())) {
 							ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
+							finish();
 						} else {
 							ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
 						}
@@ -312,6 +347,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 						if (!TextUtils.isEmpty(infos.getInfo())) {
 							type_text.setText("正常");
 							ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
+							finish();
 						} else {
 							ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
 						}

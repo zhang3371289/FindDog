@@ -2,11 +2,13 @@ package com.find.dog.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by ZhangV on 2017/7/23.
  */
 
-public class UserPetInfo {
+public class UserPetInfo implements Serializable {
 
     /**
      * id : 8

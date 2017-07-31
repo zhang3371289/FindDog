@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +22,9 @@ import com.find.dog.data.QiNiuInfo;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
-import com.find.dog.utils.DialogUtil;
 import com.find.dog.utils.MyManger;
-import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.zxing.activity.CaptureActivity;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,9 +143,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         //处理扫描结果（在界面上显示）
         if (data != null) {
             String resul = data.getStringExtra("result");
-            ToastUtil.showTextToast(this,resul);
             MyManger.saveQRCode(resul);
-            startActivity(new Intent(this, UpLoadActivity.class));
+            getPetInfo(resul);
         }
     }
 
@@ -250,6 +240,34 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 mImg = (ImageView) view.findViewById(R.id.main_item_img);
             }
         }
+    }
+
+
+    private void getPetInfo(String qrCode){
+        //获取单个宠物
+        final Map<String, String> map = new HashMap<>();
+        map.put("2dCode", qrCode);
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserPetInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+                    @Override
+                    public void onSuccess(ArrayList<UserPetInfo> result) {
+                        if (result != null) {
+                            Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                            intent.putExtra("objectList", result);
+                            startActivity(intent);
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                        startActivity(new Intent(getApplicationContext(), UpLoadActivity.class));
+                    }
+
+                });
     }
 
 }
