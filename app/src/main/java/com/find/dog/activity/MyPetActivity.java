@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
@@ -19,9 +18,8 @@ import com.find.dog.adapter.PetFooterAdapter;
 import com.find.dog.adapter.PetTopAdapter;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
-import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
-import com.find.dog.utils.ToastUtil;
+import com.find.dog.utils.PetState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,7 +73,8 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 						if (infos != null) {
 							mPetsList = infos;
 							mTopAdapter.updateData(infos);
-							getData(infos.size()-1);
+							selectPosition = infos.size()-1;
+							getData(selectPosition);
 						} else {
 						}
 					}
@@ -111,8 +110,17 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 		name_text.setText(mUserPetInfo.getPatName());
 		phone_text.setText(mUserPetInfo.getMasterPhone());
 		adress_text.setText(mUserPetInfo.getLoseAddress());
-		type_text.setText(mUserPetInfo.getState());
+		type_text.setText(PetState.getState(mUserPetInfo.getState()));
 		mFooterAdapter.notifyDataSetChanged();
+
+		MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
+		MyManger.savePicsArray(mPicList);
+		UserPetInfo savePetInfo = new UserPetInfo();
+		savePetInfo.setPatName(mUserPetInfo.getPatName());
+		savePetInfo.setState(mUserPetInfo.getState());
+		savePetInfo.setMasterPhone(mUserPetInfo.getMasterPhone());
+		savePetInfo.setLoseAddress(mUserPetInfo.getLoseAddress());
+		MyManger.savePetInfo(savePetInfo);
 	}
 
 	/**
@@ -160,14 +168,10 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener{
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.fabu:
-				MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
-				MyManger.savePicsArray(mPicList);
 				Intent intent = new Intent(this,IssueActivity.class);
 				startActivity(intent);
 				break;
 			case R.id.change:
-				MyManger.saveQRCode(mPetsList.get(selectPosition).get_$2dCode());
-				MyManger.savePicsArray(mPicList);
 				Intent intent1 = new Intent(this,ChangePetActivity.class);
 				startActivity(intent1);
 				break;

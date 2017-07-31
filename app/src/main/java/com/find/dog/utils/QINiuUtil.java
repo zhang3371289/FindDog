@@ -130,36 +130,45 @@ public class QINiuUtil {
         for (int i = 0; i < list_length; i++) {
             String key = MyManger.getUserInfo().getPhone() + YKUtil.getUnixStamp() + "_" + i + ".jpg";
             final String photo_key = "photo"+ (i+1) +"URL";
-            uploadManager.put(mtempList.get(i), key, token,
-                    new UpCompletionHandler() {
-                        @Override
-                        public void complete(String key, ResponseInfo info, JSONObject res) {
-                            //res包含hash、key等信息，具体字段取决于上传策略的设置
-                            if (info.isOK()) {
-                                Log.i("qiniu", "Upload Success");
-                                if (res != null) {
-                                    try {
-                                        String key_back = res.getString("key");
-                                        key_map.put(photo_key, photo_value+key_back);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+            String url_path = mtempList.get(i);
+            if(url_path.contains(photo_value)){
+                key_map.put(photo_key, url_path);
+                if (callback != null && key_map.size() == list_length) {
+                    callback.callback(true,key_map);
+                }
+            }else{
+                uploadManager.put(url_path, key, token,
+                        new UpCompletionHandler() {
+                            @Override
+                            public void complete(String key, ResponseInfo info, JSONObject res) {
+                                //res包含hash、key等信息，具体字段取决于上传策略的设置
+                                if (info.isOK()) {
+                                    Log.i("qiniu", "Upload Success");
+                                    if (res != null) {
+                                        try {
+                                            String key_back = res.getString("key");
+                                            key_map.put(photo_key, photo_value+key_back);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                } else {
+                                    Log.i("qiniu", "Upload Fail");
+                                    //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
+//                                ToastUtil.showTextToast(MyApplication.getInstance(), info.error);
+                                    if (callback != null) {
+                                        callback.callback(false,key_map);
                                     }
                                 }
-
-                            } else {
-                                Log.i("qiniu", "Upload Fail");
-                                //如果失败，这里可以把info信息上报自己的服务器，便于后面分析上传错误原因
-//                                ToastUtil.showTextToast(MyApplication.getInstance(), info.error);
-                                if (callback != null) {
-                                    callback.callback(false,key_map);
+                                if (callback != null && key_map.size() == list_length) {
+                                    callback.callback(true,key_map);
                                 }
+                                Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
                             }
-                            if (callback != null && key_map.size() == list_length) {
-                                callback.callback(true,key_map);
-                            }
-                            Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                        }
-                    }, uploadOptions);
+                        }, uploadOptions);
+            }
+
         }
 
     }

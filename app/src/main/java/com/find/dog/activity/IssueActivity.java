@@ -37,7 +37,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
-    private TextView name_text,phone_text,losttime_text;
+    private TextView name_text,phone_text,losttime_text,pet_state;
     private EditText issue_edit,adress_edit,description_edit;
 
 
@@ -77,10 +77,12 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         name_text = (TextView) findViewById(R.id.fragment_pet_name);
         phone_text = (TextView) findViewById(R.id.fragment_pet_phone);
         losttime_text = (TextView) findViewById(R.id.fragment_pet_time);
+        pet_state = (TextView) findViewById(R.id.fragment_pet_zhuangtai);
 
-        name_text.setText(MyManger.getUserInfo().getName());
-        phone_text.setText(MyManger.getUserInfo().getPhone());
-        adress_edit.setText(MyManger.getUserInfo().getAdress());
+        name_text.setText(MyManger.getPetInfo().getPatName());
+        phone_text.setText(MyManger.getPetInfo().getMasterPhone());
+//        pet_state.setText(PetState.getState(MyManger.getPetInfo().getState()));
+        adress_edit.setText(MyManger.getPetInfo().getLoseAddress());
         issue_edit.setText(MyManger.getMoney());
         description_edit.setText(MyManger.getDescrib());
 
@@ -170,6 +172,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
             case R.id.fabu:
                 MyManger.saveMoney(issue_edit.getText().toString());
                 MyManger.saveDescrib(description_edit.getText().toString());
+                MyManger.savePicsArray(mAdapter.getList());
                 Intent intent = new Intent(this,PayActivity.class);
                 startActivity(intent);
                 break;
@@ -230,6 +233,5 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 }).show();
 
     }
-
 
 }
