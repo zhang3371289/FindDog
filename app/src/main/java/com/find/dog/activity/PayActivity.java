@@ -115,8 +115,6 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
                             // 将Map value 转化为List
                             ArrayList<String> mapValuesList = new ArrayList<String>(pic_map.values());
                             MyManger.savePicsArray(mapValuesList);
-//                            Intent intent = new Intent(PayActivity.this,MyPetPayAfterActivity.class);
-//                            startActivity(intent);
                             finish();
                         } else {
                         }
