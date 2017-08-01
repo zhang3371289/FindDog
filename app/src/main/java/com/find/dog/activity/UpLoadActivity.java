@@ -3,7 +3,6 @@ package com.find.dog.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -28,7 +27,6 @@ import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
-import com.find.dog.utils.DialogUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.QINiuUtil;
@@ -39,7 +37,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -149,7 +146,8 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             info.setAdress(mAdressEdit.getText().toString());
                             info.setPhone(mPhoneEdit.getText().toString());
                             MyManger.saveUserInfo(info);
-                            Intent intent = new Intent(mActivity, MyPetActivity.class);
+                            Intent intent = new Intent(mActivity, FindActivity.class);
+                            intent.putExtra("isFormUpLoad",true);
                             startActivity(intent);
                             // 将Map value 转化为List
                             ArrayList<String> mapValuesList = new ArrayList<String>(pic_map.values());

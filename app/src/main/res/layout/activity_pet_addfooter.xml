@@ -183,7 +183,8 @@
         android:layout_below="@+id/fragment_pet_rv"
         android:layout_margin="20dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <Button
             android:id="@+id/change"
