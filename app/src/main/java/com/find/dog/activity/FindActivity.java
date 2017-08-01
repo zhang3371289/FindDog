@@ -44,7 +44,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 	private PetFooterAdapter mFooterAdapter;
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
-	private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text;
+	private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text,zhuzhi_title;
 	private Button mButton;
 	private LinearLayout mSureLayout,mLostLayout,mNormalState,lose_text_layout;
 	private PetTopAdapter mTopAdapter;
@@ -119,6 +119,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		name_text = (TextView) footerView.findViewById(R.id.fragment_pet_name);
 		phone_text = (TextView) footerView.findViewById(R.id.fragment_pet_phone);
 		adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
+		zhuzhi_title = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi_title);
 		type_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuangtai);
 		describ_text = (TextView) footerView.findViewById(R.id.activity_issue_miaoshu);
 		raward_text = (TextView) footerView.findViewById(R.id.activity_issue_xuanshang);
@@ -184,6 +185,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		mLostLayout.setVisibility(View.GONE);
 		mNormalState.setVisibility(View.GONE);
 		lose_text_layout.setVisibility(View.VISIBLE);
+		zhuzhi_title.setText("丢失地址:");
 		if("lose".equals(mUserPetInfo.getState())){
 			mLostLayout.setVisibility(View.VISIBLE);
 		}else if("confirming".equals(mUserPetInfo.getState())){
@@ -191,6 +193,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		}else if("normal".equals(mUserPetInfo.getState())){
 			mNormalState.setVisibility(View.VISIBLE);
 			lose_text_layout.setVisibility(View.GONE);
+			zhuzhi_title.setText("住址:");
 		}
 
 		MyManger.saveQRCode(mUserPetInfo.get_$2dCode());

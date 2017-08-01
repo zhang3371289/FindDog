@@ -72,27 +72,6 @@
                 style="@style/PetTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="悬赏:"/>
-
-            <TextView
-                android:id="@+id/activity_issue_xuanshang"
-                style="@style/PetTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/red"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                style="@style/PetTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="手机:"/>
 
             <TextView
@@ -111,14 +90,15 @@
 
             <TextView
                 style="@style/PetTextStyle"
+                android:id="@+id/fragment_pet_zhuzhi_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="丢失时间:"/>
+                android:text="地址:"/>
 
             <TextView
-                android:id="@+id/fragment_pet_time"
+                android:id="@+id/fragment_pet_zhuzhi"
                 style="@style/PetTextStyle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"/>
 
@@ -129,6 +109,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/PetTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="丢失时间:"/>
+
+                <TextView
+                    android:id="@+id/fragment_pet_time"
+                    style="@style/PetTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    style="@style/PetTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="悬赏:"/>
+
+                <TextView
+                    android:id="@+id/activity_issue_xuanshang"
+                    style="@style/PetTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:textColor="@color/red"/>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -150,25 +172,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    style="@style/PetTextStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="丢失地址:"/>
-
-                <TextView
-                    android:id="@+id/fragment_pet_zhuzhi"
-                    style="@style/PetTextStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"/>
-
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
