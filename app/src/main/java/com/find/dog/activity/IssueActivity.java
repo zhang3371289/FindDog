@@ -167,6 +167,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 MyManger.savePetInfo(pet);
                 Intent intent = new Intent(this,PayActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.change:
             case R.id.back_layout:

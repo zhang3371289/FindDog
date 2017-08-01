@@ -45,8 +45,8 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 	private static int selectPosition = 0;
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text;
-	private Button mButton, mSure, mFind;
-	private LinearLayout mSureLayout;
+	private Button mButton;
+	private LinearLayout mSureLayout,mLostLayout,mNormalState;
 	private PetTopAdapter mTopAdapter;
 	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
 
@@ -57,7 +57,12 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		intview();
 		mPetsList = (ArrayList) getIntent().getSerializableExtra("objectList");
 		if(mPetsList == null){
-			getUserPetInfo();
+			if(getIntent().getBooleanExtra("isMyPet",false)){//宠物页面
+				title.setText("我的宠物");
+				getUserAllPetInfo();
+			}else{//发现页面
+				getUserPetInfo();
+			}
 		}else {
 			getData(0);
 			mTopAdapter.updateData(mPetsList);
@@ -66,6 +71,13 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if("我的宠物".equals(title.getText().toString())){
+			getUserAllPetInfo();
+		}
+	}
 
 	private void intview() {
 		mContext = this;
@@ -112,12 +124,16 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		raward_text = (TextView) footerView.findViewById(R.id.activity_issue_xuanshang);
 		tiem_text = (TextView) footerView.findViewById(R.id.fragment_pet_time);
 		mFootRV = (RecyclerView) footerView.findViewById(R.id.fragment_pet_rv);
-		mSure = (Button) footerView.findViewById(R.id.change);
-		mFind = (Button) footerView.findViewById(R.id.cancel);
-		mSure.setOnClickListener(this);
-		mFind.setOnClickListener(this);
-		mSureLayout = (LinearLayout) footerView.findViewById(R.id.bottom_layout);
-		mSureLayout.setVisibility(View.GONE);
+		mSureLayout = (LinearLayout) footerView.findViewById(R.id.surefind_layout);
+		mLostLayout = (LinearLayout) footerView.findViewById(R.id.bottom_layout);
+		mNormalState = (LinearLayout) footerView.findViewById(R.id.normal_layout);
+		footerView.findViewById(R.id.change).setOnClickListener(this);
+		footerView.findViewById(R.id.cancel).setOnClickListener(this);
+		footerView.findViewById(R.id.find_state).setOnClickListener(this);
+		footerView.findViewById(R.id.goon_state).setOnClickListener(this);
+		footerView.findViewById(R.id.fabu_state).setOnClickListener(this);
+		footerView.findViewById(R.id.change_state).setOnClickListener(this);
+		mLostLayout.setVisibility(View.GONE);
 		mButton = (Button) footerView.findViewById(R.id.lianxizhuren);
 		mButton.setOnClickListener(this);
 		mButton.setVisibility(View.VISIBLE);
@@ -162,6 +178,18 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 
 		mFooterAdapter.notifyDataSetChanged();
 
+		mButton.setVisibility(View.GONE);
+		mSureLayout.setVisibility(View.GONE);
+		mLostLayout.setVisibility(View.GONE);
+		mNormalState.setVisibility(View.GONE);
+		if("lose".equals(mUserPetInfo.getState())){
+			mLostLayout.setVisibility(View.VISIBLE);
+		}else if("confirming".equals(mUserPetInfo.getState())){
+			mSureLayout.setVisibility(View.VISIBLE);
+		}else if("normal".equals(mUserPetInfo.getState())){
+			mNormalState.setVisibility(View.VISIBLE);
+		}
+
 		MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
 		MyManger.savePicsArray(mPicList);
 		UserPetInfo savePetInfo = new UserPetInfo();
@@ -184,13 +212,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		type_text.setText("确认中");
 	}
 
-	private void sureFind() {
-		mButton.setVisibility(View.GONE);
-		mSureLayout.setVisibility(View.VISIBLE);
-		mSure.setText("确认找回");
-		mFind.setText("继续寻找");
-	}
-
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
@@ -205,11 +226,23 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 					getSureInfo();
 				}
 				break;
-			case R.id.change://确认找回
+			case R.id.find_state://确认找回
 				getFindInfo();
 				break;
-			case R.id.cancel://继续寻找
+			case R.id.goon_state://继续寻找
 				getAgainInfo();
+				break;
+			case R.id.change://修改悬赏
+				startActivity(new Intent(this,IssueActivity.class));
+				break;
+			case R.id.cancel://取消悬赏
+				getCancelInfo();
+				break;
+			case R.id.fabu_state://发布悬赏
+				startActivity(new Intent(this,IssueActivity.class));
+				break;
+			case R.id.change_state://修改信息
+				startActivity(new Intent(this,ChangePetActivity.class));
 				break;
 			case R.id.back_layout:
 				finish();
@@ -292,7 +325,8 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 					@Override
 					public void onSuccess(stringInfo infos) {
 						if (!TextUtils.isEmpty(infos.getInfo())) {
-							sureFind();
+							type_text.setText("正常");
+							mNormalState.setVisibility(View.VISIBLE);
 							ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
 						} else {
 							ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
@@ -350,8 +384,8 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 					public void onSuccess(stringInfo infos) {
 						if (!TextUtils.isEmpty(infos.getInfo())) {
 							type_text.setText("正常");
+							mNormalState.setVisibility(View.VISIBLE);
 							ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
-							finish();
 						} else {
 							ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
 						}
@@ -360,6 +394,34 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 					@Override
 					public void onFail() {
 						ToastUtil.showTextToast(getApplicationContext(), getResources().getString(R.string.error_net));
+					}
+
+				});
+	}
+
+	private void getUserAllPetInfo(){
+		// 宠物页 获取用户所有宠物
+		Map<String, String> map = new HashMap<>();
+		map.put("userPhone", MyManger.getUserInfo().getPhone());
+		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+		new RetroFitUtil<ArrayList<UserPetInfo>>(this, RetroFactory.getIstance().getStringService().getUserAllPetInfo(requestBody))
+				.request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
+
+					@Override
+					public void onSuccess(ArrayList<UserPetInfo> infos) {
+						if (infos != null) {
+							mPetsList = infos;
+							mTopAdapter.updateData(infos);
+//							selectPosition = infos.size()-1;
+							getData(selectPosition);
+							mListView.setVisibility(View.VISIBLE);
+							mFooterAdapter.notifyDataSetChanged();
+						} else {
+						}
+					}
+
+					@Override
+					public void onFail() {
 					}
 
 				});

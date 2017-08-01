@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -193,7 +192,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab3:
 //                ToastUtil.showTextToast(mActivity,"宠物");
-                startActivity(new Intent(this, MyPetActivity.class));
+                Intent intent1 = new Intent(this, FindActivity.class);
+                intent1.putExtra("isMyPet",true);
+                startActivity(intent1);
                 break;
             case R.id.activity_main_tab4:
                 ToastUtil.showTextToast(mActivity,"社区");
