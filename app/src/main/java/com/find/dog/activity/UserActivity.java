@@ -3,7 +3,6 @@ package com.find.dog.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -90,7 +89,6 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
      * 获取用户信息
      */
     private void getUserInfo() {
-        Log.e("H", "getUserInfo---->");
         String phone = getIntent().getStringExtra("phone");
         if(TextUtils.isEmpty(phone)){
             phone = MyManger.getUserInfo().getPhone();
@@ -104,9 +102,7 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
 
                     @Override
                     public void onSuccess(GetUserInfo infos) {
-                        Log.e("H", "getUserInfo---->" + infos);
                         if (infos != null) {
-//                            ToastUtil.showTextToast(getApplicationContext(),infos.toString());
                             update(infos);
                         } else {
                         }
@@ -114,7 +110,6 @@ public class UserActivity extends BaseActivity implements View.OnClickListener {
 
                     @Override
                     public void onFail() {
-                        Log.e("H", "file---->" );
                     }
 
                 });

@@ -255,7 +255,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		//改变宠物状态（确认中） lose->confirming
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
-		map.put("2dCode", MyManger.getPetInfo().get_$2dCode());
+		map.put("2dCode", MyManger.getQRCode());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changeLoseToConfirmingState(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
@@ -284,7 +284,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		//改变宠物状态(取消悬赏) lose->normal
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
-		map.put("2dCode", MyManger.getPetInfo().get_$2dCode());
+		map.put("2dCode", MyManger.getQRCode());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changeLoseToNormalState(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
@@ -313,7 +313,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		//改变宠物状态（确认失败，继续悬赏） confirming->lose
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
-		map.put("2dCode", MyManger.getPetInfo().get_$2dCode());
+		map.put("2dCode", MyManger.getQRCode());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changeConfirmingToLoseState(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
@@ -341,7 +341,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		//改变宠物状态（宠物找回） confirming->normal
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
-		map.put("2dCode", MyManger.getPetInfo().get_$2dCode());
+		map.put("2dCode", MyManger.getQRCode());
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changeConfirmingToNormalState(requestBody))
 				.request(new RetroFitUtil.ResponseListener<stringInfo>() {
