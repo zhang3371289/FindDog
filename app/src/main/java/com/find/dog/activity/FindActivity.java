@@ -46,7 +46,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 	private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
 	private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text;
 	private Button mButton;
-	private LinearLayout mSureLayout,mLostLayout,mNormalState;
+	private LinearLayout mSureLayout,mLostLayout,mNormalState,lose_text_layout;
 	private PetTopAdapter mTopAdapter;
 	private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
 
@@ -127,6 +127,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		mSureLayout = (LinearLayout) footerView.findViewById(R.id.surefind_layout);
 		mLostLayout = (LinearLayout) footerView.findViewById(R.id.bottom_layout);
 		mNormalState = (LinearLayout) footerView.findViewById(R.id.normal_layout);
+		lose_text_layout = (LinearLayout) footerView.findViewById(R.id.lose_text_layout);
 		footerView.findViewById(R.id.change).setOnClickListener(this);
 		footerView.findViewById(R.id.cancel).setOnClickListener(this);
 		footerView.findViewById(R.id.find_state).setOnClickListener(this);
@@ -182,12 +183,14 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		mSureLayout.setVisibility(View.GONE);
 		mLostLayout.setVisibility(View.GONE);
 		mNormalState.setVisibility(View.GONE);
+		lose_text_layout.setVisibility(View.VISIBLE);
 		if("lose".equals(mUserPetInfo.getState())){
 			mLostLayout.setVisibility(View.VISIBLE);
 		}else if("confirming".equals(mUserPetInfo.getState())){
 			mSureLayout.setVisibility(View.VISIBLE);
 		}else if("normal".equals(mUserPetInfo.getState())){
 			mNormalState.setVisibility(View.VISIBLE);
+			lose_text_layout.setVisibility(View.GONE);
 		}
 
 		MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
