@@ -59,7 +59,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
 		if(mPetsList == null){
 			if(getIntent().getBooleanExtra("isMyPet",false)){//宠物页面
 				title.setText("我的宠物");
-				getUserAllPetInfo();
 			}else{//发现页面
 				getUserPetInfo();
 			}
