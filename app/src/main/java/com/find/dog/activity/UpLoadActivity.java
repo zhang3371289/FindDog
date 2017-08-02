@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.find.dog.R;
@@ -50,8 +49,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
-    private LinearLayout normalLayout;
-    private EditText mNameEdit, mAdressEdit, mPhoneEdit;
+    private EditText mNameEdit, mAdressEdit;
 
 
     @Override
@@ -69,7 +67,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
     private void initView() {
         mNameEdit = (EditText) findViewById(R.id.activity_upload_name_edit);
         mAdressEdit = (EditText) findViewById(R.id.activity_upload_adress_edit);
-        mPhoneEdit = (EditText) findViewById(R.id.activity_upload_phone_edit);
         mRecyclerView = (RecyclerView) findViewById(R.id.activity_upload_rv);
         //设置布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mActivity);
@@ -86,16 +83,11 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         mCommit = (Button) findViewById(R.id.activity_upload_up);
         mCommit.setOnClickListener(this);
         findViewById(R.id.back_layout).setOnClickListener(this);
-        findViewById(R.id.activity_upload_yzm_text).setOnClickListener(this);
-        normalLayout = (LinearLayout) findViewById(R.id.activity_upload_normal_layout);
         mNameEdit.setText(MyManger.getUserInfo().getName());
         mAdressEdit.setText(MyManger.getUserInfo().getAdress());
-        mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
         if (!MyManger.isLogin()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, LoginActivity.LOGIN_RESULT);
-        }else{
-            normalLayout.setVisibility(View.GONE);
         }
     }
 
@@ -128,7 +120,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
 
         //宠物信息录入
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", mPhoneEdit.getText().toString());
+        map.put("userPhone", MyManger.getUserInfo().getPhone());
         map.put("patName", mNameEdit.getText().toString());
         map.put("homeAddress", mAdressEdit.getText().toString());
         map.put("2dCode", MyManger.getQRCode());
@@ -144,7 +136,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             UserInfo info = new UserInfo();
                             info.setName(mNameEdit.getText().toString());
                             info.setAdress(mAdressEdit.getText().toString());
-                            info.setPhone(mPhoneEdit.getText().toString());
+                            info.setPhone(MyManger.getUserInfo().getPhone());
                             MyManger.saveUserInfo(info);
                             Intent intent = new Intent(mActivity, FindActivity.class);
                             intent.putExtra("isFormUpLoad",true);
@@ -213,10 +205,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 }
                 break;
 
-            case LoginActivity.LOGIN_RESULT:
-                mPhoneEdit.setText(MyManger.getUserInfo().getPhone());
-                break;
-
             default:
                 break;
         }
@@ -257,9 +245,6 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.back_layout:
                 finish();
-                break;
-            case R.id.activity_upload_yzm_text:
-                ToastUtil.showTextToast(this, "获取验证码");
                 break;
             default:
                 break;

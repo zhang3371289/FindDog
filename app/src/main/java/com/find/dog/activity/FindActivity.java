@@ -50,6 +50,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
     private PetTopAdapter mTopAdapter;
     private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
     private boolean isFromQRCode;
+    private View footerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +122,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
      * 当前适配
      */
     private void addFooter() {
-        View footerView = LayoutInflater.from(mContext).inflate(R.layout.activity_pet_addfooter, null, false);
+        footerView = LayoutInflater.from(mContext).inflate(R.layout.activity_pet_addfooter, null, false);
         name_text = (TextView) footerView.findViewById(R.id.fragment_pet_name);
         phone_text = (TextView) footerView.findViewById(R.id.fragment_pet_phone);
         adress_text = (TextView) footerView.findViewById(R.id.fragment_pet_zhuzhi);
@@ -141,6 +142,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         footerView.findViewById(R.id.goon_state).setOnClickListener(this);
         footerView.findViewById(R.id.fabu_state).setOnClickListener(this);
         footerView.findViewById(R.id.change_state).setOnClickListener(this);
+        footerView.setVisibility(View.GONE);
         mLostLayout.setVisibility(View.GONE);
         mButton = (Button) footerView.findViewById(R.id.lianxizhuren);
         mButton.setOnClickListener(this);
@@ -163,6 +165,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         if (mPetsList.size() <= 0) {
             return;
         }
+        footerView.setVisibility(View.VISIBLE);
         selectPosition = position;
         mPicList.clear();
         UserPetInfo mUserPetInfo = mPetsList.get(position);
