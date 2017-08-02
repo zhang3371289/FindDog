@@ -62,7 +62,9 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
             if (getIntent().getBooleanExtra("isMyPet", false)) {//宠物页面
                 title.setText("我的宠物");
             } else if (getIntent().getBooleanExtra("isFormUpLoad", false)) {//上传页面
+                title.setText("我的宠物");
                 getUserAllPetInfo(true);
+                mTopRV.setVisibility(View.GONE);
             } else {//发现页面
                 getUserPetInfo();
             }
@@ -248,7 +250,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                 if ("放弃联系".equals(mButton.getText().toString())) {
                     getCancelInfo();
                 } else {
-                    getSureInfo();
+                    getSureInfo(); //（联系主人）
                 }
                 break;
             case R.id.find_state://确认找回
@@ -260,7 +262,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
             case R.id.change://修改悬赏
                 startActivity(new Intent(this, IssueActivity.class));
                 break;
-            case R.id.cancel://取消悬赏
+            case R.id.cancel://取消悬赏  （放弃联系）
                 getCancelInfo();
                 break;
             case R.id.fabu_state://发布悬赏
@@ -350,9 +352,12 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onSuccess(stringInfo infos) {
                         if (!TextUtils.isEmpty(infos.getInfo())) {
-                            type_text.setText("正常");
-                            mButton.setVisibility(View.GONE);
-                            mNormalState.setVisibility(View.VISIBLE);
+                            if (isFromQRCode) {
+                                type_text.setText("正常");
+                                mButton.setVisibility(View.GONE);
+                            } else {
+                                getUserAllPetInfo(false);
+                            }
                             ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(), infos.getErro());

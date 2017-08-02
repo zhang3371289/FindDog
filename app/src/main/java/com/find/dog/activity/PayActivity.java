@@ -99,7 +99,7 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
         map.put("alipay", "");
         map.put("wechatpay", "");
         map.put("loseAddress", MyManger.getPetInfo().getLoseAddress());
-        map.put("reward", MyManger.getPetInfo().getReward());
+        map.put("reward", MyManger.getMoney());
         map.put("describ", MyManger.getDescrib());
         map.put("2dCode", MyManger.getQRCode());
         map.putAll(pic_map);
