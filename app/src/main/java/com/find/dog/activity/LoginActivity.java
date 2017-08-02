@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -75,7 +74,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        Log.e("H", "getLoginInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             //关闭软键盘
                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -95,7 +93,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onFail() {
-                        Log.e("H", "onFail---->");
                         ToastUtil.showTextToast(LoginActivity.this, getResources().getString(R.string.error_net));
                     }
 
