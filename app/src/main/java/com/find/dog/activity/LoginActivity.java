@@ -1,10 +1,12 @@
 package com.find.dog.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -25,9 +27,10 @@ import okhttp3.RequestBody;
 
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
-    private EditText phone_edit,yzm_edit;
-    private Button sure_text,yzm_text;
+    private EditText phone_edit, yzm_edit;
+    private Button sure_text, yzm_text;
     public static final int LOGIN_RESULT = 101;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,18 +46,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.activity_login_yzm_text:
-                ToastUtil.showTextToast(this,yzm_edit.getText().toString());
+                ToastUtil.showTextToast(this, yzm_edit.getText().toString());
                 break;
             case R.id.register_text:
-                startActivity(new Intent(this,RegisterActivity.class));
+                startActivity(new Intent(this, RegisterActivity.class));
                 finish();
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();
-                if(TextUtils.isEmpty(phone)){
-                    ToastUtil.showTextToast(this,"手机号不能为空");
+                if (TextUtils.isEmpty(phone)) {
+                    ToastUtil.showTextToast(this, "手机号不能为空");
                     return;
                 }
                 getLoginInfo(phone);
@@ -63,7 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void getLoginInfo(final String mPhone){
+    private void getLoginInfo(final String mPhone) {
         Map<String, String> map = new HashMap<>();
         map.put("userPhone", mPhone);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
@@ -74,21 +77,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     public void onSuccess(stringInfo infos) {
                         Log.e("H", "getLoginInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
+                            //关闭软键盘
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            if (imm != null) {
+                                imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(),0);
+                            }
 //                            Intent intent = new Intent(LoginActivity.this,UserActivity.class);
 //                            intent.putExtra("phone",mPhone);
 //                            startActivity(intent);
                             getUserInfo(mPhone);
                             finish();
-                            ToastUtil.showTextToast(LoginActivity.this,infos.getInfo());
+                            ToastUtil.showTextToast(LoginActivity.this, infos.getInfo());
                         } else {
-                            ToastUtil.showTextToast(LoginActivity.this,infos.getErro());
+                            ToastUtil.showTextToast(LoginActivity.this, infos.getErro());
                         }
                     }
 
                     @Override
                     public void onFail() {
                         Log.e("H", "onFail---->");
-                        ToastUtil.showTextToast(LoginActivity.this,getResources().getString(R.string.error_net));
+                        ToastUtil.showTextToast(LoginActivity.this, getResources().getString(R.string.error_net));
                     }
 
                 });
@@ -109,10 +117,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         if (infos != null) {
 //                            ToastUtil.showTextToast(getApplicationContext(),infos.toString());
                             UserInfo info = new UserInfo();
-                            if(!TextUtils.isEmpty(infos.getWechatpay())){
+                            if (!TextUtils.isEmpty(infos.getWechatpay())) {
                                 info.setPayNumber(infos.getWechatpay());
                                 info.setPayType(UserInfo.WECHATPAY);
-                            }else{
+                            } else {
                                 info.setPayNumber(infos.getAlipay());
                                 info.setPayType(UserInfo.ALIPAY);
                             }
@@ -122,7 +130,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             MyManger.saveLogin(true);
 
                             Intent intent = getIntent();
-                            setResult(LOGIN_RESULT,intent);
+                            setResult(LOGIN_RESULT, intent);
                             finish();
 
                         } else {
