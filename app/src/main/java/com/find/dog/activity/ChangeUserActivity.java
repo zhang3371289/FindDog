@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -28,7 +29,8 @@ import okhttp3.RequestBody;
 
 
 public class ChangeUserActivity extends BaseActivity implements View.OnClickListener {
-    private EditText phone_edit,yzm_edit,pay_number_edit;
+    private EditText phone_edit,yzm_edit,pay_number_edit,adress_edit;
+    private LinearLayout adress_layout;
     private Button sure_text,yzm_text;
     private TextView title_text;
     private RadioGroup radioGroup;
@@ -54,12 +56,15 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
         phone_edit = (EditText) findViewById(R.id.activity_login_phone);
         yzm_edit = (EditText) findViewById(R.id.activity_login_yzm);
         pay_number_edit = (EditText) findViewById(R.id.activity_register_pay);
+        adress_edit = (EditText) findViewById(R.id.activity_login_adress);
+        adress_layout = (LinearLayout) findViewById(R.id.activity_login_adress_layout);
         yzm_text = (Button) findViewById(R.id.activity_login_yzm_text);
         sure_text = (Button) findViewById(R.id.activity_login_sure_text);
         sure_text.setText("修改");
         title_text.setText("修改信息");
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
+        adress_layout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -92,7 +97,9 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
         final String mNumber = pay_number_edit.getText().toString();
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("userPhone", mPhone);
+        map.put("userPhone", MyManger.getUserInfo().getPhone());
+        map.put("newPhone", mPhone);
+        map.put("homeAddress", adress_edit.getText().toString());
         if(zhifubaoButton.isChecked()){
             type = UserInfo.ALIPAY;
             map.put("alipay",mNumber);

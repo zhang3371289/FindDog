@@ -140,6 +140,26 @@
 
         </RelativeLayout>
 
+        <LinearLayout android:id="@+id/activity_login_adress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/TitleTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="住址：" />
+
+            <EditText
+                android:id="@+id/activity_login_adress"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp" />
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/activity_login_sure_text"
             style="@style/TitleTextStyle"

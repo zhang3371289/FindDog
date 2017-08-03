@@ -68,6 +68,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     ToastUtil.showTextToast(this,"手机号不能为空");
                     return;
                 }
+
                 PhoneUtil.getInstance().checkSmsCode(phone, yzmCode, new PhoneUtil.PhoneCallback() {
                     @Override
                     public void onSuccess(Object o) {
