@@ -3,7 +3,6 @@ package com.find.dog.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -113,7 +112,6 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        Log.e("H", "getRegistInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setPhone(mPhone);
@@ -135,7 +133,6 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
 
                     @Override
                     public void onFail() {
-                        Log.e("H", "onFail---->");
                         ToastUtil.showTextToast(ChangeUserActivity.this,getResources().getString(R.string.error_net));
                     }
 
