@@ -17,6 +17,7 @@ import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.PhoneUtil;
 import com.find.dog.utils.ToastUtil;
 
 import java.util.HashMap;
@@ -47,19 +48,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.activity_login_yzm_text:
-                ToastUtil.showTextToast(this, yzm_edit.getText().toString());
+                PhoneUtil.getInstance().getSmsCode(phone_edit.getText().toString(),yzm_text);
                 break;
             case R.id.register_text:
                 startActivity(new Intent(this, RegisterActivity.class));
                 finish();
                 break;
             case R.id.activity_login_sure_text:
-                String phone = phone_edit.getText().toString();
+                final String phone = phone_edit.getText().toString();
+                final String yzmCode = yzm_edit.getText().toString();
                 if (TextUtils.isEmpty(phone)) {
                     ToastUtil.showTextToast(this, "手机号不能为空");
                     return;
                 }
-                getLoginInfo(phone);
+
+                PhoneUtil.getInstance().checkSmsCode(phone, yzmCode, new PhoneUtil.PhoneCallback() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        getLoginInfo(phone);
+                    }
+                });
 
                 break;
         }

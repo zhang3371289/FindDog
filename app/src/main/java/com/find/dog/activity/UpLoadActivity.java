@@ -144,7 +144,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             // 将Map value 转化为List
                             ArrayList<String> mapValuesList = new ArrayList<String>(pic_map.values());
                             MyManger.savePicsArray(mapValuesList);
-//                            finish();
+                            finish();
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
                         }

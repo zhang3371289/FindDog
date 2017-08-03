@@ -7,18 +7,15 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.find.dog.baidu.MyLocationListener;
 
+import cn.jpush.sms.SMSSDK;
+
 public class MyApplication extends android.app.Application {
 
     private DisplayMetrics displayMetrics = null;
     private static MyApplication myApplication;
     public LocationClient mLocationClient = null;
     public BDLocationListener myListener = new MyLocationListener();
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        myApplication = this;
-        initLocation();
-    }
+
     public static MyApplication getInstance() {
         if (myApplication == null) {
             myApplication = new MyApplication();
@@ -26,13 +23,29 @@ public class MyApplication extends android.app.Application {
         return myApplication;
     }
 
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        myApplication = this;
+        initLocation();
+        initJsms();
+    }
+
+    /**
+     * 短信验证实例化
+     */
+    private void initJsms(){
+        SMSSDK.getInstance().initSdk(this);
+        SMSSDK.getInstance().setIntervalTime(60*1000);//设置前后两次获取验证码的时间间隔，默认 30 秒。
+    }
+
     /**
      * 百度定位 实例化
      */
-    private void initLocation(){
+    private void initLocation() {
         mLocationClient = new LocationClient(getApplicationContext());
         //声明LocationClient类
-        mLocationClient.registerLocationListener( myListener );
+        mLocationClient.registerLocationListener(myListener);
 
         //注册监听函数
         LocationClientOption option = new LocationClientOption();
@@ -42,7 +55,7 @@ public class MyApplication extends android.app.Application {
         option.setCoorType("bd09ll");
         //可选，默认gcj02，设置返回的定位结果坐标系
 
-        int span=0;
+        int span = 0;
         option.setScanSpan(span);
         //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
 

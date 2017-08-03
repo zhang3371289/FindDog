@@ -86,8 +86,10 @@
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        //key:开发者申请的Key
+            android:value="@integer/google_play_services_version" /> //key:开发者申请的Key
+
+        <meta-data android:name="JPUSH_APPKEY" android:value="7a6743ff11c4145fc81219b3" /> <!--  </>值来自开发者平台取得的AppKey-->
+
     </application>
 
 </manifest>

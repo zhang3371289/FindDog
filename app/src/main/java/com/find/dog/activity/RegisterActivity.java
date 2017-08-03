@@ -1,9 +1,7 @@
 package com.find.dog.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +16,7 @@ import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.PhoneUtil;
 import com.find.dog.utils.ToastUtil;
 
 import java.util.HashMap;
@@ -60,20 +59,27 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_login_yzm_text:
+                PhoneUtil.getInstance().getSmsCode(phone_edit.getText().toString(),yzm_text);
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();
+                final String yzmCode = yzm_edit.getText().toString();
                 if(TextUtils.isEmpty(phone)){
                     ToastUtil.showTextToast(this,"手机号不能为空");
                     return;
                 }
-                getLoginInfo();
+                PhoneUtil.getInstance().checkSmsCode(phone, yzmCode, new PhoneUtil.PhoneCallback() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        getRegistInfo();
+                    }
+                });
 
                 break;
         }
     }
 
-    private void getLoginInfo(){
+    private void getRegistInfo(){
         final String mPhone = phone_edit.getText().toString();
         final String mNumber = pay_number_edit.getText().toString();
         //获取 正在悬赏宠物
@@ -92,7 +98,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                     @Override
                     public void onSuccess(stringInfo infos) {
-                        Log.e("H", "getRegistInfo---->" + infos);
                         if (!TextUtils.isEmpty(infos.getInfo())) {
                             UserInfo info = new UserInfo();
                             info.setPhone(mPhone);
@@ -109,7 +114,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
                     @Override
                     public void onFail() {
-                        Log.e("H", "onFail---->");
                         ToastUtil.showTextToast(RegisterActivity.this,getResources().getString(R.string.error_net));
                     }
 
