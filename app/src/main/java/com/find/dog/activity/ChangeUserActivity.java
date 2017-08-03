@@ -18,6 +18,7 @@ import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.PhoneUtil;
 import com.find.dog.utils.ToastUtil;
 
 import java.util.HashMap;
@@ -65,20 +66,28 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.activity_login_yzm_text:
+                PhoneUtil.getInstance().getSmsCode(phone_edit.getText().toString(),yzm_text);
                 break;
             case R.id.activity_login_sure_text:
                 String phone = phone_edit.getText().toString();
+                String yzmCode = yzm_edit.getText().toString();
                 if(TextUtils.isEmpty(phone)){
                     ToastUtil.showTextToast(this,"手机号不能为空");
                     return;
                 }
-                getLoginInfo();
+
+                PhoneUtil.getInstance().checkSmsCode(phone, yzmCode, new PhoneUtil.PhoneCallback() {
+                    @Override
+                    public void onSuccess(Object o) {
+                        alterUserInfo();
+                    }
+                });
 
                 break;
         }
     }
 
-    private void getLoginInfo(){
+    private void alterUserInfo(){
         final String mPhone = phone_edit.getText().toString();
         final String mNumber = pay_number_edit.getText().toString();
         //获取 正在悬赏宠物
