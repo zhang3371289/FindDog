@@ -51,7 +51,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
     private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
     private boolean isFromQRCode;
     private View footerView;
-
+    private String MY_PET = "我的宠物",FIND = "发现",GIVE_UP_CONTACT = "放弃联系";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +61,9 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         if (mPetsList == null) {// 点击发现 宠物 信息
             isFromQRCode = false;
             if (getIntent().getBooleanExtra("isMyPet", false)) {//宠物页面
-                title.setText("我的宠物");
+                title.setText(MY_PET);
             } else if (getIntent().getBooleanExtra("isFormUpLoad", false)) {//上传页面
-                title.setText("我的宠物");
+                title.setText(MY_PET);
                 getUserAllPetInfo(true);
                 mTopRV.setVisibility(View.GONE);
             } else {//发现页面
@@ -81,7 +81,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        if ("我的宠物".equals(title.getText().toString())) {
+        if (MY_PET.equals(title.getText().toString())) {
             getUserAllPetInfo(false);
         }
     }
@@ -89,7 +89,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
     private void intview() {
         mContext = this;
         title = (TextView) findViewById(R.id.title);
-        title.setText("发现");
+        title.setText(FIND);
         findViewById(R.id.back_layout).setOnClickListener(this);
         mListView = (ListView) findViewById(R.id.fragment_pet_listview);
         addTop();
@@ -178,7 +178,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         if (!TextUtils.isEmpty(mUserPetInfo.getPhoto3URL())) {
             mPicList.add(mUserPetInfo.getPhoto3URL());
         }
-
         name_text.setText(mUserPetInfo.getPatName());
         phone_text.setText(mUserPetInfo.getMasterPhone());
         adress_text.setText(mUserPetInfo.getLoseAddress());
@@ -195,35 +194,25 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         mNormalState.setVisibility(View.GONE);
         lose_text_layout.setVisibility(View.VISIBLE);
         zhuzhi_title.setText("丢失地址:");
-
-        if ("lose".equals(mUserPetInfo.getState())) {
-            if (isFromQRCode) { //二维码进入的界面
+        String state = mUserPetInfo.getState();
+        if ("lose".equals(state)) {
+            if (isFromQRCode) { //二维码进入的界面  显示  联系主人
                 mButton.setVisibility(View.VISIBLE);
-            } else { //手动点击的界面
+            } else { //手动点击的界面  显示 修改悬赏-取消悬赏
                 mLostLayout.setVisibility(View.VISIBLE);
             }
-        } else if ("confirming".equals(mUserPetInfo.getState())) {
-            if("我的宠物".equals(title.getText().toString())){
+        } else if ("confirming".equals(state)) {
+            if(MY_PET.equals(title.getText().toString())){//我的宠物 显示 确认找回-继续寻找
                 mSureLayout.setVisibility(View.VISIBLE);
-            }else if("发现".equals(title.getText().toString())){
+            }else if(FIND.equals(title.getText().toString())){// 发现 显示 放弃联系
                 mButton.setVisibility(View.VISIBLE);
-                mButton.setText("放弃联系");
+                mButton.setText(GIVE_UP_CONTACT);
             }
-        } else if ("normal".equals(mUserPetInfo.getState())) {
+        } else if ("normal".equals(state)) {
             mNormalState.setVisibility(View.VISIBLE);
             lose_text_layout.setVisibility(View.GONE);
             zhuzhi_title.setText("住址:");
         }
-
-//		if("lose".equals(mUserPetInfo.getState())){
-//			mLostLayout.setVisibility(View.VISIBLE);
-//		}else if("confirming".equals(mUserPetInfo.getState())){
-//			mSureLayout.setVisibility(View.VISIBLE);
-//		}else if("normal".equals(mUserPetInfo.getState())){
-//			mNormalState.setVisibility(View.VISIBLE);
-//			lose_text_layout.setVisibility(View.GONE);
-//			zhuzhi_title.setText("住址:");
-//		}
 
         MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
         MyManger.savePicsArray(mPicList);
@@ -243,7 +232,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         takePhone(phone_text.getText().toString());
         MyManger.savePetInfo(mPetsList.get(selectPosition));
         mTopRV.setVisibility(View.GONE);
-        mButton.setText("放弃联系");
+        mButton.setText(GIVE_UP_CONTACT);
         type_text.setText("确认中");
     }
 
@@ -255,7 +244,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                     startActivity(new Intent(this, LoginActivity.class));
                     return;
                 }
-                if ("放弃联系".equals(mButton.getText().toString())) {
+                if (GIVE_UP_CONTACT.equals(mButton.getText().toString())) {
                     getCancelInfo();
                 } else {
                     getSureInfo(); //（联系主人）
