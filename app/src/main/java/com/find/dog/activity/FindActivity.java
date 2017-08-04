@@ -203,7 +203,12 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                 mLostLayout.setVisibility(View.VISIBLE);
             }
         } else if ("confirming".equals(mUserPetInfo.getState())) {
-            mSureLayout.setVisibility(View.VISIBLE);
+            if("我的宠物".equals(title.getText().toString())){
+                mSureLayout.setVisibility(View.VISIBLE);
+            }else if("发现".equals(title.getText().toString())){
+                mButton.setVisibility(View.VISIBLE);
+                mButton.setText("放弃联系");
+            }
         } else if ("normal".equals(mUserPetInfo.getState())) {
             mNormalState.setVisibility(View.VISIBLE);
             lose_text_layout.setVisibility(View.GONE);

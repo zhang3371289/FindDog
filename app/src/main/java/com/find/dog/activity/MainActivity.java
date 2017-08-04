@@ -24,6 +24,7 @@ import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.ToastUtil;
+import com.find.dog.utils.YKUtil;
 import com.google.zxing.activity.CaptureActivity;
 
 import java.util.ArrayList;
@@ -173,6 +174,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                 break;
             case R.id.activity_main_tab1:
+                if(!YKUtil.isNetworkAvailable()){
+                    ToastUtil.showTextToast(mContext,getResources().getString(R.string.intent_no));
+                    return;
+                }
                 //打开扫描界面扫描条形码或二维码
                 MainActivity.onPermissionRequests(Manifest.permission.CAMERA, new MainActivity.OnBooleanListener() {
                     @Override

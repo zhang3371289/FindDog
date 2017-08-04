@@ -98,6 +98,9 @@ public class PhoneUtil {
      * 验证 验证码
      */
     public void checkSmsCode(String mPhone, String code, final PhoneCallback mCallback) {
+//        if (mCallback != null) {
+//            mCallback.onSuccess(code);
+//        }
         SMSSDK.getInstance().checkSmsCodeAsyn(mPhone, code, new SmscheckListener() {
             @Override
             public void checkCodeSuccess(final String code) {

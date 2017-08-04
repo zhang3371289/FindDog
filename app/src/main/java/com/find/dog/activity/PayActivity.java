@@ -64,11 +64,11 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
     class RadioGroupListener implements RadioGroup.OnCheckedChangeListener{
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
-            if (checkedId==zhifubaoButton.getId()){
-                ToastUtil.showTextToast(PayActivity.this,zhifubaoButton.getText().toString());
-            }else if (checkedId==weixinButton.getId()){
-                ToastUtil.showTextToast(PayActivity.this,weixinButton.getText().toString());
-            }
+//            if (checkedId==zhifubaoButton.getId()){
+//                ToastUtil.showTextToast(PayActivity.this,zhifubaoButton.getText().toString());
+//            }else if (checkedId==weixinButton.getId()){
+//                ToastUtil.showTextToast(PayActivity.this,weixinButton.getText().toString());
+//            }
         }
     }
 
