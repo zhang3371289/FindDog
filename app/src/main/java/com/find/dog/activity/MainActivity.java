@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.find.dog.R;
 import com.find.dog.Retrofit.RetroFactory;
 import com.find.dog.Retrofit.RetroFitUtil;
@@ -23,6 +25,8 @@ import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
 import com.find.dog.main.MyApplication;
 import com.find.dog.utils.MyManger;
+import com.find.dog.utils.MySwipeRefreshLayout;
+import com.find.dog.utils.PetState;
 import com.find.dog.utils.ToastUtil;
 import com.find.dog.utils.YKUtil;
 import com.google.zxing.activity.CaptureActivity;
@@ -41,6 +45,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static MyAdapter mAdapter;
     private static ArrayList<UserPetInfo> mList = new ArrayList<>();
     private static Context mContext;
+    private static MySwipeRefreshLayout mPullListView;
+    private static String mLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +55,35 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         initview();
         getTokenInfo();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!TextUtils.isEmpty(mLocation)){
+            getRewardInfo(mLocation);
+        }
+    }
+
     private void initview(){
         mActivity = this;
+        mPullListView = (MySwipeRefreshLayout) findViewById(R.id.homePullToRefreshListView);
+        mPullListView.setColorSchemeResources(android.R.color.holo_red_light, android.R.color.holo_orange_light,
+                android.R.color.holo_green_light, android.R.color.holo_blue_bright);
+        mPullListView.setDistanceToTriggerSync(200);
+        mPullListView.setSize(SwipeRefreshLayout.LARGE);
+        mPullListView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getRewardInfo(mLocation);
+            }
+        });
+//        mPullListView.setOnLoadListener(new MySwipeRefreshLayout.OnLoadListener() {
+//
+//            @Override
+//            public void onLoad() {
+//
+//            }
+//        });
         findViewById(R.id.activity_main_user).setOnClickListener(this);
         findViewById(R.id.activity_main_tab1).setOnClickListener(this);
         findViewById(R.id.activity_main_tab2).setOnClickListener(this);
@@ -90,15 +123,18 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private static void getRewardInfo(String location){
+        mLocation = "天通苑";
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
-        map.put("loseAddress", location);
+        map.put("loseAddress", mLocation);
         RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
         new RetroFitUtil<ArrayList<UserPetInfo>>(mContext, RetroFactory.getIstance().getStringService().getRewardInfo(requestBody))
                 .request(new RetroFitUtil.ResponseListener<ArrayList<UserPetInfo>>() {
 
                     @Override
                     public void onSuccess(ArrayList<UserPetInfo> infos) {
+                        mPullListView.setLoading(false);
+                        mPullListView.setRefreshing(false);
                         if (infos != null) {
 //                            updateUI(infos);
                             mList = infos;
@@ -109,6 +145,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
                     @Override
                     public void onFail() {
+                        mPullListView.setLoading(false);
+                        mPullListView.setRefreshing(false);
                     }
 
                 });
@@ -233,7 +271,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             UserPetInfo info = mList.get(position);
             viewHolder.mName.setText(info.getPatName());
             viewHolder.mMoney.setText(info.getReward());
-            viewHolder.mType.setText(info.getState());
+            viewHolder.mType.setText(PetState.getState(info.getState()));
+            Glide.with(mContext).load(info.getPhoto1URL()).into(viewHolder.mImg);
         }
         //获取数据的数量
         @Override
