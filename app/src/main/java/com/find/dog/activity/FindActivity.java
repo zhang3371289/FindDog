@@ -180,7 +180,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
         }
         name_text.setText(mUserPetInfo.getPatName());
         phone_text.setText(mUserPetInfo.getMasterPhone());
-        adress_text.setText(mUserPetInfo.getLoseAddress());
+        adress_text.setText(TextUtils.isEmpty(mUserPetInfo.getLoseAddress()) ? mUserPetInfo.getHomeAddress() : mUserPetInfo.getLoseAddress());
         type_text.setText(PetState.getState(mUserPetInfo.getState()));
         describ_text.setText(mUserPetInfo.getDescrib());
         raward_text.setText(mUserPetInfo.getReward());
@@ -355,6 +355,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                             } else {
                                 getUserAllPetInfo(false);
                             }
+                            finish();
                             ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(), infos.getErro());

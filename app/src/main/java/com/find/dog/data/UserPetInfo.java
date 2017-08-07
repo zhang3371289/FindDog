@@ -39,6 +39,7 @@ public class UserPetInfo implements Serializable {
     private String reward;
     private String describ;
     private String loseAddress;
+    private String homeAddress;
     private String loseDate;
     private String backDate;
     private String alipay;
@@ -119,6 +120,14 @@ public class UserPetInfo implements Serializable {
         this.loseAddress = loseAddress;
     }
 
+    public String getHomeAddress() {
+        return homeAddress;
+    }
+
+    public void setHomeAddress(String homeAddress) {
+        this.homeAddress = homeAddress;
+    }
+
     public String getLoseDate() {
         return loseDate;
     }
@@ -187,6 +196,7 @@ public class UserPetInfo implements Serializable {
                 ", reward='" + reward + '\'' +
                 ", describ='" + describ + '\'' +
                 ", loseAddress='" + loseAddress + '\'' +
+                ", homeAddress='" + homeAddress + '\'' +
                 ", loseDate='" + loseDate + '\'' +
                 ", backDate='" + backDate + '\'' +
                 ", alipay='" + alipay + '\'' +

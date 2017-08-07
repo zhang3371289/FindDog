@@ -7,7 +7,6 @@
     <ImageView
         android:id="@+id/fragmet_pet_item_img"
         android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/a"/>
+        android:layout_height="200dp"/>
 
 </RelativeLayout>
