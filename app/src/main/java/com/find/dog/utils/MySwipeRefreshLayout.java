@@ -3,31 +3,32 @@ package com.find.dog.utils;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.find.dog.R;
 
 public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScrollListener {
 
-    /**
-     * 解决SwipeRefreshLayout左右滑动事件冲突的问题
-     */
+	/**
+	 * 解决SwipeRefreshLayout左右滑动事件冲突的问题
+	 */
 	private float mPrevX;
 
 	private int mTouchSlop;
 	private ListView mListView;
 	private OnLoadListener mOnLoadListener;
-
 	public View mListViewFooter;
 	public LinearLayout mListViewFooter1;
+	private LinearLayout.LayoutParams linParam;
 	private int mYDown;
 	private int mLastY;
 	private boolean isLoading = false;
@@ -51,7 +52,9 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 		super(context, attrs);
 
 		mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-		mListViewFooter1 = (LinearLayout) View.inflate(context, R.layout.my_swipe_refresh_footer1, null);
+		mListViewFooter1 = new LinearLayout(context);
+		linParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		linParam.gravity = Gravity.CENTER_HORIZONTAL;
 		mListViewFooter = LayoutInflater.from(context).inflate(R.layout.my_swipe_refresh_footer, null, false);
 	}
 
@@ -85,24 +88,24 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 		final int action = event.getAction();
 
 		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			// 按下
-			mYDown = (int) event.getRawY();
-			break;
+			case MotionEvent.ACTION_DOWN:
+				// 按下
+				mYDown = (int) event.getRawY();
+				break;
 
-		case MotionEvent.ACTION_MOVE:
-			// 移动
-			mLastY = (int) event.getRawY();
-			break;
+			case MotionEvent.ACTION_MOVE:
+				// 移动
+				mLastY = (int) event.getRawY();
+				break;
 
-		case MotionEvent.ACTION_UP:
-			// 抬起
-			if (canLoad()) {
-				loadData();
-			}
-			break;
-		default:
-			break;
+			case MotionEvent.ACTION_UP:
+				// 抬起
+				if (canLoad()) {
+					loadData();
+				}
+				break;
+			default:
+				break;
 		}
 
 		return super.dispatchTouchEvent(event);
@@ -112,18 +115,18 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 	public boolean onInterceptTouchEvent(MotionEvent event) {
 
 		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			mPrevX = event.getX();
-			break;
+			case MotionEvent.ACTION_DOWN:
+				mPrevX = event.getX();
+				break;
 
-		case MotionEvent.ACTION_MOVE:
-			final float eventX = event.getX();
-			float xDiff = Math.abs(eventX - mPrevX);
-			// Log.d("refresh" ,"move----" + eventX + "   " + mPrevX + "   " + mTouchSlop);
-			// 增加60的容差，让下拉刷新在竖直滑动时就可以触发
-			if (xDiff > mTouchSlop + 60) {
-				return false;
-			}
+			case MotionEvent.ACTION_MOVE:
+				final float eventX = event.getX();
+				float xDiff = Math.abs(eventX - mPrevX);
+				// Log.d("refresh" ,"move----" + eventX + "   " + mPrevX + "   " + mTouchSlop);
+				// 增加60的容差，让下拉刷新在竖直滑动时就可以触发
+				if (xDiff > mTouchSlop + 60) {
+					return false;
+				}
 		}
 
 		return super.onInterceptTouchEvent(event);
@@ -131,7 +134,7 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 
 	/**
 	 * 是否可以加载更多, 条件是到了最底部, listview不在加载中, 且为上拉操作.
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean canLoad() {
@@ -176,7 +179,7 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 			if (mListView != null) {
 //				mListView.addFooterView(mListViewFooter);
 				mListViewFooter1.removeAllViews();
-				mListViewFooter1.addView(mListViewFooter);
+				mListViewFooter1.addView(mListViewFooter,linParam);
 				View view = findViewById(R.id.pull_to_refresh_load_progress);
 				if (view != null) {
 					view.setVisibility(View.VISIBLE);
@@ -201,7 +204,7 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout implements OnScroll
 	 */
 	public void setNoMore(){
 		mListViewFooter1.removeAllViews();
-		mListViewFooter1.addView(mListViewFooter);
+		mListViewFooter1.addView(mListViewFooter,linParam);
 		findViewById(R.id.pull_to_refresh_load_progress).setVisibility(View.INVISIBLE);
 		((TextView)findViewById(R.id.pull_to_refresh_loadmore_text)).setText("没有更多数据了...");
 

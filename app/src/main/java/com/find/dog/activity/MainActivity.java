@@ -123,7 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private static void getRewardInfo(String location){
-        mLocation = "天通苑";
+        mLocation = location;
         //获取 正在悬赏宠物
         Map<String, String> map = new HashMap<>();
         map.put("loseAddress", mLocation);
