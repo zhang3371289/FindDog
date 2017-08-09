@@ -37,7 +37,7 @@ import okhttp3.RequestBody;
  * Created by zhangzhongwei on 2017/7/11.
  * 发现页
  */
-public class FindActivity extends BaseActivity implements View.OnClickListener {
+public class MyPetActivity extends BaseActivity implements View.OnClickListener {
     private ListView mListView;
     private RecyclerView mTopRV, mFootRV;
     private Context mContext;

@@ -60,7 +60,7 @@
         <activity android:name="com.find.dog.activity.ChangePetActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.PayActivity"/>
-        <activity android:name="com.find.dog.activity.FindActivity"
+        <activity android:name="com.find.dog.activity.MyPetActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.RegisterActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>

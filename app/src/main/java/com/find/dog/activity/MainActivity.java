@@ -231,11 +231,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab2:
 //                ToastUtil.showTextToast(mActivity,"发现");
-                startActivity(new Intent(this, FindActivity.class));
+                startActivity(new Intent(this, MyPetActivity.class));
                 break;
             case R.id.activity_main_tab3:
 //                ToastUtil.showTextToast(mActivity,"宠物");
-                Intent intent1 = new Intent(this, FindActivity.class);
+                Intent intent1 = new Intent(this, MyPetActivity.class);
                 intent1.putExtra("isMyPet",true);
                 startActivity(intent1);
                 break;
@@ -310,7 +310,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                     public void onSuccess(ArrayList<UserPetInfo> result) {
                         if (result != null && result.size()>0) {
                             if("lose".equals(result.get(0).getState())){
-                                Intent intent = new Intent(getApplicationContext(), FindActivity.class);
+                                Intent intent = new Intent(getApplicationContext(), MyPetActivity.class);
                                 intent.putExtra("objectList", result);
                                 startActivity(intent);
                             }else if("-1".equals(result.get(0).getId())){

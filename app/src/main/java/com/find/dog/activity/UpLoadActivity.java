@@ -138,7 +138,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                             info.setAdress(mAdressEdit.getText().toString());
                             info.setPhone(MyManger.getUserInfo().getPhone());
                             MyManger.saveUserInfo(info);
-                            Intent intent = new Intent(mActivity, FindActivity.class);
+                            Intent intent = new Intent(mActivity, MyPetActivity.class);
                             intent.putExtra("isFormUpLoad",true);
                             startActivity(intent);
                             // 将Map value 转化为List
