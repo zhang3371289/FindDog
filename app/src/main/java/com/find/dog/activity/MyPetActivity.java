@@ -42,7 +42,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
     private RecyclerView mTopRV, mFootRV;
     private Context mContext;
     private PetFooterAdapter mFooterAdapter;
-    private static int selectPosition = 0;
+    private static int selectPosition;
     private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
     private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text, zhuzhi_title;
     private Button mButton;
@@ -51,12 +51,14 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
     private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
     private boolean isFromQRCode;
     private View footerView;
-    private String MY_PET = "我的宠物",FIND = "发现",GIVE_UP_CONTACT = "放弃联系";
+    private String MY_PET = "我的宠物", FIND = "发现", GIVE_UP_CONTACT = "放弃联系";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypet_layout);
         intview();
+        selectPosition = 0;
         mPetsList = (ArrayList) getIntent().getSerializableExtra("objectList");
         if (mPetsList == null) {// 点击发现 宠物 信息
             isFromQRCode = false;
@@ -162,7 +164,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
      * @param position
      */
     public void getData(int position) {
-        if (mPetsList.size() <= 0) {
+        if (mPetsList.size() <= 0 || position >= mPetsList.size()) {
             return;
         }
         footerView.setVisibility(View.VISIBLE);
@@ -202,16 +204,18 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
                 mLostLayout.setVisibility(View.VISIBLE);
             }
         } else if ("confirming".equals(state)) {
-            if(MY_PET.equals(title.getText().toString())){//我的宠物 显示 确认找回-继续寻找
+            if (MY_PET.equals(title.getText().toString())) {//我的宠物 显示 确认找回-继续寻找
                 mSureLayout.setVisibility(View.VISIBLE);
-            }else if(FIND.equals(title.getText().toString())){// 发现 显示 放弃联系
+            } else if (FIND.equals(title.getText().toString())) {// 发现 显示 放弃联系
                 mButton.setVisibility(View.VISIBLE);
                 mButton.setText(GIVE_UP_CONTACT);
             }
         } else if ("normal".equals(state)) {
-            mNormalState.setVisibility(View.VISIBLE);
             lose_text_layout.setVisibility(View.GONE);
             zhuzhi_title.setText("住址:");
+            if (MY_PET.equals(title.getText().toString())) {//我的宠物 显示 发布悬赏-修改信息
+                mNormalState.setVisibility(View.VISIBLE);
+            }
         }
 
         MyManger.saveQRCode(mUserPetInfo.get_$2dCode());
