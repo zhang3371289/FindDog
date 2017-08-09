@@ -245,7 +245,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                     return;
                 }
                 if (GIVE_UP_CONTACT.equals(mButton.getText().toString())) {
-                    getCancelInfo();
+                    getAgainInfo();//（放弃联系）
                 } else {
                     getSureInfo(); //（联系主人）
                 }
@@ -259,7 +259,7 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
             case R.id.change://修改悬赏
                 startActivity(new Intent(this, IssueActivity.class));
                 break;
-            case R.id.cancel://取消悬赏  （放弃联系）
+            case R.id.cancel://取消悬赏
                 getCancelInfo();
                 break;
             case R.id.fabu_state://发布悬赏
@@ -355,7 +355,6 @@ public class FindActivity extends BaseActivity implements View.OnClickListener {
                             } else {
                                 getUserAllPetInfo(false);
                             }
-                            finish();
                             ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
                         } else {
                             ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
