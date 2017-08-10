@@ -211,9 +211,9 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
                 mButton.setText(GIVE_UP_CONTACT);
             }
         } else if ("normal".equals(state)) {
-            lose_text_layout.setVisibility(View.GONE);
-            zhuzhi_title.setText("住址:");
             if (MY_PET.equals(title.getText().toString())) {//我的宠物 显示 发布悬赏-修改信息
+                lose_text_layout.setVisibility(View.GONE);
+                zhuzhi_title.setText("住址:");
                 mNormalState.setVisibility(View.VISIBLE);
             }
         }
