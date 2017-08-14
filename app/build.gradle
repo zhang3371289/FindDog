@@ -72,4 +72,5 @@ dependencies {
     compile files('src/main/jniLibs/retrofit-2.2.0.jar')
     compile files('src/main/jniLibs/BaiduLBS_Android.jar')
     compile files('src/main/jniLibs/jsms_android-1.1.0.jar')
+    compile files('src/main/jniLibs/alipaySdk-20170725.jar')
 }

@@ -66,6 +66,33 @@
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.ChangeUserActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
+
+        <!-- 支付宝 开始-->
+        <activity
+            android:name="com.find.dog.activity.AlipayActivity" />
+        <activity
+            android:name="com.find.dog.activity.AlipayH5Activity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <!-- 支付宝 结束-->
+
         <!--  百度定位  -->
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"/>
 

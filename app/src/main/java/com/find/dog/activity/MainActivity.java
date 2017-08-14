@@ -241,6 +241,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.activity_main_tab4:
                 ToastUtil.showTextToast(mActivity,"社区");
+                startActivity(new Intent(this, AlipayActivity.class));
                 break;
         }
     }
