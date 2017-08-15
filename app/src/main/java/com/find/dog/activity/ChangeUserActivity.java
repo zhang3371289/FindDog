@@ -63,7 +63,7 @@ public class ChangeUserActivity extends BaseActivity implements View.OnClickList
         title_text.setText("修改信息");
         yzm_text.setOnClickListener(this);
         sure_text.setOnClickListener(this);
-        adress_layout.setVisibility(View.VISIBLE);
+//        adress_layout.setVisibility(View.VISIBLE);
     }
 
     @Override

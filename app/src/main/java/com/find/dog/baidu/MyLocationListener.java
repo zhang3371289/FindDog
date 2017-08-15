@@ -7,6 +7,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.Poi;
 import com.find.dog.activity.MainActivity;
+import com.find.dog.utils.MyManger;
 
 import java.util.List;
 
@@ -118,6 +119,7 @@ public class MyLocationListener implements BDLocationListener {
         String result = province+city+district;
         if(!TextUtils.isEmpty(province)){
             MainActivity.setLocation(result);
+            MyManger.saveCity(province,city,district);
         }
 
     }

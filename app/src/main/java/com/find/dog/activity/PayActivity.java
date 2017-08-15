@@ -35,6 +35,8 @@ public class PayActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay_layout);
         initview();
+        uploadPic();
+        finish();
     }
 
     private void initview(){

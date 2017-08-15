@@ -102,6 +102,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="10dp">
 
                     <TextView
@@ -194,7 +195,7 @@
                         android:layout_height="wrap_content"
                         android:text="丢失地址:" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/activity_issue_adress"
                         style="@style/PetTextStyle"
                         android:layout_width="match_parent"
@@ -211,6 +212,7 @@
                 android:id="@+id/fragment_pet_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_below="@+id/fragment_pet_layout"
                 android:scrollbars="none" />
 

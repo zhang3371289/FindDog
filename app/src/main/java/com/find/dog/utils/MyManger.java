@@ -112,6 +112,34 @@ public class MyManger {
         return describ;
     }
 
+    /**
+     * 保存 省市区
+     */
+    public static void saveCity(String province,String city,String district){
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        SharedPreferences.Editor editor = sharedPreferences.edit();//获取编辑器
+        editor.putString("province",province);
+        editor.putString("city",city);
+        editor.putString("district",district);
+        editor.commit();
+    }
+
+    public static String getCity(int position,String normal) {
+        SharedPreferences sharedPreferences = MyApplication.getInstance().getSharedPreferences("user", Context.MODE_PRIVATE); //私有数据
+        String code = "";
+        switch (position){
+            case 1:
+                code = sharedPreferences.getString("province",normal);
+                break;
+            case 2:
+                code = sharedPreferences.getString("city",normal);
+                break;
+            case 3:
+                code = sharedPreferences.getString("district",normal);
+                break;
+        }
+        return code;
+    }
 
     /**
      * 保存 用户信息

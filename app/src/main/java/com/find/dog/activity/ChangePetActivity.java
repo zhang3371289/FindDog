@@ -141,7 +141,8 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 						break;
 				}
 				if (data != null) {
-					QrCode_text.setText(data.getStringExtra("result"));
+//					QrCode_text.setText(data.getStringExtra("result"));
+					QrCode_text.setText("******");
 					QrCode_text.setClickable(false);
 				}
 				break;
