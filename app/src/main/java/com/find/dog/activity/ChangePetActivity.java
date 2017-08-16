@@ -52,7 +52,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private UpLoadAdapter mAdapter;
 	private EditText name_edit,adress_edit;
 	private TextView QrCode_text;
-
+	private String QrCode_Value;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -142,6 +142,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				}
 				if (data != null) {
 //					QrCode_text.setText(data.getStringExtra("result"));
+					QrCode_Value = data.getStringExtra("result");
 					QrCode_text.setText("******");
 					QrCode_text.setClickable(false);
 				}
@@ -239,7 +240,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		map.put("patName", name_edit.getText().toString());
 		map.put("homeAddress", adress_edit.getText().toString());
 		map.put("2dCode", MyManger.getQRCode());
-		map.put("new2dCode", QrCode_text.getText().toString());
+		map.put("new2dCode", QrCode_Value);
 		map.putAll(pic_map);
 		RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
 		new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().changePetInfo(requestBody))
@@ -248,24 +249,25 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 					@Override
 					public void onSuccess(stringInfo infos) {
 						QINiuUtil.dismissDialog();
-						Log.e("H", "changePetInfo---->" + infos);
 						if (!TextUtils.isEmpty(infos.getInfo())) {
 							ToastUtil.showTextToast(getApplicationContext(),infos.getInfo().toString());
 							UserInfo info = new UserInfo();
 							info.setName(name_edit.getText().toString());
 							info.setAdress(adress_edit.getText().toString());
 							MyManger.saveUserInfo(info);
-							MyManger.saveQRCode(QrCode_text.getText().toString());
+							if(!TextUtils.isEmpty(QrCode_Value)){
+								MyManger.saveQRCode(QrCode_Value);
+							}
 //							MyManger.savePicsArray(mAdapter.getList());
 						} else {
-							ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
+							ToastUtil.showTextToast(getApplicationContext(),"二维码不合法");
+//							ToastUtil.showTextToast(getApplicationContext(),infos.getErro());
 						}
 					}
 
 					@Override
 					public void onFail() {
 						QINiuUtil.dismissDialog();
-						Log.e("H", "onFail---->");
 						ToastUtil.showTextToast(getApplicationContext(),getResources().getString(R.string.error_net));
 					}
 
