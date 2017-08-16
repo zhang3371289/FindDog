@@ -165,6 +165,7 @@
                 <EditText
                     android:id="@+id/activity_upload_adress_edit"
                     style="@style/PetTextStyle"
+                    android:focusable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"/>

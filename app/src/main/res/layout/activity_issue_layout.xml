@@ -195,9 +195,10 @@
                         android:layout_height="wrap_content"
                         android:text="丢失地址:" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/activity_issue_adress"
                         style="@style/PetTextStyle"
+                        android:focusable="false"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"

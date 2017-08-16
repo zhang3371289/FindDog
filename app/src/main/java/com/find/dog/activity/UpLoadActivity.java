@@ -26,6 +26,7 @@ import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserInfo;
 import com.find.dog.data.stringInfo;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.utils.ChoseCityUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.QINiuUtil;
@@ -85,6 +86,7 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.back_layout).setOnClickListener(this);
         mNameEdit.setText(MyManger.getUserInfo().getName());
         mAdressEdit.setText(MyManger.getUserInfo().getAdress());
+        mAdressEdit.setOnClickListener(this);
         if (!MyManger.isLogin()) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivityForResult(intent, LoginActivity.LOGIN_RESULT);
@@ -245,6 +247,9 @@ public class UpLoadActivity extends BaseActivity implements OnClickListener {
                 break;
             case R.id.back_layout:
                 finish();
+                break;
+            case R.id.activity_upload_adress_edit:
+                ChoseCityUtil.showDialog(this,mAdressEdit);
                 break;
             default:
                 break;

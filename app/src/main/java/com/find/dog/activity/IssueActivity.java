@@ -23,6 +23,7 @@ import com.find.dog.R;
 import com.find.dog.adapter.UpLoadAdapter;
 import com.find.dog.data.UserPetInfo;
 import com.find.dog.main.BaseActivity;
+import com.find.dog.utils.ChoseCityUtil;
 import com.find.dog.utils.MyManger;
 import com.find.dog.utils.PhotoUtil;
 import com.find.dog.utils.YKUtil;
@@ -40,9 +41,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
     private String[] photo_items = new String[]{"选择本地图片", "拍照"};
     private RecyclerView mRecyclerView;
     private UpLoadAdapter mAdapter;
-    private TextView name_text,phone_text,losttime_text,pet_state,adress_text;
-    private EditText issue_edit,description_edit;
-
+    private TextView name_text,phone_text,losttime_text,pet_state;
+    private EditText issue_edit,description_edit,adress_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +75,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
         findViewById(R.id.back_layout).setOnClickListener(this);
 
         description_edit = (EditText) findViewById(R.id.activity_issue_description);
-        adress_text = (TextView) findViewById(R.id.activity_issue_adress);
+        adress_edit = (EditText) findViewById(R.id.activity_issue_adress);
         issue_edit = (EditText) findViewById(R.id.activity_issue_issue);
         name_text = (TextView) findViewById(R.id.fragment_pet_name);
         phone_text = (TextView) findViewById(R.id.fragment_pet_phone);
@@ -84,8 +84,8 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
 
         name_text.setText(MyManger.getPetInfo().getPatName());
         phone_text.setText(MyManger.getPetInfo().getMasterPhone());
-        adress_text.setText(MyManger.getPetInfo().getLoseAddress());
-        adress_text.setOnClickListener(this);
+        adress_edit.setText(MyManger.getPetInfo().getLoseAddress());
+        adress_edit.setOnClickListener(this);
         issue_edit.setText(MyManger.getMoney());
         description_edit.setText(MyManger.getDescrib());
 
@@ -186,7 +186,7 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 MyManger.saveDescrib(description_edit.getText().toString());
                 MyManger.savePicsArray(mAdapter.getList());
                 UserPetInfo pet = new UserPetInfo();
-                pet.setLoseAddress(adress_text.getText().toString());
+                pet.setLoseAddress(adress_edit.getText().toString());
                 pet.setPatName(name_text.getText().toString());
                 pet.setMasterPhone(phone_text.getText().toString());
                 pet.setLoseDate(losttime_text.getText().toString());
@@ -200,61 +200,12 @@ public class IssueActivity extends BaseActivity implements OnClickListener {
                 finish();
                 break;
             case R.id.activity_issue_adress:
-                showDialog();
+                ChoseCityUtil.showDialog(this,adress_edit);
                 break;
             default:
                 break;
         }
 
-    }
-
-    private void showDialog(){
-//        //首先跳转到列表页面，通过startActivityForResult实现页面跳转传值
-//        Intent intent = new Intent(IssueActivity.this, CityListSelectActivity.class);
-//        startActivityForResult(intent, CityListSelectActivity.CITY_SELECT_RESULT_FRAG);
-
-        CityPicker cityPicker = new CityPicker.Builder(IssueActivity.this)
-                .textSize(20)
-                .title("丢失地址")
-                .backgroundPop(0xa0000000)
-                .titleBackgroundColor("#CCCCCC")
-                .titleTextColor("#CCCCCC")
-                .confirTextColor("#234Dfa")
-                .cancelTextColor("#234Dfa")
-                .province(MyManger.getCity(1,"北京市"))
-                .city(MyManger.getCity(2,"北京市"))
-                .district(MyManger.getCity(3,"朝阳区"))
-                .textColor(Color.parseColor("#000000"))
-                .provinceCyclic(true)
-                .cityCyclic(false)
-                .districtCyclic(false)
-                .visibleItemsCount(7)
-                .itemPadding(10)
-                .onlyShowProvinceAndCity(false)
-                .build();
-        cityPicker.show();
-
-        //监听方法，获取选择结果
-        cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
-            @Override
-            public void onSelected(String... citySelected) {
-                //省份
-                String province = citySelected[0];
-                //城市
-                String city = citySelected[1];
-                //区县（如果设定了两级联动，那么该项返回空）
-                String district = citySelected[2];
-                //邮编
-                String code = citySelected[3];
-
-                adress_text.setText(province+city+district);
-            }
-
-            @Override
-            public void onCancel() {
-//                Toast.makeText(IssueActivity.this, "已取消", Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
 
