@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.find.dog.utils.QINiuUtil;
 import com.find.dog.utils.ToastUtil;
 import com.find.dog.utils.YKUtil;
 import com.google.zxing.activity.CaptureActivity;
+import com.lljjcoder.citypickerview.widget.CityPicker;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,8 +52,8 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	private String[] photo_items = new String[]{"选择本地图片", "拍照"};
 	private RecyclerView mRecyclerView;
 	private UpLoadAdapter mAdapter;
-	private EditText name_edit,adress_edit;
-	private TextView QrCode_text;
+	private EditText name_edit,adress_text;
+	private TextView Q_text;
 	private String QrCode_Value;
 
 	@Override
@@ -85,11 +87,12 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		findViewById(R.id.back_layout).setOnClickListener(this);
 
 		name_edit = (EditText) findViewById(R.id.fragment_pet_name);
-		adress_edit = (EditText) findViewById(R.id.fragment_pet_adress);
-		QrCode_text = (TextView) findViewById(R.id.fragment_pet_QrCode);
-		QrCode_text.setOnClickListener(this);
+		adress_text = (EditText) findViewById(R.id.fragment_pet_adress);
+		adress_text.setOnClickListener(this);
+		Q_text = (TextView) findViewById(R.id.fragment_pet_QrCode);
+		Q_text.setOnClickListener(this);
 		name_edit.setText(MyManger.getUserInfo().getName());
-		adress_edit.setText(MyManger.getUserInfo().getAdress());
+		adress_text.setText(MyManger.getUserInfo().getAdress());
 	}
 
 	@Override
@@ -143,8 +146,8 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 				if (data != null) {
 //					QrCode_text.setText(data.getStringExtra("result"));
 					QrCode_Value = data.getStringExtra("result");
-					QrCode_text.setText("******");
-					QrCode_text.setClickable(false);
+					Q_text.setText("******");
+					Q_text.setClickable(false);
 				}
 				break;
 
@@ -165,19 +168,55 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 	}
 
 	/**
-	 * 判断图片 是否可 提交
-	 *
-	 * @return
+	 * 省市区 弹窗
 	 */
-	private boolean canCommitFromImage() {
-		boolean canCommit = false;
-		if (mAdapter.getList().size() <= 0) {
-			canCommit = false;
-		} else {
-			canCommit = true;
-		}
-		return canCommit;
+	private void showDialog(){
+//        //首先跳转到列表页面，通过startActivityForResult实现页面跳转传值
+//        Intent intent = new Intent(IssueActivity.this, CityListSelectActivity.class);
+//        startActivityForResult(intent, CityListSelectActivity.CITY_SELECT_RESULT_FRAG);
 
+		CityPicker cityPicker = new CityPicker.Builder(this)
+				.textSize(20)
+				.title("丢失地址")
+				.backgroundPop(0xa0000000)
+				.titleBackgroundColor("#CCCCCC")
+				.titleTextColor("#CCCCCC")
+				.confirTextColor("#234Dfa")
+				.cancelTextColor("#234Dfa")
+				.province(MyManger.getCity(1,"北京市"))
+				.city(MyManger.getCity(2,"北京市"))
+				.district(MyManger.getCity(3,"朝阳区"))
+				.textColor(Color.parseColor("#000000"))
+				.provinceCyclic(true)
+				.cityCyclic(false)
+				.districtCyclic(false)
+				.visibleItemsCount(7)
+				.itemPadding(10)
+				.onlyShowProvinceAndCity(false)
+				.build();
+		cityPicker.show();
+
+		//监听方法，获取选择结果
+		cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
+			@Override
+			public void onSelected(String... citySelected) {
+				//省份
+				String province = citySelected[0];
+				//城市
+				String city = citySelected[1];
+				//区县（如果设定了两级联动，那么该项返回空）
+				String district = citySelected[2];
+				//邮编
+				String code = citySelected[3];
+
+				adress_text.setText(province+city+district);
+			}
+
+			@Override
+			public void onCancel() {
+//                Toast.makeText(IssueActivity.this, "已取消", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 
@@ -205,6 +244,10 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
                         }
                     }
                 });
+				break;
+			case R.id.fragment_pet_adress:
+				showDialog();
+				break;
 			default:
 				break;
 		}
@@ -238,7 +281,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 		Map<String, String> map = new HashMap<>();
 		map.put("userPhone", MyManger.getUserInfo().getPhone());
 		map.put("patName", name_edit.getText().toString());
-		map.put("homeAddress", adress_edit.getText().toString());
+		map.put("homeAddress", adress_text.getText().toString());
 		map.put("2dCode", MyManger.getQRCode());
 		map.put("new2dCode", QrCode_Value);
 		map.putAll(pic_map);
@@ -253,7 +296,7 @@ public class ChangePetActivity extends BaseActivity implements OnClickListener {
 							ToastUtil.showTextToast(getApplicationContext(),infos.getInfo().toString());
 							UserInfo info = new UserInfo();
 							info.setName(name_edit.getText().toString());
-							info.setAdress(adress_edit.getText().toString());
+							info.setAdress(adress_text.getText().toString());
 							MyManger.saveUserInfo(info);
 							if(!TextUtils.isEmpty(QrCode_Value)){
 								MyManger.saveQRCode(QrCode_Value);
