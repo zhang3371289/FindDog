@@ -45,7 +45,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
     private static int selectPosition;
     private ArrayList<String> mPicList = new ArrayList<String>();//图片路径集合
     private TextView name_text, type_text, phone_text, adress_text, title, describ_text, raward_text, tiem_text, zhuzhi_title;
-    private Button mButton;
+    private Button mButton,delete_pet;
     private LinearLayout mSureLayout, mLostLayout, mNormalState, lose_text_layout;
     private PetTopAdapter mTopAdapter;
     private ArrayList<UserPetInfo> mPetsList = new ArrayList<>();
@@ -64,6 +64,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
             isFromQRCode = false;
             if (getIntent().getBooleanExtra("isMyPet", false)) {//宠物页面
                 title.setText(MY_PET);
+                delete_pet.setVisibility(View.VISIBLE);
             } else if (getIntent().getBooleanExtra("isFormUpLoad", false)) {//上传页面
                 title.setText(MY_PET);
                 getUserAllPetInfo(true);
@@ -94,6 +95,8 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
         title.setText(FIND);
         findViewById(R.id.back_layout).setOnClickListener(this);
         mListView = (ListView) findViewById(R.id.fragment_pet_listview);
+        delete_pet = (Button) findViewById(R.id.delete_pet);
+        delete_pet.setOnClickListener(this);
         addTop();
         addFooter();
         mListView.setAdapter(null);
@@ -165,6 +168,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
      */
     public void getData(int position) {
         if (mPetsList.size() <= 0 || position >= mPetsList.size()) {
+            footerView.setVisibility(View.GONE);
             return;
         }
         footerView.setVisibility(View.VISIBLE);
@@ -275,6 +279,10 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
             case R.id.back_layout:
                 finish();
                 break;
+            case R.id.delete_pet:
+                deleteUserPetInfo();
+                break;
+
         }
     }
 
@@ -302,6 +310,36 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
                     @Override
                     public void onFail() {
 //						Log.e("H", "onFail---->");
+                    }
+
+                });
+    }
+
+    /**
+     * 删除宠物
+     */
+    private void deleteUserPetInfo() {
+        Map<String, String> map = new HashMap<>();
+        map.put("userPhone", MyManger.getUserInfo().getPhone());
+        map.put("2dCode", MyManger.getQRCode());
+        RequestBody requestBody = RetroFactory.getIstance().getrequestBody(map);
+        new RetroFitUtil<stringInfo>(this, RetroFactory.getIstance().getStringService().deletePetInfo(requestBody))
+                .request(new RetroFitUtil.ResponseListener<stringInfo>() {
+
+                    @Override
+                    public void onSuccess(stringInfo infos) {
+                        if (!TextUtils.isEmpty(infos.getInfo())) {
+                            getUserAllPetInfo(false);
+                            getData(0);
+                            ToastUtil.showTextToast(getApplicationContext(), infos.getInfo().toString());
+                        } else {
+                            ToastUtil.showTextToast(getApplicationContext(), infos.getErro());
+                        }
+                    }
+
+                    @Override
+                    public void onFail() {
+                        ToastUtil.showTextToast(getApplicationContext(), getResources().getString(R.string.error_net));
                     }
 
                 });

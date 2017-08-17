@@ -27,8 +27,8 @@
 
             <ImageView
                 android:id="@+id/aenior_back"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/blck_back"/>

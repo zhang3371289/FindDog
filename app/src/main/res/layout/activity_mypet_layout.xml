@@ -28,12 +28,21 @@
 
             <ImageView
                 android:id="@+id/aenior_back"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
                 android:src="@drawable/blck_back" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/delete_pet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            android:text="删除宠物"/>
 
         <View
             android:layout_width="match_parent"
