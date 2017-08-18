@@ -26,7 +26,7 @@ import java.util.Map;
  */
 
 public class QINiuUtil {
-    public final static String photo_value = "http://otmv1mqzg.bkt.clouddn.com/";
+    public final static String photo_value = "http://zuyouba.com/";
     public final static String photo_suffix= "?imageMogr2/thumbnail/500x/strip/quality/50/format/webp";
     private static QINiuUtil mInstance;
     private static Context mContext;

@@ -169,6 +169,7 @@ public class MyPetActivity extends BaseActivity implements View.OnClickListener 
     public void getData(int position) {
         if (mPetsList.size() <= 0 || position >= mPetsList.size()) {
             footerView.setVisibility(View.GONE);
+            delete_pet.setVisibility(View.GONE);
             return;
         }
         footerView.setVisibility(View.VISIBLE);
