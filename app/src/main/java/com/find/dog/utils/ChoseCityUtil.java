@@ -2,10 +2,9 @@ package com.find.dog.utils;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import com.find.dog.main.MyApplication;
+
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
 /**
@@ -14,6 +13,24 @@ import com.lljjcoder.citypickerview.widget.CityPicker;
 
 public class ChoseCityUtil {
     public static void showDialog(Context mContext,final EditText textview){
+
+        InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+//// 获取软键盘的显示状态
+//        boolean isOpen=imm.isActive();
+//
+//// 如果软键盘已经显示，则隐藏，反之则显示
+//        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+//
+//// 隐藏软键盘
+//        imm.hideSoftInputFromWindow(textview, InputMethodManager.HIDE_NOT_ALWAYS);
+//
+//// 强制显示软键盘
+//        imm.showSoftInput(textview,InputMethodManager.SHOW_FORCED);
+
+// 强制隐藏软键盘
+        imm.hideSoftInputFromWindow(textview.getWindowToken(), 0);
+
         CityPicker cityPicker = new CityPicker.Builder(mContext)
                 .textSize(20)
                 .title("丢失地址")

@@ -50,7 +50,8 @@
             android:name="com.google.zxing.activity.CaptureActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity android:name="com.find.dog.activity.UserActivity"/>
-        <activity android:name="com.find.dog.activity.LoginActivity"/>
+        <activity android:name="com.find.dog.activity.LoginActivity"
+                  android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name="com.find.dog.activity.UpLoadActivity"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name="com.find.dog.activity.SelectAlbumActivity"/>
